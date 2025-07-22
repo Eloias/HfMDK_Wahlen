@@ -16,7 +16,7 @@ STATIC_ROOT = '/var/www/HfMDK_Wahlen/static/'
 STATICFILES_DIRS = [
     # Pfad zu jedem Ordner, der zusätzliche statische Dateien enthält
     # Wahrscheinlich sind sie hier im Hauptprojektordner oder in server_ui
-    os.path.join(BASE_DIR, 'static'),
+    # os.path.join(BASE_DIR, 'static'), # <--- DIESE ZEILE ENTFERNEN ODER AUSKOMMENTIEREN
     os.path.join(BASE_DIR, 'server_ui', 'static'), # Wenn server_ui eigene static-Dateien hat
     # os.path.join(BASE_DIR, 'helios', 'static'), # Falls helios auch eigene static-Dateien hat
 ]
