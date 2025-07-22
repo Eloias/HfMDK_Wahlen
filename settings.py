@@ -8,8 +8,7 @@ import os
 import ldap
 from django_auth_ldap.config import LDAPSearch
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/HfMDK_Wahlen/static/'
