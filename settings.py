@@ -17,7 +17,7 @@ def get_from_env(var, default):
     else:
         return default
 
-DEBUG = (get_from_env('DEBUG', '1') == '1')
+DEBUG = (get_from_env('DEBUG', '0') == '1')
 
 # add admins of the form: 
 #    ('Ben Adida', 'ben@adida.net'),
@@ -43,8 +43,12 @@ SHOW_USER_INFO = (get_from_env('SHOW_USER_INFO', '1') == '1')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'helios',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Oft benötigt für ältere Django/Postgres Versionen
+        'NAME': 'helios_db', # Der Name der Datenbank, die du erstellt hast
+        'USER': 'helios_user', # Der Benutzer, den du erstellt hast
+        'PASSWORD': 'DEIN_SICHERES_PASSWORT', # Das Passwort für den 'helios_user'
+        'HOST': 'localhost', # Wenn Postgres auf demselben Server läuft
+        'PORT': '',          # Leeren String für Standardport
         'CONN_MAX_AGE': 600,
     },
 }
@@ -92,16 +96,16 @@ MEDIA_URL = ''
 STATIC_URL = '/media/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = get_from_env('SECRET_KEY', 'replaceme')
+SECRET_KEY = get_from_env('SECRET_KEY', 'REMOVEDh-y=a6t_j@n!b2f+q8r$x0e#z5c9v')
 
 # Secret key for HMAC confirmation codes (separate from Django SECRET_KEY)
-EMAIL_OPTOUT_SECRET = get_from_env('EMAIL_OPTOUT_SECRET', 'replace-with-secure-random-key')
+EMAIL_OPTOUT_SECRET = get_from_env('EMAIL_OPTOUT_SECRET', 'REMOVED!p5v@e1t-l4b+c0d#f7g$h2j&k3q')
 
 # If debug is set to false and ALLOWED_HOSTS is not declared, django raises  "CommandError: You must set settings.ALLOWED_HOSTS if DEBUG is False."
 # If in production, you got a bad request (400) error
 #More info: https://docs.djangoproject.com/en/1.7/ref/settings/#allowed-hosts (same for 1.6)
 
-ALLOWED_HOSTS = get_from_env('ALLOWED_HOSTS', 'localhost').split(",")
+ALLOWED_HOSTS = get_from_env('ALLOWED_HOSTS', 'localhost', '142.132.170.178').split(",")
 
 # Secure Stuff
 if get_from_env('SSL', '0') == '1':
@@ -200,7 +204,7 @@ LOGOUT_ON_CONFIRMATION = True
 
 # The two hosts are here so the main site can be over plain HTTP
 # while the voting URLs are served over SSL.
-URL_HOST = get_from_env("URL_HOST", "http://localhost:8000").rstrip("/")
+URL_HOST = get_from_env("URL_HOST", "http://142.132.170.178:8000").rstrip("/")
 
 # IMPORTANT: you should not change this setting once you've created
 # elections, as your elections' cast_url will then be incorrect.
