@@ -14,17 +14,20 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/HfMDK_Wahlen/static/'
 
 STATICFILES_DIRS = [
-    # Pfad zu jedem Ordner, der zusätzliche statische Dateien enthält
-    # Wahrscheinlich sind sie hier im Hauptprojektordner oder in server_ui
-    # os.path.join(BASE_DIR, 'static'), # <--- DIESE ZEILE ENTFERNEN ODER AUSKOMMENTIEREN
-    # os.path.join(BASE_DIR, 'server_ui', 'static'), # Wenn server_ui eigene static-Dateien hat
-    # os.path.join(BASE_DIR, 'helios', 'static'), # Falls helios auch eigene static-Dateien hat
+    os.path.join(BASE_DIR, 'helios', 'media'),
+    os.path.join(BASE_DIR, 'heliosbooth', 'css'),
+    os.path.join(BASE_DIR, 'heliosbooth', 'js'),
+    os.path.join(BASE_DIR, 'server_ui', 'media'),
+    os.path.join(BASE_DIR, 'helios_auth', 'media'),
+    os.path.join(BASE_DIR, 'heliosverifier', 'css'),
+    os.path.join(BASE_DIR, 'heliosverifier', 'js'),
 ]
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
+
 
 TESTING = 'test' in sys.argv
 
