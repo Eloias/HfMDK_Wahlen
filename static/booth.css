@@ -1,0 +1,106 @@
+body {
+  font-family: sans-serif;
+  background: white;
+  padding: 0;
+  margin: 0;
+}
+
+#wrapper {
+  padding: 0;
+  background: #ffffff;
+  border: 1px solid #666;
+  margin: 20px auto;
+  max-width: 1000px;
+}
+
+@media screen and (max-width: 1000px) {
+  #wrapper {
+    margin: 0;
+  }
+}
+
+#content {
+  padding: 20px;
+}
+
+#header {
+  padding-top: 0;
+  text-align: center;
+  padding-bottom: 5px;
+}
+
+#header h1 {
+  font-size: 28pt;
+  padding: 0;
+  margin: 0;
+  line-height: 120%;
+}
+
+#header h2 {
+  font-size: 20pt;
+  padding: 0;
+  margin: 0;
+  line-height: 100%;
+}
+
+.edge {
+  width: 100%;
+  display: flex;
+  padding: 5px 0;
+  text-align: center;
+  background: #ccc;
+  font-size: 18pt;
+}
+
+#progress_div {
+  margin: auto;
+  max-width: 500px;
+  font-size: 14pt;
+}
+
+#progress_div table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  border: 0;
+}
+
+#progress_div td.unselected {
+  background: #ccc;
+  color: #888;
+  border: 1px solid #333;
+}
+
+#progress_div td.selected {
+  background: #fc9;
+  color: black;
+  font-weight: bold;
+  border: 1px solid black;
+}
+
+#footer {
+  font-size: 12pt;
+  word-break: break-all;
+}
+
+#page h2 {
+  background: #fc9;
+  border-bottom: 1px solid #f90;
+  padding: 5px 0 2px 5px;
+}
+
+h3 {
+	font-size: 1.6em;
+}
+
+#election_info {
+  font-size: 16pt;
+}
+
+#election_hash {
+  font-family: monospace;
+}
+
+#loading_div {
+  display: none;
+}
