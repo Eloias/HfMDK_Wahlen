@@ -126,7 +126,7 @@ EMAIL_OPTOUT_SECRET = get_from_env('EMAIL_OPTOUT_SECRET', 'REMOVED!p5v@e1t-l4b+c
 # If in production, you got a bad request (400) error
 #More info: https://docs.djangoproject.com/en/1.7/ref/settings/#allowed-hosts (same for 1.6)
 
-ALLOWED_HOSTS = get_from_env('ALLOWED_HOSTS', 'localhost,142.132.170.178').split(",")
+ALLOWED_HOSTS = get_from_env('ALLOWED_HOSTS', 'localhost,142.132.170.178,hfmdk-wahlen.de,www.hfmdk-wahlen.de').split(",")
 
 # Secure Stuff
 if get_from_env('SSL', '0') == '1':
