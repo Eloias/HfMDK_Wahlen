@@ -4,6 +4,7 @@ from django.urls import include, path
 from . import views, url_names as names
 
 urlpatterns = [
+  path('auth/', include('helios_auth.urls')),
   path('autologin', views.admin_autologin),
   path('testcookie', views.test_cookie, name=names.COOKIE_TEST),
   path('testcookie_2', views.test_cookie_2, name=names.COOKIE_TEST_2),
