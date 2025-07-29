@@ -14,7 +14,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/HfMDK_Wahlen/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'helios', 'media'),
+    os.path.join(BASE_DIR, 'helios', 'media',),
     os.path.join(BASE_DIR, 'heliosbooth', 'css'),
     os.path.join(BASE_DIR, 'heliosbooth', 'js'),
     os.path.join(BASE_DIR, 'server_ui', 'media'),
@@ -109,12 +109,12 @@ MEDIA_ROOT = ''
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-STATIC_URL = '/media/'
+
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = get_from_env('SECRET_KEY', 'REMOVEDh-y=a6t_j@n!b2f+q8r$x0e#z5c9v')
