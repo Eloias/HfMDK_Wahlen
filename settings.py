@@ -217,8 +217,8 @@ VOTER_UPLOAD_REL_PATH = "voters/%Y/%m/%d"
 
 
 # Change your email settings
-DEFAULT_FROM_EMAIL = get_from_env('DEFAULT_FROM_EMAIL', 'ben@adida.net')
-DEFAULT_FROM_NAME = get_from_env('DEFAULT_FROM_NAME', 'Ben for Helios')
+DEFAULT_FROM_EMAIL = get_from_env('DEFAULT_FROM_EMAIL', 'Onlinewahlen-HfMDK@gmx.net')
+DEFAULT_FROM_NAME = get_from_env('DEFAULT_FROM_NAME', 'Onlinewahl HfMDK')
 SERVER_EMAIL = '%s <%s>' % (DEFAULT_FROM_NAME, DEFAULT_FROM_EMAIL)
 
 LOGIN_URL = '/auth/'
@@ -242,7 +242,7 @@ ALLOW_ELECTION_INFO_URL = (get_from_env('ALLOW_ELECTION_INFO_URL', '0') == '1')
 FOOTER_LINKS = json.loads(get_from_env('FOOTER_LINKS', '[]'))
 FOOTER_LOGO_URL = get_from_env('FOOTER_LOGO_URL', None)
 
-WELCOME_MESSAGE = get_from_env('WELCOME_MESSAGE', "This is the default message")
+WELCOME_MESSAGE = os.environ.get('WELCOME_MESSAGE', "This is the default message")
 
 HELP_EMAIL_ADDRESS = get_from_env('HELP_EMAIL_ADDRESS', 'help@heliosvoting.org')
 
@@ -303,11 +303,31 @@ GITLAB_CLIENT_ID = get_from_env('GITLAB_CLIENT_ID', "")
 GITLAB_CLIENT_SECRET = get_from_env('GITLAB_CLIENT_SECRET', "")
 
 # email server
-EMAIL_HOST = get_from_env('EMAIL_HOST', 'localhost')
-EMAIL_PORT = int(get_from_env('EMAIL_PORT', "2525"))
-EMAIL_HOST_USER = get_from_env('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = get_from_env('EMAIL_HOST_PASSWORD', '')
-EMAIL_USE_TLS = (get_from_env('EMAIL_USE_TLS', '0') == '1')
+#EMAIL_HOST = get_from_env('EMAIL_HOST', 'mail.gmx.net')
+#EMAIL_PORT = int(get_from_env('EMAIL_PORT', "587"))
+#EMAIL_HOST_USER = get_from_env('EMAIL_HOST_USER', 'Onlinewahlen-HfMDK@gmx.net')
+#EMAIL_HOST_PASSWORD = get_from_env('EMAIL_HOST_PASSWORD', 'REMOVED')
+#EMAIL_USE_TLS = (get_from_env('EMAIL_USE_TLS', '1') == '1')
+
+# E-Mail-Einstellungen, die aus Umgebungsvariablen geladen werden
+#EMAIL_HOST = os.environ.get('EMAIL_HOST')
+#EMAIL_PORT = int(os.environ.get('EMAIL_PORT', "587"))
+#EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+#EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+#EMAIL_USE_TLS = (os.environ.get('EMAIL_USE_TLS') == '1')
+#EMAIL_USE_SSL = (os.environ.get('EMAIL_USE_SSL') ==
+#EMAIL_USE_TLS = True
+
+# ----- FINALER EMAIL-TEST-BLOCK -----
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.gmx.net'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'Onlinewahlen-HfMDK@gmx.net'
+#EMAIL_HOST_PASSWORD = 'REMOVED'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# ----- FINALER EMAIL-TEST-BLOCK ENDE -----
 
 # to use AWS Simple Email Service
 # in which case environment should contain
