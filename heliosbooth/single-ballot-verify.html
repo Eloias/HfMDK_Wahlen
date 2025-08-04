@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="de">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8">
 
-  <title>Helios Voting System</title>
+  <title>Digitale Wahlurne</title>
   <link rel="stylesheet" type="text/css" href="css/booth.css" />
   <link rel="stylesheet" type="text/css" href="css/forms.css" />
   <script language="javascript" src="js/jscrypto/jsbn.js"></script>
@@ -56,11 +56,12 @@ function result_append(str) {
 function verify_single_ballot(election_url, audit_trail) {
   var encrypted_vote_json = jQuery.secureEvalJSON(audit_trail);
   
-  result_append("loading election...");
+  result_append("Lade die Wahl...");
 
   // quick and dirty detection of cast ballot
   if (encrypted_vote_json['cast_at']) {
-    result_append("\n\nIt looks like you are trying to verify a cast ballot. That can't be done, only audited ballots can be verified.");
+    result_append("\n\nEs sieht so aus, als würdest du versuchen, einen abgegebenen Stimmzettel zu überprüfen. Das ist nicht möglich – nur Prüfungs-Stimmzettel können verifiziert werden, weil sie ja öffentlich werden dadurch.");
+
     return;
   }
   
@@ -72,9 +73,9 @@ function verify_single_ballot(election_url, audit_trail) {
     $('#loading').hide();
     
     if (overall_result) {
-       result_append('SUCCESSFUL VERIFICATION, DONE!');
+       result_append('ERFOLGREICHE VERIFIZIERUNG ABGESCHLOSSEN! :)');
     } else {
-       result_append('PROBLEM - THIS BALLOT DOES NOT VERIFY.');        
+       result_append('PROBLEM – DIESER STIMMZETTEL LÄSST SICH NICHT VERIFIZIEREN, ist er wirklich Teil der Wahl?');        
     }
   };
 
@@ -99,11 +100,11 @@ function verify_single_ballot(election_url, audit_trail) {
       after_computation(overall_result);
     }
   }, error: function() {
-      result_append('PROBLEM LOADING election. Are you sure you have the right election URL?<br />');
+      result_append('PROBLEM BEIM LADEN DER WAHL. Bist du sicher, dass du die richtige Wahl-URL eingegeben hast?<br />');
 
       $('#loading').hide();
       
-      result_append('PROBLEM - THIS BALLOT DOES NOT VERIFY.');        
+      result_append('PROBLEM – DIESER STIMMZETTEL LÄSST SICH NICHT VERIFIZIEREN, ist er wirklich Teil der Wahl?');        
   }
   });
 }
@@ -112,29 +113,29 @@ function verify_single_ballot(election_url, audit_trail) {
 </head>
 <body>
 <div id="wrapper">
-<h2 style="padding-left: 10px;">Helios Single-Ballot Verifier</h2>
+<h2 style="padding-left: 10px;">Stimmzettel Prüfer</h2>
 <div id="content">
 
 <div id="verifier_loading">
-Loading verifier...
+Stimmzettel-Prüfung wird vorbereitet…
 </div>
 
 <div id="dummy_bigint" style="display:none;">
-Your browser does not have the Java plugin installed.<br /><br />
-At this time, the Java plugin is required for browser-based ballot auditing, although it is not required for ballot preparation.
+Dein Browser hat das Java-Plugin nicht installiert.<br /><br />
+Zurzeit ist das Java-Plugin für die überprüfende Prüfung von Stimmzetteln im Browser erforderlich. Nutze einen anderen Browser!
 </div>
 
 <div id="verifier" style="display:none;">
 <p style="font-size: 16pt;">
-    This single-ballot verifier lets you enter an audited ballot<br />and verify that it was prepared correctly.
+    Mit diesem Stimmzettel-Prüfer kannst du einen Prüfungs-Stimmzettel (keinen echten) eingeben<br />und überprüfen, ob er korrekt erstellt wurde.
 </p>
 
 <form onsubmit="try {verify_single_ballot(this.election_url.value, this.audit_trail.value);} catch (e) {E = e;} return false;">
-Enter the Election URL:
+Bitte die URL der Wahl eingeben:
     <input type="text" size="50" name="election_url" id="election_url" /><br />
 
 <p>
-Your Ballot:
+Dein Stimmzettel:
 </p>
 
 <textarea name="audit_trail" cols="80" rows="7">

@@ -1,0 +1,106 @@
+from django.core.mail import send_mail
+from django.conf import settings
+
+try:
+    #settings.configure() # Only if you get an error that settings are not configured
+
+    # Manuelle Konfiguration, falls Umgebungsvariablen nicht richtig geladen werden
+    # send_mail('Test Betreff', 'Dies ist eine Testnachricht von deinem Helios-Server.', 
+    #           'Onlinewahlen-HfMDK@gmx.net', 
+    #           ['DEINE_EMPFÄNGER_EMAIL@example.com'], 
+    #           fail_silently=False)
+
+    # Oder wenn settings.py die Variablen aus .env korrekt lädt:
+    send_mail(
+        subject='Helios E-Mail Test',
+        message='Dies ist eine Testnachricht, die von deinem Helios-Server über GMX verschickt wurde.',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=['elias.ohly@gmail.com'],
+        fail_silently=False,
+    )
+    print("Test-E-Mail erfolgreich versendet (oder zum Senden in die Warteschlange gestellt).")
+except Exception as e:
+    print(f"Fehler beim Senden der E-Mail: {e}")
+
+    import smtplib
+from django.conf import settings
+from email.mime.text import MIMEText
+
+try:
+    # Lese die Einstellungen, die von Django geladen wurden
+    EMAIL_HOST = settings.EMAIL_HOST
+    EMAIL_PORT = settings.EMAIL_PORT
+    EMAIL_HOST_USER = settings.EMAIL_HOST_USER
+    EMAIL_HOST_PASSWORD = settings.EMAIL_HOST_PASSWORD
+    EMAIL_USE_TLS = settings.EMAIL_USE_TLS
+
+    print(f"Versuche Verbindung zu: {EMAIL_HOST}:{EMAIL_PORT}")
+    print(f"Benutzer: {EMAIL_HOST_USER}")
+    print(f"TLS verwenden: {EMAIL_USE_TLS}")
+
+    # E-Mail-Nachricht erstellen
+    msg = MIMEText('Dies ist eine Testnachricht direkt über smtplib. E-Mail-Einstellungen werden überprüft.')
+    msg['Subject'] = 'SMTPLIB Helios Test'
+    msg['From'] = EMAIL_HOST_USER
+    msg['To'] = 'elias.ohly@gmail.com' # Deine Empfänger-Adresse
+
+    with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
+        server.set_debuglevel(1) # Dies gibt detailliertere Ausgaben
+
+        if EMAIL_USE_TLS:
+            print("Starte TLS...")
+            server.starttls()
+            print("TLS gestartet.")
+
+        print("Versuche Login...")
+        server.login(Onlinewahlen-HfMDK@gmx.net, REMOVED)
+        print("Login erfolgreich!")
+
+        print("Sende E-Mail...")
+        server.sendmail(EMAIL_HOST_USER, 'elias.ohly@gmail.com', msg.as_string())
+        print("E-Mail erfolgreich gesendet.")
+
+except Exception as e:
+    print(f"\nFehler beim Senden der E-Mail (detailliert): {e}")
+
+    import smtplib
+from django.conf import settings # Diese Zeile ist entscheidend!
+from email.mime.text import MIMEText
+????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+try:
+    # Lese die Einstellungen, die von Django geladen wurden
+    EMAIL_HOST = settings.EMAIL_HOST
+    EMAIL_PORT = settings.EMAIL_PORT
+    EMAIL_HOST_USER = settings.EMAIL_HOST_USER
+    EMAIL_HOST_PASSWORD = settings.EMAIL_HOST_PASSWORD
+    EMAIL_USE_TLS = settings.EMAIL_USE_TLS
+
+    print(f"Versuche Verbindung zu: {EMAIL_HOST}:{EMAIL_PORT}")
+    print(f"Benutzer: {EMAIL_HOST_USER}")
+    print(f"TLS verwenden: {EMAIL_USE_TLS}")
+
+    # E-Mail-Nachricht erstellen
+    msg = MIMEText('Dies ist eine Testnachricht direkt über smtplib. E-Mail-Einstellungen werden überprüft.')
+    msg['Subject'] = 'SMTPLIB Helios Test'
+    msg['From'] = EMAIL_HOST_USER
+    msg['To'] = 'elias.ohly@gmail.com' # Deine Empfänger-Adresse
+
+    with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
+        server.set_debuglevel(1) # Dies gibt detailliertere Ausgaben
+
+        if EMAIL_USE_TLS:
+            print("Starte TLS...")
+            server.starttls()
+            print("TLS gestartet.")
+
+        print("Versuche Login...")
+        # Hier verwenden wir die Variablen, die wir von den Settings gelesen haben
+        server.login(Onlinewahlen-HfMDK@gmx.net, REMOVED)
+        print("Login erfolgreich!")
+
+        print("Sende E-Mail...")
+        server.sendmail(EMAIL_HOST_USER, 'elias.ohly@gmail.com', msg.as_string())
+        print("E-Mail erfolgreich gesendet.")
+
+except Exception as e:
+    print(f"\nFehler beim Senden der E-Mail (detailliert): {e}")

@@ -84,6 +84,7 @@ def single_voter_email(voter_uuid, subject_template, body_template, extra_vars={
         unsubscribe_code = utils.generate_email_confirmation_code(voter_email, 'optout')
         unsubscribe_path = reverse('optout_confirm', kwargs={'email': voter_email, 'code': unsubscribe_code})
         unsubscribe_url = f"{settings.URL_HOST}{unsubscribe_path}"
+        #unsubscribe_url = hf"https://hfmdk-wahlen.de/{unsubscribe_pat}"
         
         the_vars.update({
             'unsubscribe_url': unsubscribe_url,

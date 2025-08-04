@@ -1,11 +1,12 @@
-Dear {{voter.name}},
+Liebe*r {{voter.name}},
 
 {{custom_message|safe}}
 
 --
-Helios
+Wahlsache
+StuPa/AStA der HfMDK
 
 {% if unsubscribe_url %}
-To stop receiving all emails from Helios, click here:
+Um alle Emails bezüglich der Wahl abzubestellen, hier klicken (nicht empfohlen!):
 {{ unsubscribe_url }}
 {% endif %}

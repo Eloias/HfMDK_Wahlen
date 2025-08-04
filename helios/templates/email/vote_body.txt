@@ -1,39 +1,41 @@
-Dear {{voter.name}},
+Liebe*r {{voter.name}},
 
 {{custom_message|safe}}
 
-Election URL (click to begin voting):
+Wahl-Link (klicke hier, um mit der Stimmabgabe zu beginnen):
 {{election_vote_url}}
 
 {% if voter.voter_type == "password" %}
-Your voter ID: {{voter.voter_login_id}}
-Your password: {{voter.voter_password}}
+Dein Vorname: {{voter.voter_login_id}}
+Dein Passwort: {{voter.voter_password}}
 {% else %}
-Log in with your {{voter.voter_type}} account.
-{% endif %}{% if voter.vote_hash %}
-We have recorded your vote with ballot tracker:
-
-  {{voter.vote_hash}}
-
-You may re-vote if you wish: only your last vote counts.
-{% endif %}{% if election.use_voter_aliases %}
-In order to protect your privacy, this election is configured
-to never display your voter login ID, name, or email address to the public.
-Instead, the ballot tracking center will only display your alias.
-
-Your voter alias is {{voter.alias}}.
-
-IMPORTANTLY, when you are prompted to log in to vote,
-please use your *voter ID*, not your alias.
+Melde dich mit deinem {{voter.voter_type}}-Konto an.
 {% endif %}
 
-You may wish to verify the election fingerprint at the bottom of
-the screen when you vote:  {{voter.election.hash}}
+{% if voter.vote_hash %}
+Wir haben deine Stimme mit folgendem Stimmzettel-Tracker gespeichert:
+{{voter.vote_hash}}
+
+Du kannst mehrfach wählen, wenn du möchtest, nur deine letzte Stimmabgabe zählt.
+{% endif %}
+
+{% if election.use_voter_aliases %}
+Um deine Privatsphäre zu schützen, ist diese Wahl so konfiguriert,
+dass dein Login, Name oder deine E-Mail-Adresse nicht öffentlich angezeigt werden.
+Stattdessen wird im Stimmzettel-Tracking nur dein Alias angezeigt.
+
+Dein Wähler-Alias lautet: {{voter.alias}}
+
+{% endif %}
+
+Am unteren Rand des Wahlbildschirms findest du den sogenannten „Election Fingerprint“,
+mit dem du die Echtheit der Wahl prüfen kannst: {{voter.election.hash}}
 
 --
-Helios
+Wahlsache
+StuPa/AStA der HfMDK
 
 {% if unsubscribe_url %}
-To stop receiving all emails from Helios, click here:
+Um alle Emails bezüglich der Wahl abzubestellen, hier klicken (nicht empfohlen!):
 {{ unsubscribe_url }}
 {% endif %}

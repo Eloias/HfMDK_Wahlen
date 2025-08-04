@@ -1,22 +1,23 @@
-Dear {{voter.name}},
+Liebe*r {{voter.name}},
 
 {{custom_message|safe}}
 
 ========
-How to Vote
+So kannst du wählen:
 
-Election URL:  {{election_vote_url}}
+Wahl-URL: {{election_vote_url}}
 {% if voter.voter_type == "password" %}
-Your voter ID: {{voter.voter_login_id}}
-Your password: {{voter.voter_password}}
+Dein Vorname: {{voter.voter_login_id}}
+Dein Passwort: {{voter.voter_password}}
 {% else %}
-Log in with your {{voter.voter_type}} account.
+Logge dich mit deinem {{voter.voter_type}}-Konto ein.
 {% endif %}
 
 --
-Helios
+Wahlsache
+StuPa/AStA der HfMDK
 
 {% if unsubscribe_url %}
-To stop receiving all emails from Helios, click here:
+Um alle Emails bezüglich der Wahl abzubestellen, hier klicken (nicht empfohlen!):
 {{ unsubscribe_url }}
 {% endif %}
