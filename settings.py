@@ -94,7 +94,7 @@ USE_TZ = False
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'de-de'
 
 SITE_ID = 1
 
@@ -306,7 +306,7 @@ GITLAB_CLIENT_SECRET = get_from_env('GITLAB_CLIENT_SECRET', "")
 #EMAIL_HOST = get_from_env('EMAIL_HOST', 'mail.gmx.net')
 #EMAIL_PORT = int(get_from_env('EMAIL_PORT', "587"))
 #EMAIL_HOST_USER = get_from_env('EMAIL_HOST_USER', 'Onlinewahlen-HfMDK@gmx.net')
-#EMAIL_HOST_PASSWORD = get_from_env('EMAIL_HOST_PASSWORD', 'REMOVED')
+EMAIL_HOST_PASSWORD = get_from_env('EMAIL_HOST_PASSWORD', '')
 #EMAIL_USE_TLS = (get_from_env('EMAIL_USE_TLS', '1') == '1')
 
 # E-Mail-Einstellungen, die aus Umgebungsvariablen geladen werden
@@ -325,7 +325,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'Onlinewahlen-HfMDK@gmx.net'
-#EMAIL_HOST_PASSWORD = 'REMOVED'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # ----- FINALER EMAIL-TEST-BLOCK ENDE -----
 

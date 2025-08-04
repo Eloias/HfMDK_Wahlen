@@ -9,4 +9,3 @@ env.sh
 .cache
 .idea/
 .env
-settings.py
