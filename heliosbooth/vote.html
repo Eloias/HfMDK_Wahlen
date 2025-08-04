@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8">
-  <title>Helios Voting Booth</title>
+  <title>Digitale Wahlurne</title>
   <link rel="stylesheet" type="text/css" href="css/booth.css" />
   <link rel="stylesheet" type="text/css" href="css/forms.css" />
 
@@ -31,7 +31,7 @@
 <body>
 <div id="wrapper">
 <div id="banner" class="edge">
-  <div style="text-align:center; width: 100%;">Helios Voting Booth
+  <div style="text-align:center; width: 100%;">Digitale Wahlurne
       <div style="float: right; margin-right: 10px; font-size: 0.8em;"><span><a href="javascript:BOOTH.exit();">exit</a></span></div>
   </div>
 </div>
@@ -71,7 +71,7 @@ window.onbeforeunload = function(evt) {
     evt = window.event;
   }
 
-  var message = "If you leave this page with an in-progress ballot, your ballot will be lost.";
+  var message = "Wenn du jetzt die Seite verlässt, während du deinen Stimmzettel noch ausfüllst, wird dieser nicht gespeichert.";
 
   if (evt) {
     evt.returnValue = message;
@@ -81,7 +81,7 @@ window.onbeforeunload = function(evt) {
 };
 
 BOOTH.exit = function() {
-    if (confirm("Are you sure you want to exit the booth and lose all information about your current ballot?")) {
+    if (confirm("Möchtest du die Wahlkabine wirklich verlassen und deinen jetztigen Stimmzettel verwerfen?")) {
         BOOTH.started_p = false;
         window.location = BOOTH.election.cast_url;
     }
@@ -229,7 +229,7 @@ BOOTH.launch_async_encryption_answer = function(question_num) {
 BOOTH.validate_question = function(question_num) {
     // check if enough answers are checked
     if (BOOTH.ballot.answers[question_num].length < BOOTH.election.questions[question_num].min) {
-        alert('You need to select at least ' + BOOTH.election.questions[question_num].min + ' answer(s).');
+        alert('Du musst mindestens ' + BOOTH.election.questions[question_num].min + ' Optionen auswählen.');
         return false;
     }
 
@@ -342,7 +342,8 @@ BOOTH.click_checkbox = function(question_num, answer_num, checked_p) {
 
      // do the warning only if the question allows more than one option, otherwise it's confusing
      if (BOOTH.election.questions[question_num].max > 1) {
-        $('#warning_box').html("Maximum number of options selected.<br />To change your selection, please de-select a current selection first.");
+        $('#warning_box').html("Maximale Anzahl an Optionen ausgewählt.<br />Um eine andere Option zu wählen, hebe bitte zuerst eine bestehende Auswahl auf.");
+
      }
   } else {
      // enable the other checkboxes
@@ -351,7 +352,7 @@ BOOTH.click_checkbox = function(question_num, answer_num, checked_p) {
      });
      $('#warning_box').html("");
      if (BOOTH.election.questions[question_num].max != null && (BOOTH.ballot.answers[question_num].length < BOOTH.election.questions[question_num].max)) {
-        $('#warning_box').html("You may select up to " + BOOTH.election.questions[question_num].max + " choices total.");
+        $('#warning_box').html("Du darfst insgesamt bis zu " + BOOTH.election.questions[question_num].max + " Auswahlmöglichkeiten treffen.");
      }
   }
 };
@@ -492,7 +493,7 @@ BOOTH.wait_for_ciphertexts = function() {
     var percentage_done = Math.round((100 * answers_done.length) / BOOTH.encrypted_answers.length);
 
     if (BOOTH.total_cycles_waited > 250) {
-      alert('there appears to be a problem with the encryption process.\nPlease email help@heliosvoting.org and indicate that your encryption process froze at ' + percentage_done + '%');
+      alert('Beim Verschlüsseln deiner Stimme ist ein Problem aufgetreten.\nBitte schreibe sofort an info@asta-hfmdk-frankfurt.de und teile mit, dass der Vorgang bei ' + percentage_done + '% stehen geblieben ist oder versuche es nochmal.');
       return;
     }
 
@@ -561,7 +562,8 @@ BOOTH.audit_ballot = function() {
 
 BOOTH.post_audited_ballot = function() {
   $.post(BOOTH.election_url + "/post-audited-ballot", {'audited_ballot': BOOTH.audit_trail}, function(result) {
-    alert('This audited ballot has been posted.\nRemember, this vote will only be used for auditing and will not be tallied.\nClick "back to voting" and cast a new ballot to make sure your vote counts.');
+    alert('Dieser Prüfungs-Stimmzettel wurde veröffentlicht.\nAchtung!!!: Dieser Zettel dient nur der Überprüfung und wird nicht!! in die eigentliche Auszählung einbezogen.\nKlicke auf „Zurück zur Wahl“, um einen neuen Stimmzettel abzugeben, damit deine Stimme zählt.');
+
   });
 };
 
@@ -591,7 +593,7 @@ BOOTH.cast_ballot = function() {
 };
 
 BOOTH.show_receipt = function() {
-    UTILS.open_window_with_content("Your ballot tracker for " + BOOTH.election.name + ": " + BOOTH.encrypted_ballot_hash);
+    UTILS.open_window_with_content("Dein Stimmzettel-Tracker für " + BOOTH.election.name + ": " + BOOTH.encrypted_ballot_hash);
 };
 
 BOOTH.do_done = function() {
@@ -603,24 +605,24 @@ BOOTH.do_done = function() {
   <div id="progress_div" style="display:none">
       <table>
           <tr>
-              <td id="progress_1">(1) Select</td>
-              <td id="progress_2">(2) Review</td>
-              <td id="progress_3">(3) Submit</td>
+              <td id="progress_1">(1) Wählen</td>
+              <td id="progress_2">(2) Überprüfung</td>
+              <td id="progress_3">(3) Abschicken</td>
           </tr>
       </table>
   </div>
   <div id="election_div" class="panel">
-    <h3>Checking capabilities and loading election booth...</h3>
-    <div align="center"><img src="loading.gif" /><br />This may take up to 10 seconds</div>
+    <h3>Prüfe Funktionen und lade Wahlkabine…</h3>
+    <div align="center"><img src="loading.gif" /><br />Das dauert nicht lange...</div>
   </div>
 
   <div id="error_div" class="panel" style="display: none;">
-    <h3>There's a problem</h3>
+    <h3>Es gibt ein Problem!</h3>
     <p>
-      It appears that your browser does not have Java enabled. Helios needs Java to perform encryption within the browser.
+      Es scheint, dass in deinem Browser Java nicht aktiviert ist. Helios benötigt Java, um die Verschlüsselung direkt im Browser durchzuführen.
     </p>
     <p>
-      You may be able to install Java by visiting <a target="_new" href="http://java.com">java.com</a>.
+      Du kannst Java möglicherweise installieren, indem du <a target="_new" href="http://java.com">java.com</a> besuchst. Oder nutze einen anderen Browser/Gerät!
     </p>
   </div>
 
@@ -628,14 +630,14 @@ BOOTH.do_done = function() {
   </div>
 
   <div id="processing_div" class="panel" style="display:none;">
-      <h3 align="center">Processing....</h3>
+      <h3 align="center">Verarbeiten....</h3>
   </div>
 
   <div id="encrypting_div" class="panel" style="display:none;">
-      <h3 align="center">Helios is now encrypting your ballot<br />
+      <h3 align="center">Dieser Stimmzettel wird nun verschlüsselt.<br />
           <img src="encrypting.gif" /> <span style="font-size:0.7em; display:none;" id="percent_done_container">(<span id="percent_done">0</span>%)</span></h3>
 
-      <p align="center"><b>This may take up to two minutes.</b>
+      <p align="center"><b>Das dauert nicht lange :)</b>
   </div>
 
   <div id="seal_div" class="panel">

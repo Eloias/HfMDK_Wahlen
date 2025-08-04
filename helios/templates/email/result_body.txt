@@ -1,24 +1,25 @@
-Dear {{voter.name}},
+Liebe*r {{voter.name}},
 
-The tally for {{election.name}} has been computed and released:
+Die Auszählung der Stimmen für {{election.name}} wurde abgeschlossen und veröffentlicht:
 
-  {{election_url}}
+{{election_url}}
 
 {{custom_message|safe}}
 
-{% if voter.vote_hash %}Your ballot tracker in this election was:
+{% if voter.vote_hash %}Dein persönlicher Stimmzettel-Tracker in dieser Wahl lautete:
 
-  {{voter.vote_hash}}
+{{voter.vote_hash}}
 
-If you believe this tracker to be in error, please contact us.
+Falls du glaubst, dass dieser Tracker fehlerhaft ist, kontaktiere uns bitte.
 {% else %}
-It appears you did not cast a vote in this election.
-Please contact us if you believe you did.
+Offenbar hast du in dieser Wahl keine Stimme abgegeben.
+Falls du der Meinung bist, gewählt zu haben, melde dich bitte bei uns.
 {% endif %}
 --
-Helios
+Wahlsache
+StuPa/AStA der HfMDK
 
 {% if unsubscribe_url %}
-To stop receiving all emails from Helios, click here:
+Um alle Emails bezüglich der Wahl abzubestellen, hier klicken (nicht empfohlen!):
 {{ unsubscribe_url }}
 {% endif %}
