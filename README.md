@@ -1,10 +1,10 @@
-# Helios Election System
+# HfMDK AStA Onlinewahl System
 
 ![Logo](static/logo.png)
 
 # HfMDK Wahlsystem
 
-Dieses Projekt ist eine Instanz des Helios Voting Systems, das für die Wahlen an der HfMDK Frankfurt eingerichtet wurde. Es ermöglicht sichere, verifizierbare Online-Wahlen.
+Dieses Projekt ist eine Instanz des Helios Voting Systems, das für die Wahlen an der HfMDK Frankfurt vom AStA eingerichtet wurde. Es ermöglicht sichere, verifizierbare Online-Wahlen.
 
 ## Wahlvorgang
 
