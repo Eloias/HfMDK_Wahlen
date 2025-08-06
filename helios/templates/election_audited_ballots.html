@@ -1,45 +1,47 @@
+```
 {% extends TEMPLATE_BASE %}
 
-{% block title %}Audited Ballots for {{election.name}}{% endblock %}
+{% block title %}Prüfungs-Stimmzettel für {{election.name}}{% endblock %}
 
 {% block content %}
-  <h2 class="title">{{election.name}} &mdash; Audited Ballots <span style="font-size:0.7em;">[<a href="{% url "election@view" election_uuid=election.uuid %}">back to election</a>]</span></h2>
+  <h2 class="title">{{election.name}} &mdash; Prüfungs-Stimmzettel <span style="font-size:0.7em;">[<a href="{% url "election@view" election_uuid=election.uuid %}">zurück zur Wahl</a>]</span></h2>
 
-<p>
-When you prepare a ballot with Helios, you immediately receive a ballot tracker. Before you choose to cast that ballot, you have the option to ask Helios to "break open" that encrypted ballot and verify that Helios encrypted your ballot correctly. Once that's done, you can post that opened ballot here, on the audited ballots' list, for everyone to verify (your identity is not included). Once you've done this, you have to re-encrypt your choices and obtain a different ballot tracker. This helps reduce the chance that someone might coerce you to vote differently from your true choice.
-</p>
+  <p>
+    Wenn du einen Stimmzettel mit Helios vorbereitest, erhältst du sofort einen Stimmzettel-Hash. Bevor du dich entscheidest, diesen Stimmzettel abzugeben, hast du die Möglichkeit, Helios zu bitten, diesen verschlüsselten Stimmzettel "aufbrechen", also zu verifizieren, um zu überprüfen, dass deine Stimme korrekt verschlüsselt wurde. Sobald dies geschehen ist, kannst du diesen geöffneten Stimmzettel hier, auf der Liste der geprüften Stimmzettel, veröffentlichen, damit jeder ihn überprüfen kann (deine Identität wird dabei nicht preisgegeben). Danach musst du deine Auswahl erneut verschlüsseln und erhältst einen anderen Stimmzettel-Hash. Das ist wegen Wahlmanipulation.
+  </p>
 
-<p>
-These ballots are <em>not cast</em>, and they will not be counted. They are just here for auditing purposes, to spot-check that Helios is properly encrypting voter's choices.
-</p>
+  <p>
+    Diese Stimmzettel sind **nicht abgegeben** und werden nicht gezählt. Sie dienen nur zu Überprüfungszwecken, um stichprobenartig zu prüfen, ob das Programm die Stimmzettel korrekt verschlüsselt.
+  </p>
 
-<p>
-  To verify an audited ballot, copy its entire content and paste it in the <a target="_new" href="/booth/single-ballot-verify.html?election_url={% url "election@home" election.uuid %}">single ballot verifier</a>.
-</p>
+  <p>
+    Um einen Prüfungs-Stimmzettel zu verifizieren, kopiere seinen gesamten Inhalt und füge ihn in den <a target="_new" href="/booth/single-ballot-verify.html?election_url={% url "election@home" election.uuid %}">Stimmzettel-Verifizierer</a> ein.
+  </p>
 
-{% if audited_ballots %}
-<p>
-Audited Ballots {{offset_plus_one}} - {{offset_plus_limit}} &nbsp;&nbsp;
-</p>
+  {% if audited_ballots %}
+  <p>
+    Prüfungs-Stimmzettel {{offset_plus_one}} - {{offset_plus_limit}} &nbsp;&nbsp;
+  </p>
 
-{% if next_after %}
-<a href="?after={{next_after}}&offset={{offset_plus_limit}}">next {{limit}}</a> &nbsp;&nbsp;
-{% endif %}
+  {% if next_after %}
+  <a href="?after={{next_after}}&offset={{offset_plus_limit}}">nächste {{limit}}</a> &nbsp;&nbsp;
+  {% endif %}
 
-{% if offset == 0 %}
-{% else %}
-<a href="?">back to start</a> &nbsp;&nbsp;
-{% endif %}
-{% if more_p %}
-<a href="?after={{next_after}}&offset={{next_offset}}">next {{limit}}</a>
-{% endif %}
-<table class="pretty">
-{% for b in audited_ballots %}
-<tr><td><tt style="font-size: 1.4em;">{{b.vote_hash}}</tt> [<a target="_blank" href="?vote_hash={{b.vote_hash|urlencode}}">view</a>]</td></tr>
-{% endfor %}
-</table>
-{% else %}
-<em>no audited ballots yet</em>
-{% endif %}
+  {% if offset == 0 %}
+  {% else %}
+  <a href="?">zurück zum Anfang</a> &nbsp;&nbsp;
+  {% endif %}
+  {% if more_p %}
+  <a href="?after={{next_after}}&offset={{next_offset}}">nächste {{limit}}</a>
+  {% endif %}
+  <table class="pretty">
+    {% for b in audited_ballots %}
+    <tr><td><tt style="font-size: 1.4em;">{{b.vote_hash}}</tt> [<a target="_blank" href="?vote_hash={{b.vote_hash|urlencode}}">ansehen</a>]</td></tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <em>noch keine Prüfungs-Stimmzettel vorhanden</em>
+  {% endif %}
 
 {% endblock %}
+```

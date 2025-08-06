@@ -1,27 +1,27 @@
 {% extends TEMPLATE_BASE %}
-{% block title %}Confirm Vote{% endblock %}
+{% block title %}Stimme bestätigen{% endblock %}
 
 {% block content %}
-<h1>{{election.name}} &mdash; Vote Successfully Cast!</h1>
+<h1>{{election.name}} &mdash; Stimme erfolgreich abgegeben!</h1>
 
 {% if vote_hash %}
 <p>
-  Your ballot tracker is:<br />
-    <span style="font-size:1.4em; font-weight: bold; word-break: break-word;">  {{vote_hash}}</span>
+  Dein Stimmzettel-Hash lautet:<br />
+  <span style="font-size:1.4em; font-weight: bold; word-break: break-word;">{{vote_hash}}</span>
 </p>
 <p>
-  This ballot tracker mathematically ensures that your ballot is counted. You can check all ballot trackers by viewing the <a href="{% url "election@voters@list-pretty" election.uuid %}">voter list</a>, where your ballot tracker should appear within a few minutes.
+  Dieser Hash garantiert, dass dein Stimmzettel mathematisch korrekt gezählt wird. Du kannst alle Hashes einsehen, indem du die <a href="{% url "election@voters@list-pretty" election.uuid %}">Liste der Wähler*innen</a> aufrufst. Dein Hash sollte dort innerhalb weniger Minuten erscheinen.
 </p>
 {% endif %}
 
 {% if logout %}
-<p><b>For your safety, we have logged you out.</b></p>
+<p><b>Zu deiner Sicherheit haben wir dich ausgeloggt.</b></p>
 <iframe width="0" height="0" border="0" frameborder="0" src="{% url "auth@logout" %}">
 </iframe>
 {% endif %}
 
 <p style="font-size: 1.4em;">
-[ <a href="{% url "election@view" election.uuid %}">return to election info</a> ]
+  [ <a href="{% url "election@view" election.uuid %}">Zurück zu den Wahlinformationen</a> ]
 </p>
 
 {% endblock %}
