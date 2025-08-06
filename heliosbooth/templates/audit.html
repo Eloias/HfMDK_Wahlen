@@ -1,18 +1,17 @@
-
-<h3>Your audited ballot</h3>
+<h3>Dein Prüfungs-Stimmzettel</h3>
 
 <p>
-<b><u>IMPORTANT</u></b>: this ballot, now that it has been audited, <em>will not be tallied</em>.<br />
-To cast a ballot, you must click the "Back to Voting" button below, re-encrypt it, and choose "cast" instead of "audit."
+<b><u>WICHTIG</u></b>: Dieser Stimmzettel wird, da er geprüft wurde, <em>nicht ausgezählt</em>.<br />
+Um einen Stimmzettel abzugeben, musst du unten auf den "zurück zur Wahl"-Button klicken, ihn erneut verschlüsseln und "abgeben" statt "prüfen" wählen.
 </p>
 
 <p>
-<b>Why?</b> Helios prevents you from auditing and casting the same ballot to provide you with some protection against coercion.
+<b>Warum?</b> Das Programm verhindert, dass du denselben Stimmzettel prüfst und abgibst, um Wahlmanipulation zu verhindern.
 </p>
 
 <p>
-<b>Now what?</b> <a onclick="$('#audit_trail').select(); return false;" href="#">Select your ballot audit info</a>, copy it to your clipboard, then use the <a target="_blank" href="single-ballot-verify.html?election_url={$T.election_url}">ballot verifier</a> to verify it.<br />
-Once you're satisfied, click the "back to voting" button to re-encrypt and cast your ballot.
+<b>Und jetzt?</b> <a onclick="$('#audit_trail').select(); return false;" href="#">Kopiere deinen (verschlüsselten) Stimmzettel</a> und verwende dann den <a target="_blank" href="single-ballot-verify.html?election_url={$T.election_url}">Stimmzettel-Prüfer</a>, um ihn zu verifizieren.<br />
+Wenn du Wählen möchtest, klicke auf den "zurück zur Wahl"-Button, um einen neuen Stimmzettel auszufüllen, zu verschlüsseln und abzugeben.
 </p>
 
 <form action="#">
@@ -20,17 +19,13 @@ Once you're satisfied, click the "back to voting" button to re-encrypt and cast 
 {$T.audit_trail}
 </textarea>
 <br /><br />
-Before going back to voting,<br />
-you can post this audited ballot to the Helios tracking center so that others might double-check the verification of this ballot.
+Bevor du zur Wahl zurückkehrst,<br />
+kannst du diesen geprüften Stimmzettel an das öffentliche Tracking-Center senden, damit andere die Verifizierung dieses Stimmzettels überprüfen können.
 <br /><br />
-<b>Even if you post your audited ballot, you must go back to voting and choose "cast" if you want your vote to count.</b>
+<b>Auch wenn du deinen geprüften Stimmzettel veröffentlichst, musst du zur Abstimmung zurückkehren und "abgeben" wählen, damit deine Stimme gezählt wird.</b>
 <br /><br />
-<button onclick="BOOTH.reset_ciphertexts();BOOTH.seal_ballot(); return false;" class="pretty">back to voting</button>
+<button onclick="BOOTH.reset_ciphertexts();BOOTH.seal_ballot(); return false;" class="pretty">zurück zur Wahl</button>
 &nbsp; &nbsp;&nbsp;
-<button onclick="$(this).attr('disabled', 'disabled');BOOTH.post_audited_ballot(); return false;" id="post_audited_ballot_button" class="pretty" style="font-size:0.8em;">post audited ballot to tracking center</button>
+<button onclick="$(this).attr('disabled', 'disabled');BOOTH.post_audited_ballot(); return false;" id="post_audited_ballot_button" class="pretty" style="font-size:0.8em;">geprüften Stimmzettel an Tracking-Center senden</button>
 
 </form>
-
-
-
-
