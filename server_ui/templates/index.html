@@ -1,52 +1,44 @@
-{% extends 'server_ui/templates/base.html' %}
-{% block title %}{{ settings.SITE_TITLE }}{% endblock %}
-
+{% extends 'server_ui/templates/base.html' %} 
+{% block title %}{{ settings.SITE_TITLE }}{% endblock %} 
 {% block header %}
 <h2>{{ settings.SITE_TITLE }}</h2>
-{% endblock %}
-
+{% endblock %} 
 {% block content %}
-
 <div class="row"><div class="large-5 columns large-centered"><a href="/"><img border="0" src="{{ settings.MAIN_LOGO_URL }}" /></a></div></div>
 <div class="row">&nbsp;</div>
 <div class="large-9 columns">
   {% if settings.MASTER_HELIOS %}
-<p>Helios offers <b>verifiable online elections</b>.</p>
-
-<p>We believe democracy is important, whether it’s your book club, parent-teacher association, student government, workers’ union, or state. So we’ve made truly verifiable elections as easy as everything else on the Web.</p>
-
+<p>Helios bietet **verifizierbare Online-Wahlen**.</p>
+<p>Wir glauben, dass Demokratie wichtig ist, sei es in Ihrem Buchclub, der Eltern-Lehrer-Vereinigung, der Studierendenvertretung, der Gewerkschaft oder im Staat. Deshalb haben wir wirklich verifizierbare Wahlen so einfach gemacht wie alles andere im Web.</p>
 <p>
-Helios elections are:
+Helios-Wahlen sind:
 <ul class="disc">
-<li><b>private</b>: no one knows how you voted.</li>
-<li><b>verifiable</b>: each voter gets a tracking number.</li>
-<li><b>proven</b>: Helios is open-source, vetted by top-tier experts, and in use by major organizations.</li>
+<li>**privat**: Niemand weiß, wie Sie abgestimmt haben.</li>
+<li>**verifizierbar**: Jeder Wähler erhält eine Verfolgungsnummer.</li>
+<li>**bewährt**: Helios ist quelloffen, von Top-Experten geprüft und wird von großen Organisationen verwendet.</li>
 </ul>
-
 <p>
-More than <b>2,000,000 votes</b> have been cast using Helios.
+Mehr als **2.000.000 Stimmen** wurden mit Helios abgegeben.
 </p>
-
 {% if create_p %}
-<a class="button" href="{% url "elections@new" %}">create an election</a>
+<a class="button" href="{% url "elections@new" %}">Wahl erstellen</a>
 {% endif %}
 
   {% else %}
-  <p style="font-size: 1.4em;">
+<p style="font-size: 1.4em;">
     {{settings.WELCOME_MESSAGE|safe}}
   </p>
-  
   {% if elections|length %}
-  <p>
+<p>
     {% for election in elections %}
-    <div class="panel">
-      <a style="font-size: 1.4em;" href="{% url "shortcut@election" election.short_name %}">{{election.name}}</a>{% if settings.SHOW_USER_INFO %}<br /> by {{election.admin.display_html_small|safe}}{% endif %}
-    </div>
+<div class="panel">
+      <a style="font-size: 1.4em;" href="{% url "shortcut@election" election.short_name %}">{{election.name}}</a>{% if settings.SHOW_USER_INFO %}<br /> von {{election.admin.display_html_small|safe}}{% endif %}
+</div>
     <br />
     {% endfor %}
   </p>
   {% else %}
-  <h4>no featured elections at the moment</h4>
+<h4>Keine hervorgehebene Wahl</h4>
   {% endif %}
 {% endif %}
   
@@ -56,10 +48,9 @@ More than <b>2,000,000 votes</b> have been cast using Helios.
 <div class="row">&nbsp;</div>
 <div class="panel row">
 {% if user %}
-<!--<div class="row right">{{user.display_html_big|safe}}</div>-->
 {% if create_p %}
-<a class="small button" href="{% url "elections@new" %}">create election</a>
-<h5 class="subheader">Administration</h5>
+<a class="small button" href="{% url "elections@new" %}">Wahl erstellen</a>
+<h5 class="subheader">Admin Console</h5>
 {% if elections_administered %}
 <ul>
 {% for election in elections_administered %}
@@ -67,15 +58,15 @@ More than <b>2,000,000 votes</b> have been cast using Helios.
 {% endfor %}
 </ul>
 {% else %}
-<em>none yet</em>
+<em>noch keine</em>
 {% endif %}
 <div class="row right">
-<a class="tiny button" href="{% url "elections@administered" %}">see all</a>
+<a class="tiny button" href="{% url "elections@administered" %}">alle anzeigen</a>
 </div>
 <div class="row"></div>
 {% endif %}
 
-<h5 class="subheader">Recent Votes</h5>
+<h5 class="subheader">Kürzliche Abstimmungen</h5>
 {% if elections_voted %}
 <ul>
 {% for election in elections_voted %}
@@ -83,17 +74,17 @@ More than <b>2,000,000 votes</b> have been cast using Helios.
 {% endfor %}
 </ul>
 {% else %}
-<em>none yet</em>
+<em>noch keine Wahl</em>
 {% endif %}
-<div class="row right"><a class="tiny button" href="{% url "elections@voted" %}">see all</a></div>
+<div class="row right"><a class="tiny button" href="{% url "elections@voted" %}">alle anzeigen</a></div>
 <div class="row"></div>
 {% else %}
 {% if settings.SHOW_LOGIN_OPTIONS %}
-<h5>Log In to Start Voting</h5>
+<h5>Als Admin anmelden</h5>
 {{login_box|safe}}
 {% else %}
 <p>
-Select an election to start voting. You will be asked for your voting credentials after you complete a ballot.
+Wähle eine Wahl aus. Nach dem Ausfüllen des Stimmzettels wirst du nach den Login-Daten gefragt, die du per Email bekommen hast.
 </p>
 {% endif %}
 {% endif %}

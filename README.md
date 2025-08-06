@@ -20,7 +20,7 @@ Der Wahlvorgang ist in drei Hauptschritte unterteilt, die die Integrität und Ve
 3.  **Stimme auszählen (Tallied-as-Recorded):**
     Nach Ende der Wahl wird die Auszählung gestartet. Die verschlüsselten Stimmen werden mithilfe der öffentlichen Schlüssel der Trustees entschlüsselt. Jeder Trustee trägt mit seinem geheimen Schlüssel zur Entschlüsselung bei. Erst wenn alle Beiträge kombiniert werden, kann das endgültige Ergebnis berechnet werden. Das Ergebnis kann anschließend von jedem überprüft werden.
 
-## Website zum Laufen bringen
+## Lokal installieren
 
 Die Anwendung ist in Python mit dem Django-Framework entwickelt und verwendet Gunicorn sowie Celery für Hintergrundaufgaben.
 
@@ -33,7 +33,7 @@ Die Anwendung ist in Python mit dem Django-Framework entwickelt und verwendet Gu
     ```
 
 2.  **Datenbank konfigurieren:**
-    Passe die `.env`-Datei im Hauptverzeichnis an, um die Datenbankverbindung herzustellen. Stelle sicher, dass die Werte für `DB_NAME`, `DB_USER` und `DB_PASSWORD` korrekt sind.
+    Passe die `.env`-Datei (Environment Variablen) im Hauptverzeichnis an, um die Datenbankverbindung herzustellen. Darin werden außerdem die Email Server Daten gespeichert.
 
 3.  **Datenbank-Migrationen ausführen:**
     ```bash
@@ -49,6 +49,7 @@ Die Anwendung ist in Python mit dem Django-Framework entwickelt und verwendet Gu
     Für den Produktivbetrieb unter Ubuntu/Debian wird die Verwendung von `systemd` empfohlen:
     ```bash
     sudo systemctl start gunicorn
+    sudo systemctl start nginx
     sudo systemctl start helios-celery
     ```
 

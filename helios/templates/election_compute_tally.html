@@ -1,33 +1,35 @@
+```
 {% extends TEMPLATE_BASE %}
 
-{% block title %}Compute Encryted Tally for {{election.name}}{% endblock %}
+{% block title %}Verschlüsselte Auszählung berechnen für {{election.name}}{% endblock %}
 
 {% block content %}
-  <h2 class="title">Compute Tally for Election: {{election.name}}</h2>
+  <h2 class="title">Auszählung berechnen für die Wahl: {{election.name}}</h2>
 
-<div id="instructions">
-{% if election.num_cast_votes %}
-<p>
-    You are about to compute the encrypted tally for election <b>{{election.name}}</b>.
-</p>
+  <div id="instructions">
+    {% if election.num_cast_votes %}
+    <p>
+      Du bist dabei, die verschlüsselte Auszählung für die Wahl <b>{{election.name}}</b> zu starten.
+    </p>
 
-<p>
-    Once you do this, voters will no longer be able to cast a ballot.
-</p>
+    <p>
+      Sobald du dies getan hast, können die Wähler*innen keine Stimmzettel mehr abgeben.
+    </p>
 
-<form method="post" action="" onsubmit="alert('ok, tally has begun')" class="pretty">
-<input type="hidden" name="csrf_token" value="{{csrf_token}}" />
-    
-<input class="button" type="submit" value="compute encrypted tally!" />
-<button onclick="document.location='{% url "election@view" election.uuid %}'; return false;">never mind</button>
-</form>
-{% else %}
-<p>
-No votes have been cast in this election. At least one vote must be cast before you compute the tally.<br /><br />
-<a href="{% url "election@view" election.uuid %}">back to election</a>
-</p>
-{% endif %}
-</div>
+    <form method="post" action="" onsubmit="alert('ok, tally has begun')" class="pretty">
+      <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+      
+      <input class="button" type="submit" value="Verschlüsselte Auszählung berechnen!" />
+      <button onclick="document.location='{% url "election@view" election.uuid %}'; return false;">Abbrechen</button>
+    </form>
+    {% else %}
+    <p>
+      In dieser Wahl wurden noch keine Stimmen abgegeben. Es muss mindestens eine Stimme abgegeben werden, bevor du die Auszählung berechnen kannst.<br /><br />
+      <a href="{% url "election@view" election.uuid %}">zurück zur Wahl</a>
+    </p>
+    {% endif %}
+  </div>
 
-<br /><br />
+  <br /><br />
 {% endblock %}
+```
