@@ -29,6 +29,7 @@ button {
     margin: 5px;
     padding: 5px 20px 5px 20px;
     font-size: 18pt;
+    border-radius:10px
 }
 
 input.pretty {

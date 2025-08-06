@@ -1,27 +1,27 @@
-<h3>Review your Ballot</h3>
+<h3>Stimmzettel überprüfen</h3>
 
 <div style="padding: 10px; margin-bottom: 10px; background-color: #eee; border: 1px #ddd solid;">
 {#foreach $T.questions as question}
 
-Question #{$T.question$index + 1}: {$T.question.short_name}<br>
+Frage #{$T.question$index + 1}: {$T.question.short_name}<br>
 {#if $T.choices[$T.question$index].length == 0}
-<div style="margin-left: 15px;">&#x2610; <b><i>No choice selected</i></b></div>
+<div style="margin-left: 15px;">&#x2610; <b><i>Keine Auswahl getroffen (Enthaltung)</i></b></div>
 {#/if}
 {#foreach $T.choices[$T.question$index] as choice}
 <div style="margin-left: 15px;">&#x2713; <b>{$T.choice}</b></div>
 {#/for}
 {#if $T.choices[$T.question$index].length < $T.question.max}
-[{$T.choices[$T.question$index].length} selections out of possible {$T.question.min}-{$T.question.max}]<br />
+[{$T.choices[$T.question$index].length} Auswahlen von möglichen {$T.question.min}-{$T.question.max}]<br />
 {#/if}
-[<a onclick="BOOTH.show_question({$T.question$index}); return false;" href="#">change</a>]
+[<a onclick="BOOTH.show_question({$T.question$index}); return false;" href="#">ändern</a>]
 {#if !$T.question$last}<br><br>{#/if}
 {#/for}
 </div>
 
-<p>Your ballot tracker is <b><tt style="font-size: 1.5em; word-break: break-all;">{$T.encrypted_vote_hash}</tt></b>.
+<p>Dein Stimmzettel-Tracker ist <b><tt style="font-size: 1.5em; word-break: break-all;">{$T.encrypted_vote_hash}</tt></b>.
 
-<p>  
-  <button id="proceed_button" onclick="BOOTH.cast_ballot();">Proceed to Login</button><span id="loading_div"><img src="loading.gif" id="proceed_loading_img" /></span><br />
+<p>  
+  <button id="proceed_button" onclick="BOOTH.cast_ballot();">Weiter zum Login</button><span id="loading_div"><img src="loading.gif" id="proceed_loading_img" /></span><br />
 </p>
 
 
@@ -35,19 +35,14 @@ Question #{$T.question$index + 1}: {$T.question.short_name}<br>
 
 {#if $T.election_metadata.use_advanced_audit_features}
 <div style="background: lightyellow; padding: 10px; border: 1px solid #ddd; max-width: 340px;">
-<h4 style="padding: 0px; margin:0px;"><a onclick="$('#auditbody').slideToggle(250);" href="#">Spoil & Audit</a> <span style="font-size: 0.8em; color: #444">[optional]</span></h4>
+<h4 style="padding: 0px; margin:0px;"><a onclick="$('#auditbody').slideToggle(250);" href="#">Überprüfen & Auditieren</a> <span style="font-size: 0.8em; color: #444">[optional]</span></h4>
 <div id="auditbody" style="display:none;">
 <p>
-If you choose, you can spoil this ballot and reveal how your choices were encrypted. This is an optional auditing process.
+Falls du dich dafür entscheidest, kannst du diesen Stimmzettel ungültig machen und die Verschlüsselung dieser (dann ungültigen) Wahl zu prüfen. Das musst du nicht tun.
 </p>
 <p>
-You will then be guided to re-encrypt your choices for final casting.
+Du musst dann erneut wählen, und deinen Stimmzettel abgeben, damit er gezählt wird.
 </p>
-<button onclick="BOOTH.audit_ballot();" class="pretty">Spoil &amp; Audit</button>
+<button onclick="BOOTH.audit_ballot();" class="pretty">Ungültig machen &amp; Prüfen</button>
 </p>
 </div>
-</div>
-{#/if}
-
-<br />
-
