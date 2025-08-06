@@ -1,17 +1,18 @@
-Dear {{voter.name}},
+Liebe*r {{ voter.name }},
 
-You have successfully cast a vote in {{election.name}}.
+Du hast erfolgreich eine Stimme bei der Wahl {{ election.name }} abgegeben. :)
 
-Your ballot tracker is:
-{{cast_vote.vote_hash}}
+Dein Stimmzettel-Hash ist:
+{{ cast_vote.vote_hash }}
 
-And your full encrypted ballot is archived at:
-{{cast_vote_url}}
+Und dein vollständiger verschlüsselter Stimmzettel ist archiviert unter:
+{{ cast_vote_url }}
 
 {% if election.use_voter_aliases %}
-This election uses voter aliases to protect your privacy.
-Your voter alias is: {{voter.alias}}.
+Diese Wahl verwendet Wähler-Aliase, um deine Privatsphäre zu schützen.
+Dein Wähler-Alias lautet: {{ voter.alias }}.
 {% endif %}
 
 --
-Helios
+Wahlsache
+StuPa/AStA der HfMDK

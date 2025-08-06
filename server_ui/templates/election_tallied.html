@@ -2,13 +2,13 @@
 
 {% block content %}
 
-  <h2 class="title">Election {{election.name}} Already Tallied</h2>
+  <h2 class="title">Die Wahl {{ election.name }} ist bereits ausgezählt</h2>
 
-  <p>
-      This election has already been tallied (or at least the tally has begun), so you can no longer cast a vote.
-  </p>
-  
-  <p>
-      <a href="{% url "election@view" election.uuid %}">view the election</a>
-  </p>
+  <p>
+      Diese Wahl wurde bereits ausgezählt, daher kannst du keine Stimme mehr abgeben. :(
+  </p>
+  
+  <p>
+      <a href="{% url "election@view" election.uuid %}">Wahlergebnis anzeigen</a>
+  </p>
 {% endblock %}

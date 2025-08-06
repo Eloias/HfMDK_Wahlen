@@ -1,50 +1,50 @@
 {% extends 'server_ui/templates/base.html' %}
-{% block title %}Confirm Vote{% endblock %}
+{% block title %}Stimme bestätigen{% endblock %}
 
 {% block content %}
 <script language="javascript">
 $(document).ready(function() {
-  $('#waiting_div').hide();
+  $('#waiting_div').hide();
 });
 
 function show_waiting() {
-  $('#cast_div').hide();
-  $('#waiting_div').show();
+  $('#cast_div').hide();
+  $('#waiting_div').show();
 }
 </script>
-<h1>Confirm your Vote</h1>
+<h1>Überprüfe deinen Stimmzettel</h1>
 
 {% if error %}
-<p style="color: red;">{{error}}</p>
+<p style="color: red;">{{ error }}</p>
 {% endif %}
 
-<h3>Your Ballot</h3>
+<h3>Dein Stimmzettel</h3>
 
 <p style="font-size:1.6em;">
-    <tt>{{vote_fingerprint}}</tt>
+    <tt>{{ vote_fingerprint }}</tt>
 </p>
 
 <div id="cast_div">
-<h3>Cast Your Ballot with your Credentials</h3>
+<h3>Gebe deinen Stimmzettel mit deinen Zugangsdaten ab</h3>
 
 <form method="post" onsubmit="show_waiting();" action="">
-    <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
 
 <table>
-{{form.as_table}}
+{{ form.as_table }}
 </table><br />
 
-    <input type="submit" value="cast this ballot" /><br /><br />
+    <input type="submit" value="Diesen Stimmzettel abgeben" /><br /><br />
 </form>
 
 <p>
-    Forgot your password? <a href="{% url "auth@password@forgotten" %}?return_url={% url "election@cast-confirm" %}">Have it emailed to you</a>.<br />(don't worry, we won't forget your vote).
+    Passwort vergessen? <a href="{% url "auth@password@forgotten" %}?return_url={% url "election@cast-confirm" %}">Lassen Sie es sich per E-Mail senden</a>.<br />(Keine Sorge, wir vergessen Ihre Stimme nicht).
 </p>
 </div>
 
 <div id="waiting_div" align="center">
-  Verifying and Casting your ballot<br />
-  <img src="/static/helios/loading.gif" />
+  Überprüfe und gebe deinen Stimmzettel ab<br />
+  <img src="/static/helios/loading.gif" />
 </div>
 
 {% endblock %}
