@@ -64,12 +64,12 @@ SHOW_USER_INFO = (get_from_env('SHOW_USER_INFO', '1') == '1')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Oft benötigt für ältere Django/Postgres Versionen
-        'NAME': 'helios_db', # Der Name der Datenbank, die du erstellt hast
-        'USER': 'helios_user', # Der Benutzer, den du erstellt hast
-        'PASSWORD': 'DEIN_SICHERES_PASSWORT', # Das Passwort für den 'helios_user'
-        'HOST': 'localhost', # Wenn Postgres auf demselben Server läuft
-        'PORT': '',          # Leeren String für Standardport
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': get_from_env('DB_NAME', 'helios_db'),  # 'helios_db' als Standardwert
+        'USER': get_from_env('DB_USER', 'helios_user'),  # 'helios_user' als Standardwert
+        'PASSWORD': get_from_env('DB_PASSWORD', 'password'), # Einen Fallback-Wert
+        'HOST': get_from_env('DB_HOST', 'localhost'),  # 'localhost' als Standardwert
+        'PORT': get_from_env('DB_PORT', ''), # Ein leerer String als Standardwert
         'CONN_MAX_AGE': 600,
     },
 }
@@ -88,7 +88,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 # although not all choices may be available on all operating systems.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Los_Angeles'
+TIME_ZONE = 'Europe/Berlin'
 
 USE_TZ = False
 
@@ -117,10 +117,10 @@ MEDIA_URL = '/media/'
 
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = get_from_env('SECRET_KEY', 'REMOVEDh-y=a6t_j@n!b2f+q8r$x0e#z5c9v')
+SECRET_KEY = get_from_env('SECRET_KEY', '')
 
 # Secret key for HMAC confirmation codes (separate from Django SECRET_KEY)
-EMAIL_OPTOUT_SECRET = get_from_env('EMAIL_OPTOUT_SECRET', 'REMOVED!p5v@e1t-l4b+c0d#f7g$h2j&k3q')
+EMAIL_OPTOUT_SECRET = get_from_env('EMAIL_OPTOUT_SECRET', '')
 
 # If debug is set to false and ALLOWED_HOSTS is not declared, django raises  "CommandError: You must set settings.ALLOWED_HOSTS if DEBUG is False."
 # If in production, you got a bad request (400) error
@@ -306,17 +306,9 @@ GITLAB_CLIENT_SECRET = get_from_env('GITLAB_CLIENT_SECRET', "")
 #EMAIL_HOST = get_from_env('EMAIL_HOST', 'mail.gmx.net')
 #EMAIL_PORT = int(get_from_env('EMAIL_PORT', "587"))
 #EMAIL_HOST_USER = get_from_env('EMAIL_HOST_USER', 'Onlinewahlen-HfMDK@gmx.net')
-EMAIL_HOST_PASSWORD = get_from_env('EMAIL_HOST_PASSWORD', '')
+
 #EMAIL_USE_TLS = (get_from_env('EMAIL_USE_TLS', '1') == '1')
 
-# E-Mail-Einstellungen, die aus Umgebungsvariablen geladen werden
-#EMAIL_HOST = os.environ.get('EMAIL_HOST')
-#EMAIL_PORT = int(os.environ.get('EMAIL_PORT', "587"))
-#EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-#EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-#EMAIL_USE_TLS = (os.environ.get('EMAIL_USE_TLS') == '1')
-#EMAIL_USE_SSL = (os.environ.get('EMAIL_USE_SSL') ==
-#EMAIL_USE_TLS = True
 
 # ----- FINALER EMAIL-TEST-BLOCK -----
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -325,6 +317,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'Onlinewahlen-HfMDK@gmx.net'
+EMAIL_HOST_PASSWORD = get_from_env('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # ----- FINALER EMAIL-TEST-BLOCK ENDE -----
 
