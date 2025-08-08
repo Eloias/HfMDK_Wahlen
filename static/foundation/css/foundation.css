@@ -95,7 +95,7 @@ select {
 /* Grid HTML Classes */
 .row {
   width: 100%;
-  margin-left: auto;
+  margin-left: 1em;
   margin-right: auto;
   margin-top: 0;
   margin-bottom: 0;

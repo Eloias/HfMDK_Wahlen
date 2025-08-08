@@ -7,12 +7,12 @@ body {
 }
 
 #content {
-  position: absolute;
   padding: 20px 30px 20px 30px;
   top: 0px;
-  margin-left: 100px;
+  margin-left: 1em;
   margin-top: 0px;
-  width: 860px;
+  max-width: 100%
+  width: auto;
   background: #eee;
   border-left: 1px solid #666;
   border-right: 1px solid #666;
@@ -29,7 +29,8 @@ body {
   border-top: 1px solid #666;
   bottom: 0px;
   margin: auto;
-  width: 860px;
+  width: auto;
+  max-width: 100%
   text-align: center;
   color: #666;
   clear: both;
