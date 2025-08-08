@@ -4,14 +4,15 @@ body {
   background: white;
   padding: 0px;
   margin: 0px;
+  max-width: 100%;
+
 }
 
 #content {
   padding: 20px 30px 20px 30px;
   top: 0px;
-  margin-left: 1em;
-  margin-top: 0px;
-  max-width: 100%
+  margin: 0 auto; 
+  max-width: 100%;
   width: auto;
   background: #eee;
   border-left: 1px solid #666;
@@ -30,7 +31,7 @@ body {
   bottom: 0px;
   margin: auto;
   width: auto;
-  max-width: 100%
+  max-width: 100%;
   text-align: center;
   color: #666;
   clear: both;
@@ -55,12 +56,7 @@ body {
   font-size: 16pt;
 }
 
-table.pretty {
-    margin: 1em 1em 1em 2em;
-    background: whitesmoke;
-    border-collapse: collapse;
-    width: 80%;
-}
+
 
 table.pretty th, td {
     border: 1px silver solid;

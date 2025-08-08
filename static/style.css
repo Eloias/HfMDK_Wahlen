@@ -19,9 +19,7 @@ body {
 }
 
 #container {
-    margin-top:20px;
-	margin-right:50px;
-	margin-left:50px;
+    margin: 20px 20px;
 	background: #ffffff;
 	border: 1px solid #666;
     padding: 0;

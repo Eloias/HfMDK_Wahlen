@@ -37,7 +37,8 @@ table.pretty th, td {
 
 /* sticky footer */
 #footer {
- width: 100%;
+ width: atuo;
+ max-width: 100%;
  border-top: 1px solid black;
  padding: 5px;
  background: #ddd;
