@@ -209,8 +209,6 @@ def can_create_election(request):
     return user.can_create_election()
   
 def user_can_feature_election(user, election):
-  if not user:
-    return False
-    
-  return user.admin_p
-  
+    # Erlaube allen Admins das Feature
+    return user_can_admin_election(user, election)
+
