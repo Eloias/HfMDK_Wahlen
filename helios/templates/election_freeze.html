@@ -1,43 +1,45 @@
 {% extends TEMPLATE_BASE %}
 
+{% block title %}Abstimmungsgegenstand einfrieren{% endblock %}
+
 {% block content %}
-  <h2 class="title">{{election.name}} &mdash; Freeze Ballot</h2>
-<p>
-Once an election is frozen, the questions, options, and trustees can no longer be modified.<br />
-</p>
+  <h2 class="title">{{election.name}} &mdash; Abstimmungsgegenstand einfrieren</h2>
+  <p>
+    Sobald der Abstimmungsgegenstand (die Frage) eingefroren ist, können die Fragen, Optionen und Trustees nicht mehr geändert werden.<br />
+  </p>
 
-<p>
-{% if election.openreg %}
-Registration for your election is currently <b>open</b>, which means anyone can vote, even after you freeze the ballot.
-{% else %}
-Registration for your election is currently <b>closed</b>, which means only the voters you designate will be able to cast a ballot. As the administrator, you will still be able to modify that voter list as the election progresses.
-{% endif %}
-</p>    
+  <p>
+    {% if election.openreg %}
+    Die Registrierung für deine Wahl ist derzeit <b>offen</b>, was bedeutet, dass jeder abstimmen kann, auch nachdem du den Stimmzettel eingefroren hast.
+    {% else %}
+    Die Registrierung für deine Wahl ist derzeit <b>geschlossen</b>, was bedeutet, dass nur die von dir bestimmten Wähler einen Stimmzettel abgeben können. Als Administrator kannst du die Wählerliste im Laufe der Wahl weiterhin bearbeiten.
+    {% endif %}
+  </p>     
 
-{% if helios.VOTERS_EMAIL %}
-<p>
-You must freeze the ballot before you can contact voters.
-</p>
-{% endif %}
+  {% if helios.VOTERS_EMAIL %}
+  <p>
+    Du musst den Abstimmungsgegenstand einfrieren, bevor du die Wähler*innen kontaktieren kannst.
+  </p>
+  {% endif %}
 
-{% if issues_p %}
-<p>
-    Before you can freeze the election, you will need to:
+  {% if issues_p %}
+  <p>
+    Bevor du den Abstimmungsgegenstand einfrieren kannst, musst du:
     <ul>
-        {% for issue in issues %}
-        <li>{{issue.action}}</li>
-        {% endfor %}
+      {% for issue in issues %}
+      <li>{{issue.action}}</li>
+      {% endfor %}
     </ul>
-    <a href="{% url "election@view" election.uuid %}">go back to the election</a>
-</p>
-{% else %}
-<form method="post" action="">
-<input type="hidden" name="csrf_token" value="{{csrf_token}}" />
-    
-<input class="button" type="submit" value="Freeze the ballot" />
-<button onclick="document.location='{% url "election@view" election.uuid %}'; return false;">do NOT freeze yet</button>
-</form>
-{% endif %}
+    <a href="{% url "election@view" election.uuid %}">zurück zur Wahl</a>
+  </p>
+  {% else %}
+  <form method="post" action="">
+    <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+      
+    <input class="button" type="submit" value="Stimmzettel einfrieren" />
+    <button onclick="document.location='{% url "election@view" election.uuid %}'; return false;">noch NICHT einfrieren</button>
+  </form>
+  {% endif %}
 
-<br /><br />
+  <br /><br />
 {% endblock %}

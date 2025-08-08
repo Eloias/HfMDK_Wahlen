@@ -5,30 +5,30 @@
   <h3 class="title">{{ election.name }}
 {% if admin_p %}
 {% if not election.frozen_at %}
-<small><a class="small button" href="{% url "election@edit" election.uuid %}">edit</a></small>
+<small><a class="small button" href="{% url "election@edit" election.uuid %}">bearbeiten</a></small>
 {% endif %}
 {% endif %}</h3>
 <p style="padding-top:0px; margin-top:0px">
-<em>{% if election.private_p %}private{%else%}public{% endif %}</em> {{ election.election_type }}{% if settings.SHOW_USER_INFO %} created by <u><b>{{election.admin.display_html_small|safe}}</b></u>{% endif %}
+<em>{% if election.private_p %}privat{%else%}öffentlich{% endif %}</em> {{ election.election_type }}{% if settings.SHOW_USER_INFO %} erstellt von <u><b>{{election.admin.display_html_small|safe}}</b></u>{% endif %}
 {% if election.is_archived %}
-[archived]
+[archiviert]
 {% endif %}
 {% if admin_p %}
-&nbsp;{% if election.is_archived %}<a class="small button" href="{% url "election@archive" election_uuid=election.uuid %}?archive_p=0">unarchive it</a>{% else %}<a class="small button" href="{% url "election@archive" election_uuid=election.uuid %}?archive_p=1">archive it</a>{% endif %}
-<a class="small button" onclick="return window.confirm('Are you sure you want to copy this election?');" href="{% url "election@copy" election_uuid=election.uuid %}">copy</a>
+&nbsp;{% if election.is_archived %}<a class="small button" href="{% url "election@archive" election_uuid=election.uuid %}?archive_p=0">de-archivieren</a>{% else %}<a class="small button" href="{% url "election@archive" election_uuid=election.uuid %}?archive_p=1">archivieren</a>{% endif %}
+<a class="small button" onclick="return window.confirm('Bist du sicher, dass du diese Wahl kopieren möchtest?');" href="{% url "election@copy" election_uuid=election.uuid %}">Kopie erstellen</a>
 {% endif %}
 <br />
 {% if admin_p %}
 {% if not election.private_p %}
 {% if election.featured_p %}
-this {{election.election_type}} is featured on the front page.
+diese {{election.election_type}} wird auf der Startseite hervorgehoben.
 {% if can_feature_p %}
-[<a href="{% url "election@set-featured" election.uuid %}?featured_p=0">unfeature it</a>]
+[<a href="{% url "election@set-featured" election.uuid %}?featured_p=0">nicht mehr hervorheben</a>]
 {% endif %}
 {% else %}
-this {{election.election_type}} is <u>not</u> featured on the front page.
+diese {{election.election_type}} wird <u>nicht</u> auf der Startseite hervorgehoben.
 {% if can_feature_p %}
-[<a href="{% url "election@set-featured" election.uuid %}?featured_p=1">feature it</a>]
+[<a href="{% url "election@set-featured" election.uuid %}?featured_p=1">hervorheben</a>]
 {% endif %}
 {% endif %}
 {% endif %}
@@ -46,34 +46,38 @@ this {{election.election_type}} is <u>not</u> featured on the front page.
 {{election.description_bleached|safe}}
 </div>
 
+<hr>
+
 <p>
-{% if election.help_email and admin_p%}Help Email Address: {{election.help_email}}<br />{% endif %}
-{% if election.voting_start_at %}Voting start at {{election.voting_start_at}}<br />{% endif %}
-{% if election.voting_end_at %}Voting end at {{election.voting_end_at}}<br />{% endif %}
+{% if election.help_email and admin_p%}E-Mail-Adresse für Hilfe: {{election.help_email}}<br />{% endif %}
+{% if election.voting_start_at %}Wahl beginnt am {{election.voting_start_at}}<br />{% endif %}
+{% if election.voting_end_at %}Wahl endet am {{election.voting_end_at}}<br />{% endif %}
 </p>
 
 {% if election.election_info_url %}
-<p style="font-size:1.5em;">[<a target="_blank" href="{{election.election_info_url}}" rel="noopener noreferrer">download candidate bios &amp; statements</a>]</p>
+<p style="font-size:1.5em;">[<a target="_blank" href="{{election.election_info_url}}" rel="noopener noreferrer">Kandidaten-Biografien &amp; Statements herunterladen</a>]</p>
 {% endif %}
 
 <p align="center" style="font-size: 1.5em;">
-<a href="{% url "election@questions" election.uuid %}">questions ({% if election.questions %}{{election.questions|length}}{% else %}0{% endif %})</a>
+<a href="{% url "election@questions" election.uuid %}">Abstimmungsgegenstand ({% if election.questions %}{{election.questions|length}}{% else %}0{% endif %})</a>
 &nbsp;&nbsp;|&nbsp;&nbsp;
-<a href="{% url "election@voters@list-pretty" election.uuid %}">voters &amp; ballots</a>
+<a href="{% url "election@voters@list-pretty" election.uuid %}">Wähler*innen &amp; Stimmzettel</a>
 &nbsp;&nbsp;|&nbsp;&nbsp;
-<a href="{% url "election@trustees@view" election.uuid %}">trustees ({{trustees|length}})</a>
+<a href="{% url "election@trustees@view" election.uuid %}">Trustees ({{trustees|length}})</a>
 </p>
+
+<hr>
 
 {% if admin_p %}
 {% if election.frozen_p %}
 <div style="background: lightyellow; padding:5px; padding-left: 10px; margin-top: 15px; border: 1px solid #aaa; width: 720px;" class="round">
-<a href="#" onclick="$('#badgebody').slideToggle(250);">Embed an Election Badge</a>
+<a href="#" onclick="$('#badgebody').slideToggle(250);">Wahl-Badge einbetten</a>
 <div id="badgebody" style="display:none;">
 <br />
 <form action="#">
 <textarea cols="90" rows="4" wrap="soft">&lt;iframe src="{{election_badge_url}}" frameborder="0" style="border: 1px solid black" height="75" width="200"&gt;
 &lt;/iframe&gt;</textarea><br />
-<p style="font-size:0.8em;">adding this HTML to your site displays a thin banner with direct links to voting.</p>
+<p style="font-size:0.8em;">wenn du diesen HTML-Code zu deiner Website hinzufügst, wird ein kleines Banner mit direkten Links zur Abstimmung angezeigt.</p>
 </form>
 </div>
 </div>
@@ -82,24 +86,22 @@ this {{election.election_type}} is <u>not</u> featured on the front page.
 
 {% if election.result_released_at %}
 
-<!-- election complete, no next step -->
-
 {% else %}
-<b>Next Step:</b>
+<b>Nächster Schritt:</b>
 <span style="font-size: 1.3em;">
 {% if not election.frozen_at %}
 {% if election.issues_before_freeze %}
 {% for issue in election.issues_before_freeze %}
-{{issue.action}}{% if forloop.last %}{% else %}, and{% endif %}<br />
+{{issue.action}}{% if forloop.last %}{% else %}, und{% endif %}<br />
 {% endfor %}
 {% else %}
-<a href="{% url "election@freeze" election.uuid %}">freeze ballot and open election.</a>
+<a href="{% url "election@freeze" election.uuid %}">Abstimmungsgegenstand einfrieren und Wahl öffnen.</a>
 <br />
 {% if election.voting_starts_at %}
-once you do this, the election will be ready for voting and will open automatically<br />
-at {{election.voting_starts_at}}, as per your settings.
+sobald du dies tust, ist die Wahl abstimmungsbereit und wird automatisch<br />
+am {{election.voting_starts_at}} gemäß deinen Einstellungen geöffnet.
 {% else %}
-once you do this, the election will be immediately open for voting.
+sobald du dies tust, wird die Wahl sofort für die Abstimmung geöffnet.
 {% endif %}
 {% endif %}
 
@@ -107,37 +109,37 @@ once you do this, the election will be immediately open for voting.
 
 {% if not election.encrypted_tally %}
 {% if election.tallying_started_at %}
-Tally computation is under way.<br />
-Reload this page in a couple of minutes.
+Die Auszählung wird derzeit berechnet.<br />
+Lade diese Seite gleich neu.
 {% else %}
-<a href="{% url "election@compute-tally" election.uuid %}">compute encrypted tally</a><br />
-The encrypted votes will be combined into an encrypted tally. Once this is done,<br />
-trustees will be asked to provide their share of the decryption.
+<a href="{% url "election@compute-tally" election.uuid %}">verschlüsselte Auszählung berechnen</a><br />
+Die verschlüsselten Stimmen werden zu einer verschlüsselten Auszählung zusammengefasst. Sobald dies geschehen ist,<br />
+werden die Trustees aufgefordert, ihren Schlüssel für die Entschlüsselung bereitzustellen.
 {% endif %}
 {% else %}
 
 {% if election.result %}
-<a href="{% url "election@release-result" election.uuid %}">release result</a><br />
-The result displayed below is visible only to you.<br />
-Once you release the result, it will be visible to everyone.
+<a href="{% url "election@release-result" election.uuid %}">Ergebnis veröffentlichen</a><br />
+Das unten angezeigte Ergebnis ist nur für dich sichtbar.<br />
+Sobald du das Ergebnis veröffentlichst, wird es für alle sichtbar sein.
 {% else %}
 
 {% if election.ready_for_decryption_combination %}
 <a href="{% url "election@combine-decryptions" election.uuid %}">
 {% if election.num_trustees == 1 %}
-compute results
+Ergebnisse berechnen
 {% else %}
-combine trustee decryptions and compute results
+Trustees-Entschlüsselungen kombinieren und Ergebnisse berechnen
 {% endif %}
 </a><br />
 {% if election.num_trustees == 1 %}
-The result will be computed and shown to you, the administrator, only.
+Das Ergebnis wird berechnet und nur dir, dem Administrator, angezeigt.
 {% else %}
-The decryption shares from the trustees will be combined and the tally computed.<br />
-Once you do this, the tally will visible to you, the administrator, only.
+Die Entschlüsselungsanteile der Trustees werden kombiniert und die Auszählung berechnet.<br />
+Sobald du dies getan hast, wird die Auszählung nur für dich, den Administrator, sichtbar sein.
 {% endif %}
 {% else %}
-<a href="{% url "election@trustees@view" election.uuid %}">trustees (for decryption)</a>
+<a href="{% url "election@trustees@view" election.uuid %}">Trustees (zur Entschlüsselung)</a>
 {% endif %}
 
 {% endif %}
@@ -158,13 +160,13 @@ Once you do this, the tally will visible to you, the administrator, only.
 {% if show_result %}
 {% if election.result_released_at %}
 <span class="highlight-box round">
-    This election is complete.
+  Diese Wahl ist abgeschlossen.
 </span><br /><br /><br />
 {% endif %}
 
-<h3 class="highlight-box">Tally</h3>
+<h3 class="highlight-box">Auszählung</h3>
 {% for question in election.pretty_result %}
-<b><span style="font-size:0.8em;">Question #{{forloop.counter}}</span><br />{{question.question}}</b><br />
+<b><span style="font-size:0.8em;">Frage #{{forloop.counter}}</span><br />{{question.question}}</b><br />
 <table class="pretty" style="width: auto;">
 {% for answer in question.answers %}
 <tr><td style="padding-right:80px;{% if answer.winner %}font-weight:bold;{% endif %}">{{answer.answer}}</td><td align="right" style="{% if answer.winner %}font-weight:bold;{% endif %}">{{answer.count}}</td></tr>
@@ -176,49 +178,49 @@ Once you do this, the tally will visible to you, the administrator, only.
 
 {% if election.voting_has_stopped %}
 <span class="highlight-box round">
-    Election closed. Results will be released soon.
+  Wahl geschlossen. Die Ergebnisse werden bald veröffentlicht.
 </span><br /><br />
 {% else %}
 
 {% if election.voting_has_started %}
-<a class="button" href="{{test_cookie_url}}">Vote in this {{election.election_type}} </a>
+<a class="button" href="{{test_cookie_url}}">In dieser {{election.election_type}} abstimmen </a>
 <br />
 <br />
 {% if election.voting_extended_until %}
-This {{election.election_type}} was initially scheduled to end at {{election.voting_ends_at}} (UTC),<br />
-but has been extended until {{ election.voting_extended_until }} (UTC).
+Diese {{election.election_type}} sollte ursprünglich am {{election.voting_ends_at}} (UTC) enden,<br />
+wurde aber bis zum {{ election.voting_extended_until }} (UTC) verlängert.
 {% else %}
 {% if election.voting_ends_at %}
 <br />
-This {{election.election_type}} is scheduled to end at {{election.voting_ends_at}} (UTC).
+Diese {{election.election_type}} endet am {{election.voting_ends_at}} (UTC).
 {% else %}
-This {{election.election_type}} ends at the administrator's discretion.
+Diese {{election.election_type}} endet nach Ermessen des Wahlsausschusses.
 {% endif %}
 <br />
 {% endif %}
 
 {% if election.private_p and voter %}
 <br />
-This election is <em>private</em>. You are signed in as eligible voter <em>{{voter.name}}</em>.
+Diese Wahl ist <em>privat</em>. Du bist als wahlberechtigter Wähler <em>{{voter.name}}</em> angemeldet.
 {% endif %}
 
 <div class="highlight-box round" style="font-size: 1.2em; margin-right: 400px; display:none;" id="nojava_message">
-  You do not have Java installed in your browser.<br />At this time, Helios requires Java.<br />
-  Visit <a target="_new" href="http://java.sun.com">java.sun.com</a> to install it.
+  In deinem Browser ist Java nicht installiert.<br />Zurzeit benötigt Helios Java.<br />
+  Besuche <a target="_new" href="http://java.sun.com">java.sun.com</a>, um es zu installieren. Oder nutze einen anderen Browser, der Java unterstützt.
 </div>
 <br />
 {% else %}
 <span class="highlight-box round">
-  voting is not yet open
+  Die Abstimmung ist noch nicht offen
 </span> <br /><br />
 {% endif %}
 
 {% if user %}
 {% if voter %}
 <p style="padding-top:1px;">
-  You are registered to vote in this {{election.election_type}}.
+  Du bist als Wähler in dieser {{election.election_type}} registriert.
 {% if election.use_voter_aliases %}
-Your voter alias is {{voter.alias}}.
+Dein Wähler-Alias ist {{voter.alias}}.
 {% endif %}
 </p>
 
@@ -227,12 +229,12 @@ Your voter alias is {{voter.alias}}.
 {% else %}
 {% if election.openreg %}
 {% if eligible_p %}
-You are eligible to vote in this election.
+Du bist wahlberechtigt für diese Wahl.
 {% else %}
-You are <em>not eligible</em> to vote in this {{election.election_type}}.
+Du bist <em>nicht wahlberechtigt</em> für diese {{election.election_type}}.
 {% endif %}
 {% else %}
-You are <em>not eligible</em> to vote in this {{election.election_type}}.
+Du bist <em>nicht wahlberechtigt</em> für diese {{election.election_type}}.
 <br />
 {% endif %}
 {% endif %}
@@ -241,10 +243,10 @@ You are <em>not eligible</em> to vote in this {{election.election_type}}.
 
 {% if election.openreg %}
 {% if election.eligibility %}
-This election is open to: {{election.pretty_eligibility|safe}}
-<a href="{{settings.SECURE_URL_HOST}}{% url "auth@index" %}?return_url={{CURRENT_URL}}">Log in</a> to check your eligibility.
+Diese Wahl steht offen für: {{election.pretty_eligibility|safe}}
+<a href="{{settings.SECURE_URL_HOST}}{% url "auth@index" %}?return_url={{CURRENT_URL}}">Logge dich ein</a>, um deine Wahlberechtigung zu überprüfen.
 {% else %}
-Anyone can vote in this election.
+Jede*r kann in dieser Wahl abstimmen.
 {% endif %}
 {% endif %}
 
@@ -255,30 +257,30 @@ Anyone can vote in this election.
 {% endif %}
 
 {% if admin_p and election.voting_ends_at and not election.tallying_started_at %}
-<br /><a href="{% url "election@extend" election.uuid %}">extend voting</a><br />
+<br /><a href="{% url "election@extend" election.uuid %}">Abstimmung verlängern</a><br />
 {% endif %}
 
 <div style="background: lightyellow; padding:5px; padding-left: 10px; margin-top: 15px; border: 1px solid #aaa;" class="round">
-<a href="#" onclick="$('#auditbody').slideToggle(250);">Audit Info</a>
+<a href="#" onclick="$('#auditbody').slideToggle(250);">Prüfungs-Infos</a>
 <div id="auditbody" style="display:none; word-wrap: break-word;">
-<br />Election URL:<br />
+<br />Wahl-URL:<br />
 <a href="{{election.url}}">{{election.url}}</a>
 
 {% if election.frozen_at %}
 <br />
-<br />Election Fingerprint:<br />
+<br />Wahl-Hash:<br />
 <tt style="font-size: 1.3em; font-weight: bold;">{{election.hash}}</tt>
 
 
 {% if votes %}
-<p>Your ballot tracker:<br />
+<p>Dein Stimmzettel-Hash:<br />
 <tt style="font-size:14pt; font-weight: bold;">{{votes.0.vote_hash}}</tt>
 </p>
 {% endif %}
 
 <p style="font-size: 1.3em;">
-<a href="{% url "election@voters@list-pretty" election.uuid %}">Ballot Tracking Center</a> &nbsp;| &nbsp;
-<a href="{% url "election@audited-ballots" election.uuid %}">Audited Ballots</a>
+<a href="{% url "election@voters@list-pretty" election.uuid %}">Stimmzettel-Verifizierung</a> &nbsp;| &nbsp;
+<a href="{% url "election@audited-ballots" election.uuid %}">Prüfungs-Stimmzettel</a>
 </p>
 
 {% endif %}
@@ -286,17 +288,17 @@ Anyone can vote in this election.
 {% if not election.voting_has_started %}
 <p style="font-size: 1.2em;">
   <br>
-  <a href="{{SECURE_URL_HOST}}/booth/vote.html?election_url={% url "election@home" election.uuid %}">preview booth</a>
+  <a href="{{SECURE_URL_HOST}}/booth/vote.html?election_url={% url "election@home" election.uuid %}">Wahlkabine-Vorschau</a>
 </p>
-{% endif %}  
-
+{% endif %}
+ 
 {% if election.voting_has_stopped %}
 <p style="font-size: 1.2em;">
 {% if election.result %}
-verify <a target="_blank" href="/verifier/verify.html?election_url={% url "election@home" election.uuid %}">election tally</a>.
+die <a target="_blank" href="/verifier/verify.html?election_url={% url "election@home" election.uuid %}">Auszählung der Wahl</a> verifizieren.
 {% endif %}
 
-review the <a href="{{vote_url}}">voting booth</a>.
+die <a href="{{vote_url}}">Wahlkabine</a> ansehen.
 </p>
 
 {% endif %}
@@ -308,3 +310,4 @@ review the <a href="{{vote_url}}">voting booth</a>.
 
 
 {% endblock %}
+```
