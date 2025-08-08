@@ -301,7 +301,7 @@ def election_badge(request, election):
 def one_election_view(request, election):
   user = get_user(request)
   admin_p = user_can_admin_election(user, election)
-  can_feature_p = user_can_feature_election(user, election)
+  can_feature_p = admin_p
   
   notregistered = False
   eligible_p = True
@@ -920,8 +920,12 @@ def one_election_set_featured(request, election):
   """
 
   user = get_user(request)
-  if not user_can_feature_election(user, election):
-    raise PermissionDenied()
+  # Erlaube allen Admins das Feature
+  # if not user_can_feature_election(user, election):
+  #     raise PermissionDenied()
+  # oder:
+  if not user_can_admin_election(user, election):
+        raise PermissionDenied()
 
   featured_p = bool(int(request.GET['featured_p']))
   election.featured_p = featured_p
