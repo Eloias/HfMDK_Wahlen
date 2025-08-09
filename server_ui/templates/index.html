@@ -49,8 +49,8 @@ Mehr als **2.000.000 Stimmen** wurden mit Helios abgegeben.
 <div class="panel row">
 {% if user %}
 {% if create_p %}
-<a class="small button" href="{% url "elections@new" %}">Wahl erstellen</a>
 <h5 class="subheader">Admin Console</h5>
+<a class="small button" href="{% url "elections@new" %}">Wahl erstellen</a>
 {% if elections_administered %}
 <ul>
 {% for election in elections_administered %}
@@ -58,7 +58,7 @@ Mehr als **2.000.000 Stimmen** wurden mit Helios abgegeben.
 {% endfor %}
 </ul>
 {% else %}
-<em>noch keine</em>
+<em>noch keine Wahl</em>
 {% endif %}
 <div class="row right">
 <a class="tiny button" href="{% url "elections@administered" %}">alle anzeigen</a>
@@ -84,7 +84,7 @@ Mehr als **2.000.000 Stimmen** wurden mit Helios abgegeben.
 {{login_box|safe}}
 {% else %}
 <p>
-Wähle eine Wahl aus. Nach dem Ausfüllen des Stimmzettels wirst du nach den Login-Daten gefragt, die du per Email bekommen hast.
+Hier siehst du die aktuelle Wahl. Wenn du wahlberechtigt bist, hast du eine Email bekommen mit allen Infos.
 </p>
 {% endif %}
 {% endif %}
