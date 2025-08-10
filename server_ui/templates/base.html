@@ -110,6 +110,7 @@
 {% if settings.SHOW_LOGIN_OPTIONS %}
     nicht angemeldet. <a class="tiny button" href="{{settings.SECURE_URL_HOST}}{% url "auth@index" %}?return_url={{CURRENT_URL}}">anmelden</a>      
 {% else %}
+<a href="https://github.com/Eloias/HfMDK_Wahlen">Anleitung+Quellcode für dieses Projekt</a> <br>
 Basiert auf <a href="http://heliosvoting.org">Helios Voting</a>.
 {% endif %}
     {% endif %}

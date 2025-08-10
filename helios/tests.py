@@ -635,7 +635,7 @@ class ElectionBlackboxTests(WebTest):
         assert "your password" in email_message.subject, "bad subject in email"
 
         # get the username and password
-        username = re.search('voter ID: (.*)', email_message.body).group(1)
+        username = re.search('Vorname: (.*)', email_message.body).group(1)
         password = re.search('password: (.*)', email_message.body).group(1)
 
         # now log out as administrator
