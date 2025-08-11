@@ -22,7 +22,7 @@ Der Wahlvorgang ist in drei Hauptschritte unterteilt, die die Integrität und Ve
 
 <br/>
 
-# Anleitung zum Online-wählen 
+# Anleitung zur Onlinewahl 
 
 Hier ist eine Schritt-für-Schritt-Anleitung für die Stimmabgabe und die Verifizierung deines Stimmzettels.
 
@@ -30,38 +30,66 @@ Hier ist eine Schritt-für-Schritt-Anleitung für die Stimmabgabe und die Verifi
 
 ### 1. Email lesen
 
-Du hast eine Email bekommen, in der du deine Anmeldedaten findest. Wenn du die Email nicht finden kannst oder keine bekommen hast, wende dich an den AStA. Klicke den Wahl-Link, um auf die Wahl-Seite zu kommen.
+Du hast eine Email an deine Studi-Mail bekommen, in der du deine Anmeldedaten findest. Wenn du die Email nicht finden kannst oder keine bekommen hast, wende dich an den AStA. Klicke den Wahl-Link, um auf die Wahl-Seite zu kommen.
 <details>
+<summary><b>Bild der Email mit Anmeldedaten</b></summary>
+
 ![Bild der Email mit Anmeldedaten.](static/Readme_media/0.png)
 </details>
+
 ### 2. Startseite der Wahlkabine
 
+<details>
+<summary><b>Bild der Wahlkabine</b></summary>
+
 ![Bild der Wahlkabine.](static/Readme_media/1.png)
+</details>
 
 ### 3. Stimmzettel ausfüllen
 
 Zuerst wählst du deine gewünschte Kandidat*innen für aus. Nachdem du deine Wahl getroffen hast, klicke auf **"Weiter"**, um deine Auswahl zu bestätigen.
+<details>
+<summary><b>Bild der Wahlkabine, Kandidat*innen ausgewählt</b></summary>
 
 ![Bild der Wahlkabine-Vorschau, Optionen ausgewählt.](static/Readme_media/2.png)
+</details>
+
 
 ---
 
 ### 4. Stimmzettel überprüfen
 
-![Bild der Wahlkabine-Vorschau, Optionen ausgewählt.](static/Readme_media/3.png)
-Nach der Bestätigung deiner Auswahl siehst du deinen ausgefüllten Stimmzettel. Hier wird ein einzigartiger **Stimmzettel-Tracker** angezeigt, mit dem du später nachvollziehen kannst, ob der Stimmzettel wirklich abgegeben wurde und grundsätzlich richtig verschlüsselt wird. Hier kannst du optional deinen aktuellen Stimmzettel verwerfen und verifizieren. 
+
+
+Nach der Bestätigung deiner Auswahl siehst du deinen ausgefüllten Stimmzettel. Hier wird ein einzigartiger **Stimmzettel-Tracker** angezeigt, mit dem du später nachvollziehen kannst, ob der Stimmzettel wirklich abgegeben wurde und grundsätzlich richtig verschlüsselt wird. Hier kannst du optional den aktuellen Stimmzettel verwerfen und verifizieren. 
 Klicke sonst auf **"Weiter zum Login"**.
+<details>
+<summary><b>Bild der Wahlkabine, Überprüfung</b></summary>
+
+![Bild der Wahlkabine-Vorschau, Optionen ausgewählt.](static/Readme_media/3.png)
+</details>
 
 ---
 
-### 5. Bestätigung der Stimmabgabe
+### 5. Login, bevor der Stimmzettel abgschickt wird.
+
+
+Um deinen Stimmzettel abzugeben musst du deine Wahlberechtigung verifizieren. Das tust du mit deinem Vornamen und Passwort. **Beides findest du in der Email!**
+<details>
+<summary><b>Bild der Wahlkabine, Login</b></summary>
 
 ![Bild der Wahlkabine, Login.](static/Readme_media/4.png)
-Um deinen Stimmzettel abzugeben musst du deine Wahlberechtigung verifizieren. Das tust du mit deinem Vornamen und Passwort. **Beides findest du in der Email!**
+</details>
 
 ### 6. Stimme Abgegeben.
 
+<details>
+<summary><b>Stimme erfolgreich abgegeben</b></summary>
+
 ![Bild der Seite "Stimme erfolgreich abgegeben", die den Prüfcode und die Bestätigung anzeigt.](static/Readme_media/5.png)
+</details>
+
+
 
 ---
 
@@ -70,23 +98,61 @@ Um deinen Stimmzettel abzugeben musst du deine Wahlberechtigung verifizieren. Da
 
 Die Anwendung ist in Python mit dem Django-Framework entwickelt und verwendet Gunicorn sowie Celery für Hintergrundaufgaben.
 
-### Installation und Start
+# Installation und Start (für Entwickler)
 
-1.  **Abhängigkeiten installieren:**
-    ```bash
-    # Im Projektverzeichnis
-    pip install -r requirements.txt
-    ```
+- installiere PostgreSQL 9.5+
+- installiere Rabbit MQ
+  Dies wird benötigt, damit Celery funktioniert, das für Hintergrundprozesse wie die Verarbeitung von hochgeladenen CSV-Dateien mit Wählerlisten zuständig ist.
+- stelle sicher, dass `virtualenv` installiert ist:
+  http://www.virtualenv.org/en/latest/
+- clone das repo
+- wechsle in das Verzeichnis
+- installiere Python 3.6, einschließlich dev, pip und venv
+```
+sudo apt install python3.6 python3.6-venv python3.6-pip python3.6-venv
+```
+- erstelle eine virtuelle Umgebung
+```
+python3.6 -m venv $(pwd)/venv
+```
+- du benötigst außerdem die Postgres-Entwicklungsbibliotheken. Zum Beispiel unter Ubuntu:
+```
+sudo apt install libpq-dev
+```
+- aktiviere die virtuelle Umgebung
+```
+source venv/bin/activate
+```
+- installiere die requirements
+```
+# Im Projektverzeichnis
+pip install -r requirements.txt
+```
+- setze die Datenbank zurück
+```
+./reset.sh
+```
+- starte den Server
+```
+python manage.py runserver
+```
+- um die Google-Authentifizierung zum Laufen zu bringen:
+** gehe zu https://console.developers.google.com
+** erstelle eine Anwendung
+** richte OAuth2-Anmeldedaten als Webanwendung ein, mit deinem Ursprung, z.B. https://myhelios.example.com, und deinem Authentifizierungs-Rückruf, der, basierend auf unserem Beispiel, https://myhelios.example.com/auth/after/ ist
+** immer noch in der Entwicklerkonsole, aktiviere die Google+ API und Google People API.
+** setze die Konfigurationsvariablen GOOGLE_CLIENT_ID und GOOGLE_CLIENT_SECRET entsprechend.
+
 
 2.  **Datenbank konfigurieren:**
-    Passe die `.env`-Datei (Environment Variablen) im Hauptverzeichnis an, um die Datenbankverbindung herzustellen. Darin werden außerdem die Email Server Daten gespeichert.
+    Passe die `.env`-Datei und `settings.py` (Environment Variablen) im Hauptverzeichnis an, um die Datenbankverbindung herzustellen. Darin werden außerdem die Email Server Daten gespeichert.
 
 3.  **Datenbank-Migrationen ausführen:**
     ```bash
     python manage.py migrate
     ```
 
-4.  **Statische Dateien sammeln:**
+4.  **Statische Dateien für Website sammeln:**
     ```bash
     python manage.py collectstatic
     ```
