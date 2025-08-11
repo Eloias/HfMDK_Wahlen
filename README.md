@@ -22,7 +22,7 @@ Der Wahlvorgang ist in drei Hauptschritte unterteilt, die die Integrität und Ve
 
 <br/>
 
-# Anleitung zur Stimmabgabe
+# Anleitung zum Online-wählen 
 
 Hier ist eine Schritt-für-Schritt-Anleitung für die Stimmabgabe und die Verifizierung deines Stimmzettels.
 
@@ -31,9 +31,9 @@ Hier ist eine Schritt-für-Schritt-Anleitung für die Stimmabgabe und die Verifi
 ### 1. Email lesen
 
 Du hast eine Email bekommen, in der du deine Anmeldedaten findest. Wenn du die Email nicht finden kannst oder keine bekommen hast, wende dich an den AStA. Klicke den Wahl-Link, um auf die Wahl-Seite zu kommen.
-
+<details>
 ![Bild der Email mit Anmeldedaten.](static/Readme_media/0.png)
-
+</details>
 ### 2. Startseite der Wahlkabine
 
 ![Bild der Wahlkabine.](static/Readme_media/1.png)
