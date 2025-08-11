@@ -20,6 +20,52 @@ Der Wahlvorgang ist in drei Hauptschritte unterteilt, die die Integrität und Ve
 3.  **Stimme auszählen (Tallied-as-Recorded):**
     Nach Ende der Wahl wird die Auszählung gestartet. Die verschlüsselten Stimmen werden mithilfe der öffentlichen Schlüssel der Trustees entschlüsselt. Jeder Trustee trägt mit seinem geheimen Schlüssel zur Entschlüsselung bei. Erst wenn alle Beiträge kombiniert werden, kann das endgültige Ergebnis berechnet werden. Das Ergebnis kann anschließend von jedem überprüft werden.
 
+<br/>
+
+# Anleitung zur Stimmabgabe
+
+Hier ist eine Schritt-für-Schritt-Anleitung für die Stimmabgabe und die Verifizierung deines Stimmzettels.
+
+---
+
+### 1. Email lesen
+
+Du hast eine Email bekommen, in der du deine Anmeldedaten findest. Wenn du die Email nicht finden kannst oder keine bekommen hast, wende dich an den AStA. Klicke den Wahl-Link, um auf die Wahl-Seite zu kommen.
+
+![Bild der Email mit Anmeldedaten.](static/Readme_media/0.png)
+
+### 2. Startseite der Wahlkabine
+
+![Bild der Wahlkabine.](static/Readme_media/1.png)
+
+### 3. Stimmzettel ausfüllen
+
+Zuerst wählst du deine gewünschte Kandidat*innen für aus. Nachdem du deine Wahl getroffen hast, klicke auf **"Weiter"**, um deine Auswahl zu bestätigen.
+
+![Bild der Wahlkabine-Vorschau, Optionen ausgewählt.](static/Readme_media/2.png)
+
+---
+
+### 4. Stimmzettel überprüfen
+
+![Bild der Wahlkabine-Vorschau, Optionen ausgewählt.](static/Readme_media/3.png)
+Nach der Bestätigung deiner Auswahl siehst du deinen ausgefüllten Stimmzettel. Hier wird ein einzigartiger **Stimmzettel-Tracker** angezeigt, mit dem du später nachvollziehen kannst, ob der Stimmzettel wirklich abgegeben wurde und grundsätzlich richtig verschlüsselt wird. Hier kannst du optional deinen aktuellen Stimmzettel verwerfen und verifizieren. 
+Klicke sonst auf **"Weiter zum Login"**.
+
+---
+
+### 5. Bestätigung der Stimmabgabe
+
+![Bild der Wahlkabine, Login.](static/Readme_media/4.png)
+Um deinen Stimmzettel abzugeben musst du deine Wahlberechtigung verifizieren. Das tust du mit deinem Vornamen und Passwort. **Beides findest du in der Email!**
+
+### 6. Stimme Abgegeben.
+
+![Bild der Seite "Stimme erfolgreich abgegeben", die den Prüfcode und die Bestätigung anzeigt.](static/Readme_media/5.png)
+
+---
+
+
 ## Lokal installieren
 
 Die Anwendung ist in Python mit dem Django-Framework entwickelt und verwendet Gunicorn sowie Celery für Hintergrundaufgaben.
