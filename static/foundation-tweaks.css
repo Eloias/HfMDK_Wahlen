@@ -4,6 +4,10 @@ table.pretty {
     background: whitesmoke;
     border-collapse: collapse;
     width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    display: block;
+    box-sizing: border-box;
 }
 
 table.pretty th, td {
