@@ -1,9 +1,8 @@
-```
 {% extends TEMPLATE_BASE %}
 
 {% block title %}Wähler &amp; Stimmzettel-Verifizierungszentrum für {{election.name}}{% endblock %}
 {% block content %}
-  <h3 class="title">{{election.name}} &mdash; Wähler und Stimmzettel-Verifizierungszentrum <span style="font-size:0.7em;">[<a href="{% url "election@view" election.uuid %}">zurück zur Wahl</a>]</span></h3>
+  <h3 class="title">{{election.name}} &mdash; Wähler*innenliste und Verifizierungszentrum <span style="font-size:0.7em;">[<a href="{% url "election@view" election.uuid %}">zurück zur Wahl</a>]</span></h3>
 
   <p>
     <b>Wer kann abstimmen?</b>
