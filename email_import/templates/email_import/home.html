@@ -1,0 +1,52 @@
+{% extends TEMPLATE_BASE %}
+{% block title %}E-Mail-Import-Tool für Helios{% endblock %}
+
+{% block content %}
+<h1>E-Mail-Import-Tool für Helios</h1>
+
+<p>
+  Dieses Tool wandelt eine Textdatei mit studentischen E-Mail-Adressen in ein 
+  Helios-kompatibles Format um.
+</p>
+
+{% if error %}
+<div style="color: red; margin-bottom: 20px; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
+  <strong>Fehler:</strong> {{error}}
+</div>
+{% endif %}
+
+<div style="background-color: #f0f8ff; padding: 15px; margin-bottom: 20px; border: 1px solid #b0d4f1; border-radius: 5px;">
+  <h3>Anleitung:</h3>
+  <ol>
+    <li>Bereiten Sie eine Textdatei (.txt) mit E-Mail-Adressen vor</li>
+    <li>Die E-Mail-Adressen müssen das Format <code>vorname.nachname@students.hfmdk-frankfurt.de</code> haben</li>
+    <li>Trennen Sie mehrere E-Mail-Adressen durch Kommas</li>
+    <li>Laden Sie die Datei hoch und die konvertierte Datei wird automatisch heruntergeladen</li>
+  </ol>
+  
+  <h4>Beispiel für Eingabedatei:</h4>
+  <pre style="background-color: white; padding: 10px; border: 1px solid #ccc;">max.mustermann@students.hfmdk-frankfurt.de, anna.schmidt@students.hfmdk-frankfurt.de</pre>
+  
+  <h4>Resultat (wird als CSV-Datei heruntergeladen):</h4>
+  <pre style="background-color: white; padding: 10px; border: 1px solid #ccc;">password,Max,max.mustermann@students.hfmdk-frankfurt.de,Max Mustermann
+password,Anna,anna.schmidt@students.hfmdk-frankfurt.de,Anna Schmidt</pre>
+</div>
+
+<form method="post" enctype="multipart/form-data" style="margin-top: 20px;">
+  <p>
+    <label for="email_file"><strong>E-Mail-Datei auswählen:</strong></label><br />
+    <input type="file" name="email_file" id="email_file" accept=".txt" required 
+           style="margin-top: 5px; margin-bottom: 10px;" />
+  </p>
+  
+  <p>
+    <input type="submit" value="Datei hochladen und konvertieren" class="button" 
+           style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer;" />
+  </p>
+</form>
+
+<p style="margin-top: 30px;">
+  <a href="{% url 'stats@home' %}" class="tiny button">← Zurück zur Admin-Startseite</a>
+</p>
+
+{% endblock %}
