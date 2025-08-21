@@ -8,6 +8,7 @@
 <li> <a href="{% url "stats@elections" %}">elections</a></li>
 <li> <a href="{% url "stats@recent-votes" %}">recent votes</a></li>
 <li> <a href="{% url "stats@elections-problems" %}">recent problem elections</a></li>
+<li> <a href="{% url "email-import-home" %}">E-Mail-Import-Tool für Helios</a></li>
 </ul>
 
 <p><b>{{num_votes_in_queue}}</b> votes in queue. {% if num_votes_in_queue %}[<a href="{% url "stats@force-queue" %}">force it</a>]{% endif %}</p>
