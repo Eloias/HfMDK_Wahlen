@@ -1,31 +1,31 @@
 {% extends "helios/templates/cryptobase.html" %}
 
-{% block title %}Trustees for {{election.name}}{% endblock %}
+{% block title %}Trustees für {{election.name}}{% endblock %}
 
 {% block content %}
-  <h3 class="title">{{election.name}} &mdash; Trustees <span style="font-size:0.7em;">[<a href="{% url "election@view" election.uuid %}">back to election</a>]</span></h3>
+  <h3 class="title">{{election.name}} &mdash; Trustees <span style="font-size:0.7em;">[<a href="{% url "election@view" election.uuid %}">zurück zur Wahl</a>]</span></h3>
 
 <p>
-    Trustees are responsible for decrypting the election result.<br />
-    Each trustee generates a keypair and submits the public portion to Helios.<br />
-    When it's time to decrypt, each trustee needs to provide their secret key.
+    Trustees sind für die Entschlüsselung des Wahlergebnisses verantwortlich.<br />
+    Jeder Trustee erzeugt ein Schlüsselpaar und übermittelt den öffentlichen Teil an Helios.<br />
+    Wenn es Zeit zum Entschlüsseln ist, muss jeder Trustee seinen geheimen Schlüssel angeben.
 </p>
 
 {% if not election.frozen_at %}
 
 <p>
-  Helios is automatically your first trustee and will handle its keypair generation and decryption automatically.<br />
-  You may add additional trustees if you want, and you can even remove the Helios trustee.<br />
-  However, we recommend you do this only if you have a solid understanding of the trustee's role.
+  Helios ist automatisch Ihr erster Trustee und wird die Generierung seines Schlüsselpaares und die Entschlüsselung automatisch handhaben.<br />
+  Sie können bei Bedarf zusätzliche Trustees hinzufügen und sogar den Helios Trustee entfernen.<br />
+  Wir empfehlen Ihnen jedoch, dies nur zu tun, wenn Sie die Rolle des Trustees genau verstehen.
 </p>
 
 {% if admin_p %}
 <p>
-    [ <a onclick="return(confirm('Adding your own trustee requires a good bit more work to tally the election.\nYou will need to have trustees generate keypairs and safeguard their secret key.\n\nIf you are not sure what that means, we strongly recommend\nclicking Cancel and letting Helios tally the election for you.'));" href="{% url "election@trustees@new" election.uuid %}">add a trustee</a> ]
+    [ <a onclick="return(confirm('Das Hinzufügen eines eigenen Trustees erfordert etwas mehr Arbeit, um die Wahl auszuzählen.\nSie müssen die Trustees Schlüsselpaare erzeugen lassen und deren geheimen Schlüssel sichern.\n\nWenn Sie nicht sicher sind, was das bedeutet, empfehlen wir dringend,\nauf Abbrechen zu klicken und Helios die Wahl für Sie auszählen zu lassen.'));" href="{% url "election@trustees@new" election.uuid %}">einen Trustee hinzufügen</a> ]
 </p>
 {% if not election.has_helios_trustee %}
 <p>
-    <a href="{% url "election@trustees@add-helios" election.uuid %}">add Helios as a trustee</a>
+    <a href="{% url "election@trustees@add-helios" election.uuid %}">Helios als Trustee hinzufügen</a>
 </p>
 {% endif %}
 {% endif %}
@@ -36,31 +36,32 @@
 
 {% else %}
 {% for t in trustees %}
-<h5> Trustee #{{forloop.counter}}: {{t.name}} 
+<h5> Trustee Nr. {{forloop.counter}}: {{t.name}} 
 {% if admin_p %}
 {% if t.secret_key %}
-{% if not election.frozen_at %}[<a onclick="return confirm('Are you sure you want to remove Helios as a trustee?');" href="{% url "election@trustees@delete" election.uuid %}?uuid={{t.uuid}}">x</a>]{% endif %}
+{% if not election.frozen_at %}[<a onclick="return confirm('Sind Sie sicher, dass Sie Helios als Trustee entfernen möchten?');" href="{% url "election@trustees@delete" election.uuid %}?uuid={{t.uuid}}">x</a>]{% endif %}
 {% else %}
 ({{t.email}})
-{% if not election.frozen_at %}[<a onclick="return confirm('Are you sure you want to remove this Trustee?');" href="{% url "election@trustees@delete" election.uuid %}?uuid={{t.uuid}}">x</a>]{% endif %}
-[<a onclick="return confirm('Are you sure you want to send this trustee his/her admin URL?');" href="{% url "election@trustee@send-url" election.uuid t.uuid %}">send login</a>]
+{% if not election.frozen_at %}[<a onclick="return confirm('Sind Sie sicher, dass Sie diesen Trustee entfernen möchten?');" href="{% url "election@trustees@delete" election.uuid %}?uuid={{t.uuid}}">x</a>]{% endif %}
+[<a onclick="return confirm('Sind Sie sicher, dass Sie diesem Trustee seinen/ihren Admin-Link senden möchten?');" href="{% url "election@trustee@send-url" election.uuid t.uuid %}">Anmelde-Link senden</a>]
 {% endif %}
 {% endif %}
 </h5>
 
 <p>
 {% if t.public_key_hash %}
-  Public Key Fingerprint: <tt style="font-size:1.5em;">{{t.public_key_hash}}</tt>
+    Hash des öffentlichen Schlüssels: 
+    <tt style="font-size:1.5em; overflow-x:auto; display:inline-block; max-width:100%;">{{t.public_key_hash}}</tt>
 {% else %}
-No public key uploaded yet.
+Es wurde noch kein öffentlicher Schlüssel hochgeladen.
 {% endif %}
 </p>
 
 {% if election.encrypted_tally %}
 {% if t.decryption_factors %}
-<b>tally recorded for this trustee.</b>
+<b>Auszählung für diesen Trustee aufgezeichnet.</b>
 {% else %}
-<em>waiting for this trustee's tally</em>
+<em>wartet auf die Auszählung dieses Trustees</em>
 {% endif %}
 {% endif %}
 </li>
