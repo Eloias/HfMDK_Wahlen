@@ -90,7 +90,7 @@ Um deinen Stimmzettel abzugeben musst du deine Wahlberechtigung verifizieren. Da
 </details>
 
 ---
-### [Admin Docs](Admin-Docs.md) | [Admin Anleitung](Admin-Wahl-Anleitung.md) | [Entwickler Docs](Entwickler-Docs.md) 
+### [Admin Docs](Admin-Docs.md) | [Admin Anleitung](Admin-Wahl-Anleitung.md) | [Entwickler Docs](Entwickler-docs.md) 
 
 ---
 
