@@ -31,16 +31,30 @@
     <br />
     {% endif %}
 
-    {% if admin_p %}
-  <p>
-    <a class="button" href="https://hfmdk-wahlen.de/helios/email-import/">Hfmdk Email-Liste</a>
-  </p>
-  {% endif %}
   
+  
+  <a class="button" href="https://hfmdk-wahlen.de/helios/email-import/">Hfmdk Email-Liste</a>
+ 
+  
+
     <input class="button" type="submit" value="aktualisieren" />
   </form>
   {% endif %}
   {% endif %}
+
+  {% if admin_p %}
+  <p>
+    <a class="button" href="https://hfmdk-wahlen.de/helios/email-import/">HfMDK Studi Email-Liste hochladen</a>
+  </p>
+  {% endif %}
+
+  {% if admin_p %}
+  <p>
+    <a class="button" href="{% url "election@voters@download-csv" election.uuid %}{% if q %}?q={{q|urlencode}}{% endif %}">Wähler als CSV herunterladen</a>
+  </p>
+  {% endif %}
+
+  <hr>
 
   {% if email_voters and election.frozen_at and admin_p %}
   <p><a class="button" href="{% url "election@voters@email" election.uuid %}">E-Mail an Wähler*innen</a></p>
@@ -56,11 +70,7 @@
   </p>
   {% endif %}
 
-  {% if admin_p %}
-  <p>
-    <a class="button" href="{% url "election@voters@download-csv" election.uuid %}{% if q %}?q={{q|urlencode}}{% endif %}">Wähler als CSV herunterladen</a>
-  </p>
-  {% endif %}
+
 
   {% if admin_p %}
   {% if upload_p and not election.openreg %}
