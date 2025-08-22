@@ -12,13 +12,14 @@ from django.urls import reverse
 from django.conf import settings
 from helios.view_utils import render_template
 from helios.stats_views import require_admin
+from django.shortcuts import render
 
 
 def email_import_home(request):
     """
     Main page for the email import tool.
     """
-    user = require_admin(request)
+    # user = require_admin(request)
     
     if request.method == "GET":
         return render_template(request, 'email_import/home', {
