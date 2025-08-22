@@ -1,1 +1,1 @@
-Tally Released - {{custom_subject|safe}}
+Wahlergebnis - {{custom_subject|safe}}
