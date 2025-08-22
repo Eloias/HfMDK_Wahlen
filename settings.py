@@ -1,4 +1,3 @@
-
 # a massive hack to see if we're testing, in which case we use different settings
 import sys
 
@@ -190,12 +189,13 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'django.contrib.staticfiles', # <--- DIESE ZEILE HINZUFÜGEN
+    'django.contrib.staticfiles',
     'anymail',
     ## HELIOS stuff
     'helios_auth',
     'helios',
     'server_ui',
+    'email_import',
 )
 
 ANYMAIL = {

@@ -1,8 +1,8 @@
-{% extends TEMPLATE_BASE %}
-{% block title %}E-Mail-Import-Tool für Helios{% endblock %}
+{% extends "server_ui/templates/base.html" %}
+{% block title %}E-Mail-Import-Tool für die Hfmdk{% endblock %}
 
 {% block content %}
-<h1>E-Mail-Import-Tool für Helios</h1>
+<h1>E-Mail-Import-Tool für die Hfmdk</h1>
 
 <p>
   Dieses Tool wandelt eine Textdatei mit studentischen E-Mail-Adressen in ein 
@@ -32,13 +32,13 @@
 password,Anna,anna.schmidt@students.hfmdk-frankfurt.de,Anna Schmidt</pre>
 </div>
 
+
 <form method="post" enctype="multipart/form-data" style="margin-top: 20px;">
   <p>
     <label for="email_file"><strong>E-Mail-Datei auswählen:</strong></label><br />
     <input type="file" name="email_file" id="email_file" accept=".txt" required 
            style="margin-top: 5px; margin-bottom: 10px;" />
   </p>
-  
   <p>
     <input type="submit" value="Datei hochladen und konvertieren" class="button" 
            style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer;" />
@@ -48,5 +48,4 @@ password,Anna,anna.schmidt@students.hfmdk-frankfurt.de,Anna Schmidt</pre>
 <p style="margin-top: 30px;">
   <a href="{% url 'stats@home' %}" class="tiny button">← Zurück zur Admin-Startseite</a>
 </p>
-
 {% endblock %}

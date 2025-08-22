@@ -1365,7 +1365,7 @@ def voters_upload(request, election):
   #  raise PermissionDenied()
 
   if request.method == "GET":
-    return render_template(request, 'voters_upload', {'election': election, 'error': request.GET.get('e',None)})
+    return render_template(request, 'voters_upload', {'election': election, 'error': request.GET.get('e', None)})
     
   if request.method == "POST":
     if bool(request.POST.get('confirm_p', 0)):
@@ -1779,6 +1779,12 @@ def optin_confirm(request, email, code):
         'message': f'The email address {email} has been successfully opted back in to Helios emails.',
         'email': email
     })
+
+def email_import_home(request):
+    if request.method == "GET":
+        return render_template(request, 'email_import/home.html', {
+            'error': request.GET.get('e', None)
+        })
 
 
 
