@@ -9,7 +9,12 @@
 {% endif %}
 {% endif %}</h3>
 <p style="padding-top:0px; margin-top:0px">
-<em>{% if election.private_p %}privat{%else%}öffentlich{% endif %}</em> {{ election.election_type }}{% if settings.SHOW_USER_INFO %} erstellt von <u><b>{{election.admin.display_html_small|safe}}</b></u>{% endif %}
+<em>{% if election.private_p %}privat{%else%}öffentliche{% endif %}</em> 
+{% if election.election_type == "election" %}
+  Wahl
+{% else %}
+  {{ election.election_type }}
+{% endif %}{% if settings.SHOW_USER_INFO %} erstellt von <u><b>{{election.admin.display_html_small|safe}}</b></u>{% endif %}
 {% if election.is_archived %}
 [archiviert]
 {% endif %}
@@ -45,27 +50,30 @@ diese {{election.election_type}} wird <u>nicht</u> auf der Startseite hervorgeho
 {{election.description_bleached|safe}}
 </div>
 
-<hr>
 
-<p>
-{% if election.help_email and admin_p%}E-Mail-Adresse für Hilfe: {{election.help_email}}<br />{% endif %}
-{% if election.voting_start_at %}Wahl beginnt am {{election.voting_start_at}}<br />{% endif %}
-{% if election.voting_end_at %}Wahl endet am {{election.voting_end_at}}<br />{% endif %}
-</p>
 
-{% if election.election_info_url %}
-<p style="font-size:1.5em;">[<a target="_blank" href="{{election.election_info_url}}" rel="noopener noreferrer">Kandidaten-Biografien &amp; Statements herunterladen</a>]</p>
-{% endif %}
+  <div>
+    <a href="#" onclick="$('#info_dropdown').slideToggle(250); return false;" style="padding-bottom: 10px; color: black;"><u> (Zeitraum + Support)</u> ↓</a>
+    <div id="info_dropdown" style="display:none; margin-top: 10px;">
+      <p>
+        {% if election.help_email and admin_p %}E-Mail-Adresse für Hilfe: {{election.help_email}}<br />{% endif %}
+        {% if election.voting_start_at %}Wahl beginnt am {{election.voting_start_at}}<br />{% endif %}
+        {% if election.voting_end_at %}Wahl endet am {{election.voting_end_at}}<br />{% endif %}
+      </p>
+    </div>
+  </div>
 
-<p align="center" style="font-size: 1.5em;">
-<a href="{% url "election@questions" election.uuid %}">Abstimmungsgegenstand ({% if election.questions %}{{election.questions|length}}{% else %}0{% endif %})</a>
-&nbsp;&nbsp;|&nbsp;&nbsp;
-<a href="{% url "election@voters@list-pretty" election.uuid %}">Wähler*innen &amp; Stimmzettel</a>
-&nbsp;&nbsp;|&nbsp;&nbsp;
-<a href="{% url "election@trustees@view" election.uuid %}">Trustees ({{trustees|length}})</a>
-</p>
+  {% if election.election_info_url %}
+  <p style="font-size:1.5em;">[<a target="_blank" href="{{election.election_info_url}}" rel="noopener noreferrer">Kandidaten-Biografien &amp; Statements herunterladen</a>]</p>
+  {% endif %}
 
-<hr>
+  <p align="center" style="font-size: 1.5em;">
+  <a href="{% url "election@questions" election.uuid %}">Abstimmungsgegenstand ({% if election.questions %}{{election.questions|length}}{% else %}0{% endif %})</a>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="{% url "election@voters@list-pretty" election.uuid %}">Wähler*innen &amp; Stimmzettel</a>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="{% url "election@trustees@view" election.uuid %}">Trustees ({{trustees|length}})</a>
+  </p>
 
 {% if admin_p %}
 {% if election.frozen_p %}
@@ -213,6 +221,7 @@ Diese Wahl ist <em>privat</em>. Du bist als wahlberechtigter Wähler <em>{{voter
   Die Abstimmung ist noch nicht offen
 </span> <br /><br />
 {% endif %}
+
 
 {% if user %}
 {% if voter %}
