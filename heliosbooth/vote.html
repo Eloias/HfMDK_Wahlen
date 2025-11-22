@@ -31,8 +31,9 @@
 <body>
 <div id="wrapper">
 <div id="banner" class="edge">
-  <div style="text-align:center; width: 100%;">Digitale Wahlkabine
-      <div style="float: right; margin-right: 10px; font-size: 0.8em;"><span><a href="javascript:BOOTH.exit();">exit</a></span></div>
+  <div class="banner-content">
+      <span class="banner-title">Digitale Wahlkabine</span>
+      <a class="banner-exit" href="javascript:BOOTH.exit();">Verlassen</a>
   </div>
 </div>
 <div id="content">
@@ -630,14 +631,14 @@ BOOTH.do_done = function() {
   </div>
 
   <div id="processing_div" class="panel" style="display:none;">
-      <h3 align="center">Verarbeiten....</h3>
+      <h3 class="text-center">Verarbeiten....</h3>
   </div>
 
   <div id="encrypting_div" class="panel" style="display:none;">
-      <h3 align="center">Dieser Stimmzettel wird nun verschlüsselt.<br />
+      <h3 class="text-center">Dieser Stimmzettel wird nun verschlüsselt.<br />
           <img src="encrypting.gif" /> <span style="font-size:0.7em; display:none;" id="percent_done_container">(<span id="percent_done">0</span>%)</span></h3>
 
-      <p align="center"><b>Das dauert nicht lange :)</b>
+      <p class="text-center"><b>Das dauert nicht lange :)</b>
   </div>
 
   <div id="seal_div" class="panel">
