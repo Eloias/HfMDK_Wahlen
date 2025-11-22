@@ -302,23 +302,15 @@ GH_CLIENT_SECRET = get_from_env('GH_CLIENT_SECRET', '')
 GITLAB_CLIENT_ID = get_from_env('GITLAB_CLIENT_ID', "")
 GITLAB_CLIENT_SECRET = get_from_env('GITLAB_CLIENT_SECRET', "")
 
-# email server
-#EMAIL_HOST = get_from_env('EMAIL_HOST', 'mail.gmx.net')
-#EMAIL_PORT = int(get_from_env('EMAIL_PORT', "587"))
-#EMAIL_HOST_USER = get_from_env('EMAIL_HOST_USER', 'Onlinewahlen-HfMDK@gmx.net')
-
-#EMAIL_USE_TLS = (get_from_env('EMAIL_USE_TLS', '1') == '1')
 
 
 # ----- FINALER EMAIL-TEST-BLOCK -----
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = get_from_env('EMAIL_HOST', 'mail.gmx.net')
+EMAIL_HOST = get_from_env('EMAIL_HOST', 'hfmdk-wahlen.de')
 EMAIL_PORT = int(get_from_env('EMAIL_PORT', "587"))
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-EMAIL_HOST_USER = get_from_env('EMAIL_HOST_USER', 'Onlinewahlen-HfMDK@gmx.net')
+EMAIL_USE_TLS = False
+EMAIL_HOST_USER = get_from_env('EMAIL_HOST_USER', 'wahlsache@hfmdk-wahlen.de')
 EMAIL_HOST_PASSWORD = get_from_env('EMAIL_HOST_PASSWORD', '')
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # ----- FINALER EMAIL-TEST-BLOCK ENDE -----
 
 # to use AWS Simple Email Service

@@ -10,3 +10,4 @@ Significant contributors:
 - Shirley Chaves
 - Marco Ciotola
 - Lucas Araujo
+- für AStA HfMDK -> Elias Ohly
