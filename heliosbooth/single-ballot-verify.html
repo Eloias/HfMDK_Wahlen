@@ -132,13 +132,13 @@ Zurzeit ist das Java-Plugin für die überprüfende Prüfung von Stimmzetteln im
 
 <form onsubmit="try {verify_single_ballot(this.election_url.value, this.audit_trail.value);} catch (e) {E = e;} return false;">
 Bitte die URL der Wahl eingeben:
-    <input type="text" size="50" name="election_url" id="election_url" /><br />
+    <input type="text" size="50" name="election_url" id="election_url" style="width: 100%; box-sizing: border-box;"/><br />
 
 <p>
 Dein Stimmzettel:
 </p>
 
-<textarea name="audit_trail" cols="80" rows="7">
+<textarea name="audit_trail" cols="80" style="width: 100%; box-sizing: border-box;" rows="7" >
 </textarea><br /><br />
 <input type="submit" class="pretty" value="Verify" />
 </form>

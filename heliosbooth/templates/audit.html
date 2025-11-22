@@ -15,9 +15,11 @@ Wenn du Wählen möchtest, klicke auf den "zurück zur Wahl"-Button, um einen ne
 </p>
 
 <form action="#">
-<textarea name="audit_trail" id="audit_trail" cols="80" rows="10" wrap="soft">
+<textarea name="audit_trail" id="audit_trail" style="width: 100%; box-sizing: border-box;" rows="10" wrap="soft">{$T.audit_trail}
 {$T.audit_trail}
 </textarea>
+<br />
+<button onclick="document.getElementById('audit_trail').select(); document.execCommand('copy'); return false;" class="pretty small-button">Stimmzettel-Hash kopieren</button>
 <br /><br />
 Bevor du zur Wahl zurückkehrst,<br />
 kannst du diesen geprüften Stimmzettel an das öffentliche Tracking-Center senden, damit andere die Verifizierung dieses Stimmzettels überprüfen können.

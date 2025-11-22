@@ -236,7 +236,7 @@ h3 {
     line-height: 1.6;
     margin-bottom: 20px;
     padding-left: 20px;
-    font-size: 1.1rem;
+    font-size: 1.rem;
 }
 
 .election-steps li {
@@ -250,7 +250,6 @@ h3 {
 }
 
 .help-text {
-    margin-top: 30px;
     font-size: 0.9rem;
     color: #666;
     text-align: center;
@@ -261,8 +260,8 @@ h3 {
 .review-box {
     padding: 15px;
     margin-bottom: 15px;
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
+    background-color: #fffde7;
+    border: 1px solid #fff9c4;
     border-radius: 4px;
 }
 
