@@ -1,6 +1,7 @@
 body {
-  font-family: sans-serif;
-  background: white;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  background: #f4f4f4; /* Light grey background */
+  color: #333;
   padding: 0;
   margin: 0;
 }
@@ -8,14 +9,18 @@ body {
 #wrapper {
   padding: 0;
   background: #ffffff;
-  border: 1px solid #666;
+  border: 2px solid #d5d5d5;
+  border-radius: 12px; /* Larger rounded corners */
+  box-shadow: none;
   margin: 20px auto;
-  max-width: 1000px;
+  max-width: 900px;
+  overflow: hidden;
 }
 
 @media screen and (max-width: 1000px) {
   #wrapper {
-    margin: 0;
+    margin: 10px;
+    width: auto;
   }
 }
 
@@ -24,83 +29,284 @@ body {
 }
 
 #header {
-  padding-top: 0;
+  padding-top: 10px;
   text-align: center;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
 }
 
 #header h1 {
-  font-size: 28pt;
-  padding: 0;
-  margin: 0;
-  line-height: 120%;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.2em 0;
+  line-height: 1.2;
 }
 
 #header h2 {
-  font-size: 20pt;
-  padding: 0;
+  font-size: 1.5rem;
+  color: #666;
   margin: 0;
-  line-height: 100%;
+  line-height: 1.2;
 }
 
 .edge {
   width: 100%;
   display: flex;
-  padding: 5px 0;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
   text-align: center;
-  background: #ccc;
-  font-size: 18pt;
+  background: #333;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.edge_footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  text-align: center;
+  background: #d5d5d5;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.edge a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.edge a:hover {
+  color: #ccc;
 }
 
 #progress_div {
-  margin: auto;
-  max-width: 500px;
-  font-size: 14pt;
+  margin: 20px auto;
+  max-width: 700px;
+  font-size: 1rem;
 }
 
 #progress_div table {
   width: 100%;
-  border-collapse: collapse;
-  text-align: center;
-  border: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+  border-radius: 12px; /* Larger rounded corners */
+  overflow: hidden;
+}
+
+#progress_div td {
+  padding: 10px;
+  transition: all 0.3s ease;
+  border-right: 1px solid #ddd;
+  background: #f9f9f9;
+  color: #999;
+}
+
+#progress_div td:last-child {
+  border-right: none;
 }
 
 #progress_div td.unselected {
-  background: #ccc;
-  color: #888;
-  border: 1px solid #333;
+  background: #f9f9f9;
+  color: #999;
 }
 
 #progress_div td.selected {
-  background: #fc9;
-  color: black;
-  font-weight: bold;
-  border: 1px solid black;
+  background: #333;
+  color: white;
+  font-weight: 600;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.tracker-hash {
+    font-size: 0.9rem;
+    word-break: break-all;
+    background: transparent;
+    padding: 5px 0;
+    display: inline-block;
+    margin-top: 5px;
+    color: #777;
+    font-family: monospace;
+}
+
+div.selected {
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px;
+  transition: background 0.2s;
+}
+
+.audit-box {
+    background: #fffde7; /* Subtle yellow/beige */
+    padding: 15px;
+    border: 1px solid #fff9c4;
+    border-radius: 4px;
+    max-width: 400px;
+    margin-top: 20px;
+}
+
+@media screen and (max-width: 600px) {
+  button {
+      font-size: 1.2rem; /* Larger buttons on mobile */
+      padding: 12px 30px;
+      width: 100%; /* Full width buttons on mobile */
+      margin: 10px 0;
+  }
+  
+  .nav-buttons, .nav-buttons-left {
+      float: none;
+      width: 100%;
+  }
 }
 
 #footer {
-  font-size: 12pt;
+  font-size: 0.9rem;
+  background: #d5d5d5;
+  color: #212121;
+  padding: 10px;
   word-break: break-all;
 }
 
 #page h2 {
-  background: #fc9;
-  border-bottom: 1px solid #f90;
-  padding: 5px 0 2px 5px;
+  background: transparent;
+  border-bottom: 2px solid #333;
+  color: #333;
+  padding: 5px 0;
+  margin-bottom: 15px;
+  font-size: 1.8rem;
 }
 
 h3 {
-	font-size: 1.6em;
+	font-size: 1.5rem;
+    color: #333;
+    margin-top: 1em;
 }
 
 #election_info {
-  font-size: 16pt;
+  font-size: 1.1rem;
+  color: #555;
 }
 
-#election_hash {
-  font-family: monospace;
+.banner-content {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    box-sizing: border-box;
+    flex-wrap: wrap;
 }
 
-#loading_div {
-  display: none;
+.banner-title {
+    font-weight: 600;
+    flex-grow: 1;
+    text-align: center;
+    margin-left: 0;
+    font-size: 1.4rem;
+}
+
+.banner-exit {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.8) !important;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.5);
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.banner-exit:hover {
+    color: white !important;
+    border-color: white;
+    background: rgba(255,255,255,0.2);
+}
+
+.election-steps {
+    line-height: 1.6;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    font-size: 1.1rem;
+}
+
+.election-steps li {
+    margin-bottom: 10px;
+}
+
+.start-button-container {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.help-text {
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.review-box {
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+.review-question {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.review-choice {
+    margin-left: 15px;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.review-meta {
+    margin-left: 15px;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.review-edit {
+    margin-left: 15px;
+    font-size: 0.9rem;
+}
+
+.review-separator {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 10px 0;
+}
+
+.audit-box {
+    background: #fffde7; /* Subtle yellow/beige */
+    padding: 15px;
+    border: 1px solid #fff9c4;
+    border-radius: 4px;
+    max-width: 400px;
+    margin-top: 20px;
+}
+
+.text-center {
+    text-align: center;
 }

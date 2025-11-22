@@ -2,16 +2,14 @@
 <p>
     So funktioniert die Online-Wahl:
 </p>
-<ol>
+<ol class="election-steps">
     <li><b>Wähle</b> deine bevorzugten Kanditat*innen aus.</li>
-    <br />
     <li><b>Überprüfe</b> deinen Stimmzettel, der anschließend verschlüsselt wird.</li>
-    <br />
     <li><b>Gib</b> deinen verschlüsselten Stimmzettel ab und authentifiziere dich, um deine Wahlberechtigung zu bestätigen.</li>
 </ol>
-<div align="center"><button onclick="BOOTH.show_question(0);">Start</button></div>
+<div class="start-button-container"><button onclick="BOOTH.show_question(0);">Start</button></div>
 </div>
 
-<p>
+<p class="help-text">
     Bei Fragen kannst du eine <a target="_new" href="mailto:{$T.election_metadata.help_email}?subject=Hilfe%20bei%20der%20Wahl%20{$T.election.name}&body=Ich%20ben%C3%B6tige%20Hilfe%20bei%20der%20Wahl%20{$T.election.uuid}">E-Mail senden</a>.
 </p>

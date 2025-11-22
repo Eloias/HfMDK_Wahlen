@@ -1,27 +1,34 @@
 <h3>Stimmzettel überprüfen</h3>
 
-<div style="padding: 10px; margin-bottom: 10px; background-color: #eee; border: 1px #ddd solid;">
+<div class="review-box">
 {#foreach $T.questions as question}
 
-Frage #{$T.question$index + 1}: {$T.question.short_name}<br>
+<div class="review-question">
+Frage #{$T.question$index + 1}: {$T.question.short_name}
+</div>
+
 {#if $T.choices[$T.question$index].length == 0}
-<div style="margin-left: 15px;">&#x2610; <b><i>Keine Auswahl getroffen (Enthaltung)</i></b></div>
+<div class="review-choice">&#x2610; <b><i>Keine Auswahl getroffen (Enthaltung)</i></b></div>
 {#/if}
 {#foreach $T.choices[$T.question$index] as choice}
-<div style="margin-left: 15px;">&#x2713; <b>{$T.choice}</b></div>
+<div class="review-choice">&#x2713; <b>{$T.choice}</b></div>
 {#/for}
 {#if $T.choices[$T.question$index].length < $T.question.max}
-[{$T.choices[$T.question$index].length} Auswahlen von möglichen {$T.question.min}-{$T.question.max}]<br />
+<div class="review-meta">
+[{$T.choices[$T.question$index].length} Auswahlen von möglichen {$T.question.min}-{$T.question.max}]
+</div>
 {#/if}
+<div class="review-edit">
 [<a onclick="BOOTH.show_question({$T.question$index}); return false;" href="#">ändern</a>]
-{#if !$T.question$last}<br><br>{#/if}
+</div>
+{#if !$T.question$last}<hr class="review-separator">{#/if}
 {#/for}
 </div>
 
-<p>Dein Stimmzettel-Tracker ist <b><tt style="font-size: 1.5em; word-break: break-all;">{$T.encrypted_vote_hash}</tt></b>.
+<p>Dein Stimmzettel-Hash ist <b><tt class="tracker-hash">{$T.encrypted_vote_hash}</tt></b>
 
 <p>  
-  <button id="proceed_button" onclick="BOOTH.cast_ballot();">Weiter zum Login</button><span id="loading_div"><img src="loading.gif" id="proceed_loading_img" /></span><br />
+  <button id="proceed_button" onclick="BOOTH.cast_ballot();">Weiter zum Login</button><span id="loading_div" class="hidden"><img src="loading.gif" id="proceed_loading_img" /></span><br />
 </p>
 
 
@@ -34,7 +41,7 @@ Frage #{$T.question$index + 1}: {$T.question.short_name}<br>
 </form>
 
 {#if $T.election_metadata.use_advanced_audit_features}
-<div style="background: lightyellow; padding: 10px; border: 1px solid #ddd; max-width: 340px;">
+<div class="audit-box">
 <h4 style="padding: 0px; margin:0px;"><a onclick="$('#auditbody').slideToggle(250);" href="#">Überprüfen & Auditieren</a> <span style="font-size: 0.8em; color: #444">[optional]</span></h4>
 <div id="auditbody" style="display:none;">
 <p>

@@ -24,7 +24,7 @@ so viele, wie du möchtest
 </p>
 
 {#foreach $T.question.answers as answer}
-<div id="answer_label_{$T.question_num}_{$T.answer_ordering[$T.answer$index]}">
+<div class="answer-row" id="answer_label_{$T.question_num}_{$T.answer_ordering[$T.answer$index]}">
 <input type="checkbox" class="ballot_answer" id="answer_{$T.question_num}_{$T.answer_ordering[$T.answer$index]}" name="answer_{$T.question_num}_{$T.answer_ordering[$T.answer$index]}" value="yes" onclick="BOOTH.click_checkbox({$T.question_num}, {$T.answer_ordering[$T.answer$index]}, this.checked);" />
 
 <label class="answer" for="answer_{$T.question_num}_{$T.answer_ordering[$T.answer$index]}">
@@ -32,7 +32,7 @@ so viele, wie du möchtest
 
 {#if $T.question.answer_urls && $T.question.answer_urls[$T.answer_ordering[$T.answer$index]] && $T.question.answer_urls[$T.answer_ordering[$T.answer$index]] != ""}
 &nbsp;&nbsp;
-<span style="font-size: 12pt;">
+<span class="info-link">
 [<a target="_blank" href="{$T.question.answer_urls[$T.answer_ordering[$T.answer$index]]}" rel="noopener noreferrer">mehr Info</a>]
 </span>
 {#/if}
@@ -40,25 +40,27 @@ so viele, wie du möchtest
 </div>
 {#/for}
 
-<div id="warning_box" style="color: green; text-align:center; font-size: 0.8em; padding-top:10px; padding-bottom: 10px; height:50px;">
+<div id="warning_box" class="warning-box">
 </div>
 
 
 {#if $T.show_reviewall}
-<div style="float: right;">
+<div class="nav-buttons">
 <button onclick="BOOTH.validate_and_confirm({$T.question_num});">Weiter</button>
 </div>
 {#/if}
 
-{#if $T.question_num != 0}
-<button onclick="BOOTH.previous({$T.question_num});">Zurück</button>
-&nbsp;
+{#if !$T.show_reviewall}
+<div class="nav-buttons">
+<button onclick="BOOTH.next({$T.question_num});">Weiter</button>
+</div>
 {#/if}
 
-{#if $T.question_num < $T.last_question_num}
-<button onclick="BOOTH.next({$T.question_num});">Weiter</button>
-&nbsp;
+<div class="nav-buttons-left">
+{#if $T.question_num != 0}
+<button onclick="BOOTH.previous({$T.question_num});">Zurück</button>
 {#/if}
+</div>
 
 <br clear="both" />
 
