@@ -1,10 +1,42 @@
 # Admin-Docs – HfMDK Online-Wahlen
 
-Diese Datei richtet sich an Administrator:innen der Wahlplattform. Sie liefert einen kompakten Überblick über Aufbau, Betrieb, Sicherheit und das kryptographische Verfahren (basierend auf dem Helios‑Prinzip).
+Diese Datei richtet sich an Administrator:innen der Wahlplattform. Sie liefert einen kompakten Überblick über Aufbau, Betrieb, Sicherheit und das kryptographische Verfahren (basierend auf Helios).
 
 ## Anleitung für die [Durchführung der Wahl](Admin-Wahl-Anleitung.md)
 
 ---
+
+## Eigene Befele (einfach genau so ins Terminal)
+### zum Testen, ob alles läuft:
+system-check
+
+[1] Prüfe System-Ressourcen...
+  ✔ Speicherplatz: OK (39% belegt)
+  ✘ Warnung: Wenig RAM frei (390MB)
+
+[2] Prüfe Helios Wahl-Applikation & Webserver...
+  ✔ Service 'nginx' läuft
+  ✔ Service 'helios-celery' läuft
+  ✔ Service 'gunicorn' läuft
+  ✔ Gunicorn Socket gefunden
+  ✔ Keine akuten Fehler im Celery Log (letzte 20 Zeilen)
+
+[3] Prüfe Mailcow (Docker)...
+  ✔ Docker Daemon läuft
+  ✔ Container 'postfix-mailcow' läuft
+  ✔ Container 'nginx-mailcow' läuft
+  ✔ Container 'mysql-mailcow' läuft
+  ✔ Container 'redis-mailcow' läuft
+[4] Prüfe Netzwerk & Zertifikate...
+  ✔ Website hfmdk-wahlen.de erreichbar (Code 200)
+  ✔ Mailcow Admin erreichbar (Port 7443)
+  ✔ SSL Zertifikat vorhanden
+    Gültig bis: Dec 23 16:49:38 2025 GMT
+  ✔ Interner SMTP Port (25) ist offen
+
+### Die Zustellbarkeit von Emails wird live überwacht:
+
+helios-live
 
 ## 1. Gesamtarchitektur (Überblick)
 
