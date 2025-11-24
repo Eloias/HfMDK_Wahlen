@@ -1,106 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Stimme - Digitale Wahlkabine</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'booth.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'forms.css' %}" />
+  <script language="javascript" src="{% static 'helios/js/jquery-1.4.2.min.js' %}"></script>
+</head>
+<body>
+<div id="wrapper">
+  <div id="banner" class="edge">
+    <div class="banner-content">
+        <span class="banner-title">Digitale Wahlkabine</span>
+        <a class="banner-exit" href="{% url "election@view" election.uuid %}">Verlassen</a>
+    </div>
+  </div>
+  <div id="content">
+    <div id="header">
+      <h1 id="election_name">{{ election.name }}</h1>
+    </div>
 
-{% extends TEMPLATE_BASE %}
-{% block title %}Stimme bestätigen{% endblock %}
+    <script language="javascript">
+    $(document).ready(function() {
+      $('#waiting_div').hide();
+    });
 
-{% block content %}
-<script language="javascript">
-$(document).ready(function() {
-  $('#waiting_div').hide();
-});
+    function show_waiting() {
+      $('#all_forms').hide();
+      $('#waiting_div').show();
+    }
 
-function show_waiting() {
-  $('#all_forms').hide();
-  $('#waiting_div').show();
-}
+    // FIXME: set this to false once it's clear how to set it back to true
+    // so that it's not easy to forget to cast a ballot
+    var ready_to_unload = true;
 
-// FIXME: set this to false once it's clear how to set it back to true
-// so that it's not easy to forget to cast a ballot
-var ready_to_unload = true;
+    window.onbeforeunload = function(evt) {
+      if (ready_to_unload)
+        return;
 
-window.onbeforeunload = function(evt) {
-  if (ready_to_unload)
-    return;
+      if (typeof evt == 'undefined') {
+        evt = window.event;
+      }
+      
+      var message = "Du hast deinen Stimmzettel noch nicht abgegeben! Schließe den Wahlvorgang ab, wenn deine Stimme gezählt werden soll.";
 
-  if (typeof evt == 'undefined') {
-    evt = window.event;
-  }
-  
-  var message = "Du hast deinen Stimmzettel noch nicht abgegeben! Schließe den Wahlvorgang ab, wenn deine Stimme gezählt werden soll.";
+      if (evt) {
+        evt.returnValue = message;
+      }
+      
+      return message;
+    };
+    </script>
 
-  if (evt) {
-    evt.returnValue = message;
-  }
-  
-  return message;
-};
+    <div id="page">
+      <div id="progress_div">
+          <table>
+              <tr>
+                  <td id="progress_1" class="unselected">(1) Wählen</td>
+                  <td id="progress_2" class="unselected">(2) Überprüfung</td>
+                  <td id="progress_3" class="selected">(3) Abschicken</td>
+              </tr>
+          </table>
+      </div>
 
-</script>
-<h1>Einloggen! Um deine Stimme abzugeben.</h1>
+      <div class="panel">
+        <h2 class="title">Einloggen! Um deine Stimme abzugeben.</h2>
 
-<div id="waiting_div">
-  Dein Stimmzettel wird verifiziert und abgegeben<br />
-  <img src="/static/helios/loading.gif" />
+        <div id="waiting_div">
+       
+        </div>
+
+        
+
+        <div id="all_forms">
+
+        {% if voter %}
+
+        {% include "_castconfirm_docast.html" %}
+
+        {% else %}
+
+        {% if show_password %}
+        {% with cast_ballot="1" %}
+        {% include "_castconfirm_password.html" %}
+        {% endwith %}
+
+        {% else %}
+
+        {% if user %}
+        <h1>Entschuldigung!<h1>
+        <b>Entschuldigung, du bist <em>
+          {% if election.openreg %}
+            <u>nicht wahlberechtigt</u></em> für diese Wahl.
+          {% else %}
+            nicht registriert</em> für diese Wahl, und die Registrierung ist geschlossen.
+          {% endif %}
+          </b><br /></p>
+        <p>
+          [<a href="{% url "election@view" election.uuid %}">zurück zur Hauptseite der Wahl</a>]
+        </p>
+        {% else %}
+        <p>
+        {% if election.openreg %}
+
+          {% if election.eligibility %}
+          {% else %}
+            Diese Wahl steht <em>jedem*r</em> offen, melde dich einfach mit deinem bevorzugten Konto an.
+          {% endif %}
+
+        {% else %}
+          Diese Wahl steht nur <em>registrierten Wähler*innen</em> offen. Logge dich mit
+          demselben Konto ein, mit dem du dich registriert hast.
+        {% endif %}
+        </p>
+
+        {{login_box|safe}}
+
+        <br />
+        Keine Sorge, wir speichern deinen Stimmzettel, während du dich anmeldest.
+        {% endif %}
+
+        {% endif %}
+        </p>
+        {# this closes the IF ELSE of this being password_only #}
+        {% endif %}
+
+        </div>
+
+        <div style="margin-bottom: 20px;">
+        Dein Stimmzettel-Hash lautet:<br>
+        <tt class="tracker-hash">{{vote_fingerprint}}</tt>
+        <br><br>
+        </div>
+        
+      </div>
+    </div>
+    <br clear="both" />
+  </div>
+  <div id="footer" class="edge_footer">
+    <div style="text-align:center; width: 100%; padding: 3px 30px 3px 5px;">
+      <span>
+          Wahl-Hash: <span id="election_hash" style="font-weight:bold;">{{ election.hash }}</span>
+      </span>
+    </div>
+  </div>
 </div>
-
-<div style="word-wrap: break-word; width: 90vw;">
-Dein Stimmzettel-Hash lautet:<br>
-<b>{{vote_fingerprint}}</b>
-<br><br>
-</div>
-
-<div id="all_forms">
-
-{% if voter %}
-
-{% include "_castconfirm_docast.html" %}
-
-{% else %}
-
-{% if show_password %}
-{% with cast_ballot="1" %}
-{% include "_castconfirm_password.html" %}
-{% endwith %}
-
-{% else %}
-
-{% if user %}
-<h1>Entschuldigung!<h1>
-<b>Entschuldigung, du bist <em>
-  {% if election.openreg %}
-    <u>nicht wahlberechtigt</u></em> für diese Wahl.
-  {% else %}
-    nicht registriert</em> für diese Wahl, und die Registrierung ist geschlossen.
-  {% endif %}
-  </b><br /></p>
-<p>
-  [<a href="{% url "election@view" election.uuid %}">zurück zur Hauptseite der Wahl</a>]
-</p>
-{% else %}
-<p>
-{% if election.openreg %}
-
-  {% if election.eligibility %}
-  {% else %}
-    Diese Wahl steht <em>jedem*r</em> offen, melde dich einfach mit deinem bevorzugten Konto an.
-  {% endif %}
-
-{% else %}
-  Diese Wahl steht nur <em>registrierten Wähler*innen</em> offen. Logge dich mit
-  demselben Konto ein, mit dem du dich registriert hast.
-{% endif %}
-</p>
-
-{{login_box|safe}}
-
-<br />
-Keine Sorge, wir speichern deinen Stimmzettel, während du dich anmeldest.
-{% endif %}
-
-{% endif %}
-</p>
-{# this closes the IF ELSE of this being password_only #}
-{% endif %}
-
-</div>
-
-{% endblock %}
+</body>
+</html>

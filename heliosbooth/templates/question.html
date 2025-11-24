@@ -5,8 +5,11 @@
 <br />
 <b>{$T.question.question}</b>
 <br />
-<span style="font-size: 0.6em;">#{$T.question_num + 1} von {$T.last_question_num + 1} &mdash;
-stimme für
+<span style="font-size: 0.8em;">
+{#if $T.last_question_num > 0}
+#{$T.question_num + 1} von {$T.last_question_num + 1} &mdash;
+{#/if}
+ Stimme für
 {#if $T.question.min && $T.question.min > 0} Kanditat*innen
 {#if $T.question.max}
 {$T.question.min} bis {$T.question.max} Kanditat*innen

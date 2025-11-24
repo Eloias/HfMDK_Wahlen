@@ -1,9 +1,9 @@
 form.prettyform {
-  font-size: 1.4em;
+  font-size: 1.1rem;
 }
 
 form.prettyform label,input,textarea,select {
-    line-height: 1.8;
+    line-height: 1.6;
 }
 
 form.prettyform label:not(.answer) {
@@ -11,7 +11,9 @@ form.prettyform label:not(.answer) {
     text-align: right;
     float: left;
     width: 200px;
-    padding-right: 10px;
+    padding-right: 15px;
+    color: #555;
+    font-weight: 600;
 }
 
 form.prettyform br {
@@ -19,51 +21,153 @@ form.prettyform br {
 }
 
 form.prettyform input, form.prettyform textarea {
-    border: 1px solid black;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     margin: 5px;
-    font-size: 16pt;
+    padding: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+form.prettyform input:focus, form.prettyform textarea:focus {
+    border-color: #333;
+    outline: none;
 }
 
 button {
-    background: lightblue;
-    margin: 5px;
-    padding: 5px 20px 5px 20px;
-    font-size: 18pt;
-    border-radius:10px
+    background: #333;
+    color: white;
+    border: none;
+    margin: 10px 5px;
+    padding: 10px 25px;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: none;
+}
+
+button:hover {
+    background: #555;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: none;
 }
 
 input.pretty {
-    font-size: 16pt;
-    border: 1px solid black;
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px;
 }
 
 input.prettysmall {
-    font-size: 12pt;
-    border: 1px solid black;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px;
 }
 
 table.pretty {
-    margin: 1em 1em 1em 2em;
-    background: whitesmoke;
+    margin: 1em 0;
+    background: #f9f9f9;
     border-collapse: collapse;
-    width: 80%;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: none;
+    border: 1px solid #ddd;
 }
 
-table.pretty th, td {
-    border: 1px silver solid;
-    padding: 0.3em;
+table.pretty th {
+    background: #f4f4f4;
+    color: #333;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 2px solid #ddd;
+    font-size: 1rem;
+}
+
+table.pretty td {
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    color: #555;
+    font-size: 1rem;
+}
+
+table.pretty tr:last-child td {
+    border-bottom: none;
 }
 
 #answers {
-    padding-left: 210px;
-    padding-top: 0;
-    margin-top: 0;
+    padding-left: 0; /* Reset padding */
+    margin-top: 15px;
 }
 
 #questions_div {
-    font-size: 1.4em;
+    font-size: 1.35rem;
 }
 
 div.selected {
-  background: lightblue;
+  background: #383838;
+  border-left: none; /* Removed border-left */
+  padding-left: 10px;
+  transition: background 0.2s;
+}
+
+.answer-row {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    transition: background 0.2s;
+    border: 1px solid transparent;
+}
+
+.answer-row:hover {
+    border-color: #eee;
+}
+
+.answer-row label.answer {
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: inline-block;
+    width: 90%;
+}
+
+.info-link {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.warning-box {
+    color: #27ae60; 
+    text-align: center;
+    font-size: 1rem;
+    padding: 10px;
+    min-height: 40px;
+    font-weight: 600;
+}
+
+.nav-buttons {
+    float: right;
+}
+
+.nav-buttons-left {
+    float: left;
+}
+
+/* Clearfix for buttons */
+#answer_form:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.small-button {
+    font-size: 0.9rem;
+    padding: 8px 15px;
 }
