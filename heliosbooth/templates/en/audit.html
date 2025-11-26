@@ -1,0 +1,33 @@
+<h3>Your Audited Ballot</h3>
+
+<p>
+<b><u>IMPORTANT</u></b>: This ballot, because it has been audited, will <em>not be counted</em>.<br />
+To cast a ballot, you must click the "Back to Voting" button below, re-encrypt it, and select "Cast" instead of "Audit".
+</p>
+
+<p>
+<b>Why?</b> The system prevents you from auditing and casting the same ballot to ensure voter privacy and prevent coercion.
+</p>
+
+<p>
+<b>Now what?</b> <a onclick="$('#audit_trail').select(); return false;" href="#">Copy your (encrypted) ballot</a> and use the <a target="_blank" href="single-ballot-verify.html?election_url={$T.election_url}">Ballot Verifier</a> to verify it.<br />
+If you want to vote, click the "Back to Voting" button to fill out a new ballot, encrypt it, and cast it.
+</p>
+
+<form action="#">
+<textarea name="audit_trail" id="audit_trail" style="width: 100%; box-sizing: border-box;" rows="10" wrap="soft">{$T.audit_trail}
+{$T.audit_trail}
+</textarea>
+<br />
+<button onclick="document.getElementById('audit_trail').select(); document.execCommand('copy'); return false;" class="pretty small-button">Copy Ballot Hash</button>
+<br /><br />
+Before you return to voting,<br />
+you can post this audited ballot to the public tracking center so that others can verify this ballot's audit.
+<br /><br />
+<b>Even if you post your audited ballot, you must return to voting and select "Cast" for your vote to be counted.</b>
+<br /><br />
+<button onclick="BOOTH.reset_ciphertexts();BOOTH.seal_ballot(); return false;" class="pretty">Back to Voting</button>
+&nbsp; &nbsp;&nbsp;
+<button onclick="$(this).attr('disabled', 'disabled');BOOTH.post_audited_ballot(); return false;" id="post_audited_ballot_button" class="pretty small-button">Post audited ballot to tracking center</button>
+
+</form>

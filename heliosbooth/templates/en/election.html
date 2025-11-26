@@ -1,0 +1,15 @@
+<div id="questions_div">
+<p>
+    How online voting works:
+</p>
+<ol class="election-steps">
+    <li><b>Select</b> your preferred candidates.</li>
+    <li><b>Review</b> your ballot, which will then be encrypted.</li>
+    <li><b>Cast</b> your encrypted ballot and authenticate yourself to confirm your eligibility.</li>
+</ol>
+<div class="start-button-container"><button onclick="BOOTH.show_question(0);">Start</button></div>
+</div>
+
+<p class="help-text">
+    If you have questions, you can <a target="_new" href="mailto:{$T.election_metadata.help_email}?subject=Help%20with%20election%20{$T.election.name}&body=I%20need%20help%20with%20election%20{$T.election.uuid}">send an email</a>.
+</p>

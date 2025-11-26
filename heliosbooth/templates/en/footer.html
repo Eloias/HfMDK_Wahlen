@@ -1,0 +1,9 @@
+<div style="text-align:center; width: 100%; padding: 3px 30px 3px 5px;">
+<span>
+    {#if $T.election.BOGUS_P}
+    The public key for this election is not ready yet. This election is in preview mode only. Refresh?
+    {#else}
+    Election Hash: <span id="election_hash" style="font-weight:bold;">{$T.election.hash}</span>
+    {#/if}
+</span>
+</div>

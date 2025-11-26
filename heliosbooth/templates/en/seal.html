@@ -1,0 +1,55 @@
+<h3>Review your Ballot</h3>
+
+<div class="review-box">
+{#foreach $T.questions as question}
+
+<div class="review-question">
+Question #{$T.question$index + 1}: {$T.question.short_name}
+</div>
+
+{#if $T.choices[$T.question$index].length == 0}
+<div class="review-choice">&#x2610; <b><i>No selection made (Abstention)</i></b></div>
+{#/if}
+{#foreach $T.choices[$T.question$index] as choice}
+<div class="review-choice">&#x2713; <b>{$T.choice}</b></div>
+{#/for}
+{#if $T.choices[$T.question$index].length < $T.question.max}
+<div class="review-meta">
+[{$T.choices[$T.question$index].length} selections out of possible {$T.question.min}-{$T.question.max}]
+</div>
+{#/if}
+<div class="review-edit">
+[<a onclick="BOOTH.show_question({$T.question$index}); return false;" href="#">edit</a>]
+</div>
+{#if !$T.question$last}<hr class="review-separator">{#/if}
+{#/for}
+</div>
+
+<p>Your ballot tracker is <b><tt class="tracker-hash">{$T.encrypted_vote_hash}</tt></b>
+
+<p>  
+  <button id="proceed_button" onclick="BOOTH.cast_ballot();">Proceed to Login</button><span id="loading_div" class="hidden"><img src="loading.gif" id="proceed_loading_img" /></span><br />
+</p>
+
+
+<form method="POST" action="{$T.cast_url}" id="send_ballot_form" class="prettyform">
+<input type="hidden" name="election_uuid" value="{$T.election_uuid}" />
+<input type="hidden" name="election_hash" value="{$T.election_hash}" />
+<textarea name="encrypted_vote" style="display: none;">
+{$T.encrypted_vote_json}
+</textarea>
+</form>
+
+{#if $T.election_metadata.use_advanced_audit_features}
+<div class="audit-box">
+<h4 style="padding: 0px; margin:0px;"><a onclick="$('#auditbody').slideToggle(250);" href="#">Verify & Audit</a> <span style="font-size: 0.8em; color: #444">[optional]</span></h4>
+<div id="auditbody" style="display:none;">
+<p>
+If you choose, you can spoil this ballot and verify the encryption of this (then spoiled) vote. You do not have to do this.
+</p>
+<p>
+You will then have to vote again and cast your ballot for it to be counted.
+</p>
+<button onclick="BOOTH.audit_ballot();" class="pretty">Spoil &amp; Verify</button>
+</p>
+</div>
