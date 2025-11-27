@@ -25,7 +25,71 @@
     <script language="javascript">
     $(document).ready(function() {
       $('#waiting_div').hide();
+      
+      // Language handling
+      var lang = localStorage.getItem('helios_language') || 'de';
+      // console.log("Helios language: " + lang);
+      if (lang === 'en') {
+          // Banner
+          $('.banner-title').text('Voting Booth');
+          $('.banner-exit').text('Exit');
+          
+          // Header
+          $('title').text('Vote - Digital Voting Booth');
+          
+          // Waiting div
+          $('#waiting_div h2').text('Submitting your ballot...');
+          $('#waiting_div p').first().text('Please wait while we verify and cast your ballot.');
+          
+          // Onbeforeunload message
+          window.onbeforeunload = function(evt) {
+              if (ready_to_unload) return;
+              if (typeof evt == 'undefined') evt = window.event;
+              var message = "You have not cast your ballot yet! Complete the process if you want your vote to count.";
+              if (evt) evt.returnValue = message;
+              return message;
+          };
+          
+          // Translate content in included templates
+          translate_content();
+      }
     });
+
+    function translate_content() {
+        // Translations for _castconfirm_password.html
+        $('.trans-voter-id-label').text('Voter ID:');
+        $('.trans-password-label').text('Password:');
+        $('.trans-login-button').val('Login');
+        $('.trans-cast-button').val('Authenticate & Cast Ballot');
+        $('.trans-bad-login').text('Your Voter ID or Password was incorrect. This is not your HfMDK account login. Please try again using the credentials from the email!');
+        
+        var help_email = '{{election.help_email|escapejs}}';
+        $('.trans-help-text-1').html('You can find your Voter ID and Password in the email you received.<br>If you cannot find your credentials, please contact AStA at: <tt>' + help_email + '</tt>.');
+        $('.trans-help-text-2').text('You can cast as many ballots as you want. Only the last one counts.');
+        
+        // Translations for _castconfirm_docast.html
+        var voter_display = '{{voter.display_html_big|escapejs}}';
+        $('.trans-logged-in-as-container').html('You are logged in as <u>' + voter_display + '</u>');
+        
+        $('.trans-submit-ballot').text('Cast this ballot');
+        $('.trans-submit-info').html('<br />You can cast as many ballots as you want.<br />Only the last one counts.');
+        $('.trans-cancel-button').text('Cancel');
+        $('.trans-cancel-info').html('If you cancel now, your ballot will <em>NOT</em> be recorded.<br />You can restart the voting process at any time.');
+        $('.trans-voting-stopped').text('Sorry, voting has ended.');
+        $('.trans-voting-not-started').text('Sorry, voting has not started yet.');
+        
+        // Update confirm dialog for cancel button
+        var cancelUrl = '{% url "election@view" election.uuid %}';
+        $('.trans-cancel-button').attr('onclick', "if (confirm('Are you sure you want to delete this ballot and NOT cast it?')) {document.location='" + cancelUrl + "';}");
+
+        // General page translations
+        $('.title').text('Log in to cast your ballot!');
+        $('#progress_1').text('(1) Select');
+        $('#progress_2').text('(2) Review');
+        $('#progress_3').text('(3) Submit');
+        $('.trans-ballot-hash-label').text('Your ballot tracker is:');
+        $('.trans-election-hash-label').text('Election Fingerprint:');
+    }
 
     function show_waiting() {
       $('#all_forms').hide();
@@ -130,7 +194,7 @@
         </div>
 
         <div style="margin-bottom: 20px;">
-        Dein Stimmzettel-Hash lautet:<br>
+        <span class="trans-ballot-hash-label">Dein Stimmzettel-Hash lautet:</span><br>
         <tt class="tracker-hash">{{vote_fingerprint}}</tt>
         <br><br>
         </div>
@@ -142,7 +206,7 @@
   <div id="footer" class="edge_footer">
     <div style="text-align:center; width: 100%; padding: 3px 30px 3px 5px;">
       <span>
-          Wahl-Hash: <span id="election_hash" style="font-weight:bold;">{{ election.hash }}</span>
+          <span class="trans-election-hash-label">Wahl-Hash:</span> <span id="election_hash" style="font-weight:bold;">{{ election.hash }}</span>
       </span>
     </div>
   </div>

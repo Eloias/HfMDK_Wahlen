@@ -1,0 +1,6 @@
+<!-- sehr einfache DE-Flagge (klein) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="18" viewBox="0 0 3 2" preserveAspectRatio="none">
+  <rect width="3" height="2" y="0" fill="#000"/>
+  <rect width="3" height="2" y="0.66" fill="#D00"/>
+  <rect width="3" height="2" y="1.33" fill="#FFCE00"/>
+</svg>

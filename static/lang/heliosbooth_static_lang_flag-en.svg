@@ -1,0 +1,14 @@
+<!-- vereinfachte UK-Flagge (stilisiert, klein) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="18" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice">
+  <rect width="60" height="30" fill="#012169"/>
+  <g stroke="#fff" stroke-width="6">
+    <path d="M0 0 L60 30 M60 0 L0 30" stroke-linecap="square"/>
+  </g>
+  <g stroke="#C8102E" stroke-width="4">
+    <path d="M0 0 L60 30 M60 0 L0 30" stroke-linecap="square"/>
+  </g>
+  <rect x="26" width="8" height="30" fill="#fff"/>
+  <rect y="11" width="60" height="8" fill="#fff"/>
+  <rect x="27" width="6" height="30" fill="#C8102E"/>
+  <rect y="12" width="60" height="6" fill="#C8102E"/>
+</svg>

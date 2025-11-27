@@ -13,25 +13,27 @@
         <br />
         {% endif %}
 
-        Du bist eingeloggt als <u>{{voter.display_html_big|safe}}</u><br /><br />
+        <span class="trans-logged-in-as-container">
+          Du bist eingeloggt als <u>{{voter.display_html_big|safe}}</u>
+        </span><br /><br />
 
-        <button type="submit" class="large">Diesen Stimmzettel abgeben</button>
-        <span style="font-size:0.8em;"><br />Du kannst so viele Stimmzettel abgeben, wie du möchtest.<br />Nur der letzte zählt.</span>
+        <button type="submit" class="large trans-submit-ballot">Diesen Stimmzettel abgeben</button>
+        <span style="font-size:0.8em;" class="trans-submit-info"><br />Du kannst so viele Stimmzettel abgeben, wie du möchtest.<br />Nur der letzte zählt.</span>
       </form>
 
       <p>
-        <button class="tiny" onclick="if (confirm('Bist du sicher, dass du den Stimmzettel löschen und NICHT abgeben willst?')) {document.location='{% url "election@view" election.uuid %}';}">Abbrechen</button><br />
-        <span style="font-size:0.8em;">Wenn du jetzt abbrichst, wird dein Stimmzettel <em>NICHT</em> aufgezeichnet.<br />Du kannst den Wahlvorgang natürlich jederzeit wieder neu starten.</span>
+        <button class="tiny trans-cancel-button" onclick="if (confirm('Bist du sicher, dass du den Stimmzettel löschen und NICHT abgeben willst?')) {document.location='{% url "election@view" election.uuid %}';}">Abbrechen</button><br />
+        <span style="font-size:0.8em;" class="trans-cancel-info">Wenn du jetzt abbrichst, wird dein Stimmzettel <em>NICHT</em> aufgezeichnet.<br />Du kannst den Wahlvorgang natürlich jederzeit wieder neu starten.</span>
       </p>
 
     </div>
   {% else %}
-    <p style="font-size:1.4em;">
+    <p style="font-size:1.4em;" class="trans-voting-stopped">
       Entschuldigung, die Abstimmung ist bereits beendet.
     </p>
   {% endif %}
 {% else %}
-  <p style="font-size:1.4em;">
+  <p style="font-size:1.4em;" class="trans-voting-not-started">
     Entschuldigung, die Abstimmung hat noch nicht begonnen.
   </p>
 {% endif %}

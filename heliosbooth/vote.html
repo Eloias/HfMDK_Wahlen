@@ -31,11 +31,26 @@
 <body>
 <div id="wrapper">
 <div id="banner" class="edge">
-  <div class="banner-content">
-      <span class="banner-title">Wahlkabine</span>
-      <a class="banner-exit" href="javascript:BOOTH.exit();">Verlassen</a>
+  <div class="banner-content" style="position:relative; display:flex; align-items:center; justify-content:center;">
+    <!-- Sprach-Icon links oben -->
+    <div id="lang-switch" style="position:sticky; left:12px; top:8px; display:flex; gap:6px; align-items:center;">
+      <a id="lang-de" class="lang-link" href="#" onclick="BOOTH.switch_language('de'); return false;" title="Deutsch" aria-label="Deutsch">
+        <img src="static/lang/flag-de.svg" alt="DE" style="width:26px; height:18px; vertical-align:middle; border-radius:2px;"/>
+      </a>
+      <a id="lang-en" class="lang-link" href="#" onclick="BOOTH.switch_language('en'); return false;" title="English" aria-label="English">
+        <img src="static/lang/flag-en.svg" alt="EN" style="width:26px; height:18px; vertical-align:middle; border-radius:2px;"/>
+      </a>
+    </div>
+
+    <!-- Titel in der Mitte bleibt unverändert -->
+    <span class="banner-title">Wahlkabine</span>
+
+    <!-- Exit bleibt rechts -->
+    <a class="banner-exit" href="javascript:BOOTH.exit();" style="position:absolute; right:12px;">Verlassen</a>
   </div>
 </div>
+
+
 <div id="content">
 
 <div id="header">
@@ -51,14 +66,99 @@ BOOTH.setup_templates = function() {
 
     var cache_bust = "?cb=" + new Date().getTime();
 
-    $('#header').setTemplateURL("templates/header.html" + cache_bust);
-    $('#election_div').setTemplateURL("templates/election.html" + cache_bust);
-    $('#question_div').setTemplateURL("templates/question.html" + cache_bust);
-    $('#seal_div').setTemplateURL("templates/seal.html" + cache_bust);
-    $('#audit_div').setTemplateURL("templates/audit.html" + cache_bust);
-    $('#footer').setTemplateURL("templates/footer.html" + cache_bust);
+    // Check for lang parameter or localStorage
+    var params = new URLSearchParams(window.location.search);
+    var lang = params.get('lang') || localStorage.getItem('helios_language');
+    
+    // Ensure consistency
+    if (lang) {
+        localStorage.setItem('helios_language', lang);
+    }
+
+    var template_prefix = "templates/";
+    if (lang === 'en') {
+        template_prefix = "templates/en/";
+
+        // Translate static UI elements
+        $('#progress_1').text("(1) Select");
+        $('#progress_2').text("(2) Review");
+        $('#progress_3').text("(3) Submit");
+        $('.banner-title').text("Voting Booth");
+        $('.banner-exit').text("Exit");
+        
+        $('#lang-en').addClass('lang-active');
+    } else {
+        $('#lang-de').addClass('lang-active');
+    }
+
+    $('#header').setTemplateURL(template_prefix + "header.html" + cache_bust);
+    $('#election_div').setTemplateURL(template_prefix + "election.html" + cache_bust);
+    $('#question_div').setTemplateURL(template_prefix + "question.html" + cache_bust);
+    $('#seal_div').setTemplateURL(template_prefix + "seal.html" + cache_bust);
+    $('#audit_div').setTemplateURL(template_prefix + "audit.html" + cache_bust);
+    $('#footer').setTemplateURL(template_prefix + "footer.html" + cache_bust);
 
     BOOTH.templates_setup_p = true;
+};
+
+BOOTH.switch_language = function(lang) {
+    // 0. Save preference
+    localStorage.setItem('helios_language', lang);
+
+    // 1. Update URL (visual only, no reload)
+    var url = new URL(window.location);
+    url.searchParams.set('lang', lang);
+    window.history.pushState({}, '', url);
+
+    // 2. Update static texts
+    if (lang === 'en') {
+        $('#progress_1').text("(1) Select");
+        $('#progress_2').text("(2) Review");
+        $('#progress_3').text("(3) Submit");
+        $('.banner-title').text("Voting Booth");
+        $('.banner-exit').text("Exit");
+        
+        $('#lang-en').addClass('lang-active');
+        $('#lang-de').removeClass('lang-active');
+    } else {
+        $('#progress_1').text("(1) Wählen");
+        $('#progress_2').text("(2) Überprüfung");
+        $('#progress_3').text("(3) Abschicken");
+        $('.banner-title').text("Wahlkabine");
+        $('.banner-exit').text("Verlassen");
+        
+        $('#lang-de').addClass('lang-active');
+        $('#lang-en').removeClass('lang-active');
+    }
+
+    // 3. Reload templates
+    var template_prefix = (lang === 'en') ? "templates/en/" : "templates/";
+    var cache_bust = "?cb=" + new Date().getTime();
+
+    $('#header').setTemplateURL(template_prefix + "header.html" + cache_bust);
+    $('#election_div').setTemplateURL(template_prefix + "election.html" + cache_bust);
+    $('#question_div').setTemplateURL(template_prefix + "question.html" + cache_bust);
+    $('#seal_div').setTemplateURL(template_prefix + "seal.html" + cache_bust);
+    $('#audit_div').setTemplateURL(template_prefix + "audit.html" + cache_bust);
+    $('#footer').setTemplateURL(template_prefix + "footer.html" + cache_bust);
+
+    // 4. Re-render current view
+    if (BOOTH.state && BOOTH.state.type) {
+        if (BOOTH.state.type === 'election') {
+            BOOTH.show_election();
+        } else if (BOOTH.state.type === 'question') {
+            BOOTH.show_question(BOOTH.state.arg);
+        } else if (BOOTH.state.type === 'seal') {
+             $('#seal_div').processTemplate(BOOTH.state.data);
+             BOOTH.show($('#seal_div'));
+        } else if (BOOTH.state.type === 'audit') {
+             $('#audit_div').processTemplate(BOOTH.state.data);
+             BOOTH.show($('#audit_div'));
+        }
+    } else {
+        // Default start
+        BOOTH.show_election();
+    }
 };
 
 // set up the message when navigating away
@@ -211,6 +311,7 @@ BOOTH.show = function(el) {
 };
 
 BOOTH.show_election = function() {
+  BOOTH.state = {type: 'election'};
   BOOTH.show($('#election_div')).processTemplate({'election' : BOOTH.election, 'election_metadata': BOOTH.election_metadata});
 };
 
@@ -287,6 +388,7 @@ function shuffleArray(array) {
 }
 
 BOOTH.show_question = function(question_num) {
+  BOOTH.state = {type: 'question', arg: question_num};
   BOOTH.started_p = true;
 
   // the first time we hit the last question, we enable the review all button
@@ -468,7 +570,7 @@ BOOTH._after_ballot_encryption = function() {
     };
 
     var show_cast = function() {
-      $('#seal_div').processTemplate({'cast_url': BOOTH.election.cast_url,
+      var data = {'cast_url': BOOTH.election.cast_url,
         'encrypted_vote_json': BOOTH.encrypted_vote_json,
         'encrypted_vote_hash' : BOOTH.encrypted_ballot_hash,
         'election_uuid' : BOOTH.election.uuid,
@@ -476,7 +578,10 @@ BOOTH._after_ballot_encryption = function() {
         'election': BOOTH.election,
         'election_metadata': BOOTH.election_metadata,
         'questions' : BOOTH.election.questions,
-        'choices' : BALLOT.pretty_choices(BOOTH.election, BOOTH.ballot)});
+        'choices' : BALLOT.pretty_choices(BOOTH.election, BOOTH.ballot)};
+      
+      BOOTH.state = {type: 'seal', data: data};
+      $('#seal_div').processTemplate(data);
       BOOTH.show($('#seal_div'));
       BOOTH.encrypted_vote_json = null;
     };
@@ -557,8 +662,9 @@ BOOTH.seal_ballot = function() {
 
 BOOTH.audit_ballot = function() {
     BOOTH.audit_trail = BOOTH.encrypted_ballot_with_plaintexts_serialized || $.toJSON(BOOTH.encrypted_ballot.get_audit_trail());
-
-    BOOTH.show($('#audit_div')).processTemplate({'audit_trail' : BOOTH.audit_trail, 'election_url' : BOOTH.election_url});
+    var data = {'audit_trail' : BOOTH.audit_trail, 'election_url' : BOOTH.election_url};
+    BOOTH.state = {type: 'audit', data: data};
+    BOOTH.show($('#audit_div')).processTemplate(data);
 };
 
 BOOTH.post_audited_ballot = function() {
@@ -655,5 +761,40 @@ BOOTH.do_done = function() {
 </div>
 <div id="applet_div">
 </div>
+
+<script>
+  // Hilfsfunktion: erstelle eine URL, die alle bestehenden query-params erhält
+  function buildLangUrl(lang) {
+    var loc = window.location;
+    // Use URL and URLSearchParams to preserve other params
+    var url = new URL(loc.href);
+    if (lang) {
+      url.searchParams.set('lang', lang);
+    } else {
+      url.searchParams.delete('lang');
+    }
+    return url.toString();
+  }
+
+  // Setze hrefs so, dass andere Parameter (z.B. election id) erhalten bleiben
+  document.addEventListener('DOMContentLoaded', function() {
+    var de = document.getElementById('lang-de');
+    var en = document.getElementById('lang-en');
+    if (de) de.href = buildLangUrl('de');
+    if (en) en.href = buildLangUrl('en');
+
+    // Markiere die momentan aktive Sprache (optisch)
+    var params = new URLSearchParams(window.location.search);
+    var current = (params.get('lang') || localStorage.getItem('helios_language') || 'de').toLowerCase(); // default deutsch
+    if (current === 'en') {
+      en.classList.add('lang-active');
+      de.classList.remove('lang-active');
+    } else {
+      de.classList.add('lang-active');
+      en.classList.remove('lang-active');
+    }
+  });
+</script>
+
 </body>
 </html>

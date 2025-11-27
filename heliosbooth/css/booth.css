@@ -309,3 +309,19 @@ h3 {
 .text-center {
     text-align: center;
 }
+
+.lang-link img {
+  opacity: 0.8;
+  transition: opacity .15s, transform .12s;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.lang-link:hover img {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.lang-active img {
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.12) inset, 0 0 0 2px rgba(0,0,0,0.06);
+  opacity: 1;
+}
