@@ -542,7 +542,13 @@ def one_election_cast(request, election):
 
   save_in_session_across_logouts(request, 'encrypted_vote', encrypted_vote)
 
-  return HttpResponseRedirect(settings.SECURE_URL_HOST + reverse(one_election_cast_confirm, args=[election.uuid]))
+  # Preserve language parameter
+  redirect_url = reverse(one_election_cast_confirm, args=[election.uuid])
+  lang = request.GET.get('lang')
+  if lang:
+      redirect_url += "?" + urlencode({'lang': lang})
+
+  return HttpResponseRedirect(settings.SECURE_URL_HOST + redirect_url)
 
 @election_view(allow_logins=True)
 def password_voter_login(request, election):
@@ -597,18 +603,26 @@ def password_voter_login(request, election):
         return one_election_cast_confirm(request, election.uuid)
       
     except Voter.DoesNotExist:
-      redirect_url = login_url + "?" + urlencode({
+      params = {
           'bad_voter_login' : '1',
           'return_url' : return_url
-          })
+      }
+      if request.GET.get('lang'):
+          params['lang'] = request.GET.get('lang')
+
+      redirect_url = login_url + "?" + urlencode(params)
 
       return HttpResponseRedirect(settings.SECURE_URL_HOST + redirect_url)
   else:
     # bad form, bad voter login
-    redirect_url = login_url + "?" + urlencode({
+    params = {
         'bad_voter_login' : '1',
         'return_url' : return_url
-        })
+    }
+    if request.GET.get('lang'):
+        params['lang'] = request.GET.get('lang')
+
+    redirect_url = login_url + "?" + urlencode(params)
 
     return HttpResponseRedirect(settings.SECURE_URL_HOST + redirect_url)
     

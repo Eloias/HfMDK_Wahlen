@@ -3,7 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8">
-  <title>Digitale Wahlkabine</title>
+  <title>Wahlkabine</title>
   <link rel="stylesheet" type="text/css" href="css/booth.css" />
   <link rel="stylesheet" type="text/css" href="css/forms.css" />
 
@@ -75,6 +75,8 @@ BOOTH.setup_templates = function() {
         localStorage.setItem('helios_language', lang);
     }
 
+    BOOTH.language = (lang === 'en') ? 'en' : 'de';
+
     var template_prefix = "templates/";
     if (lang === 'en') {
         template_prefix = "templates/en/";
@@ -85,6 +87,8 @@ BOOTH.setup_templates = function() {
         $('#progress_3').text("(3) Submit");
         $('.banner-title').text("Voting Booth");
         $('.banner-exit').text("Exit");
+        $('#encrypting_message').text("Your ballot is being encrypted.");
+        $('#encrypting_submessage').text("This won't take long :)");
         
         $('#lang-en').addClass('lang-active');
     } else {
@@ -102,6 +106,7 @@ BOOTH.setup_templates = function() {
 };
 
 BOOTH.switch_language = function(lang) {
+    BOOTH.language = lang;
     // 0. Save preference
     localStorage.setItem('helios_language', lang);
 
@@ -117,6 +122,8 @@ BOOTH.switch_language = function(lang) {
         $('#progress_3').text("(3) Submit");
         $('.banner-title').text("Voting Booth");
         $('.banner-exit').text("Exit");
+        $('#encrypting_message').text("Your ballot is being encrypted.");
+        $('#encrypting_submessage').text("This won't take long :)");
         
         $('#lang-en').addClass('lang-active');
         $('#lang-de').removeClass('lang-active');
@@ -126,6 +133,8 @@ BOOTH.switch_language = function(lang) {
         $('#progress_3').text("(3) Abschicken");
         $('.banner-title').text("Wahlkabine");
         $('.banner-exit').text("Verlassen");
+        $('#encrypting_message').text("Dieser Stimmzettel wird nun verschlüsselt.");
+        $('#encrypting_submessage').text("Das dauert nicht lange :)");
         
         $('#lang-de').addClass('lang-active');
         $('#lang-en').removeClass('lang-active');
@@ -461,7 +470,8 @@ BOOTH.click_checkbox = function(question_num, answer_num, checked_p) {
 };
 
 BOOTH.show_processing_before = function(str_to_execute) {
-    $('#processing_div').html("<h3 align='center'>Processing...</h3>");
+    var msg = (BOOTH.language === 'en') ? "Processing..." : "Verarbeiten...";
+    $('#processing_div').html("<h3 align='center'>" + msg + "</h3>");
     BOOTH.show($('#processing_div'));
 
     // add a timeout so browsers like Safari actually display the processing message
@@ -696,7 +706,13 @@ BOOTH.cast_ballot = function() {
     BOOTH.started_p = false;
 
     // submit the form
-    $('#send_ballot_form').submit();
+    var form = $('#send_ballot_form');
+    if (BOOTH.language) {
+        var action = form.attr('action');
+        var separator = action.indexOf('?') !== -1 ? '&' : '?';
+        form.attr('action', action + separator + 'lang=' + BOOTH.language);
+    }
+    form.submit();
 };
 
 BOOTH.show_receipt = function() {
@@ -719,8 +735,8 @@ BOOTH.do_done = function() {
       </table>
   </div>
   <div id="election_div" class="panel">
-    <h3>Prüfe Funktionen und lade Wahlkabine…</h3>
-    <div class="text-center"><img src="loading.gif" /><br />Das dauert nicht lange...</div>
+    <h3 id="election_loading_msg">Prüfe Funktionen und lade Wahlkabine…</h3>
+    <div class="text-center"><img src="loading.gif" /><br /><span id="election_loading_submsg">Das dauert nicht lange...</span></div>
   </div>
 
   <div id="error_div" class="panel" style="display: none;">
@@ -741,10 +757,10 @@ BOOTH.do_done = function() {
   </div>
 
   <div id="encrypting_div" class="panel" style="display:none;">
-      <h3 class="text-center">Dieser Stimmzettel wird nun verschlüsselt.<br />
+      <h3 class="text-center"><span id="encrypting_message">Dieser Stimmzettel wird nun verschlüsselt.</span><br />
           <img src="encrypting.gif" /> <span style="font-size:0.7em; display:none;" id="percent_done_container">(<span id="percent_done">0</span>%)</span></h3>
 
-      <p class="text-center"><b>Das dauert nicht lange :)</b>
+      <p class="text-center"><b id="encrypting_submessage">Das dauert nicht lange :)</b>
   </div>
 
   <div id="seal_div" class="panel">
@@ -789,6 +805,12 @@ BOOTH.do_done = function() {
     if (current === 'en') {
       en.classList.add('lang-active');
       de.classList.remove('lang-active');
+
+      // Translate loading message immediately
+      var msg = document.getElementById('election_loading_msg');
+      var submsg = document.getElementById('election_loading_submsg');
+      if (msg) msg.innerText = "Checking functions and loading voting booth...";
+      if (submsg) submsg.innerText = "This won't take long...";
     } else {
       de.classList.add('lang-active');
       en.classList.remove('lang-active');

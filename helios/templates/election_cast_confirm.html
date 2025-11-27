@@ -4,17 +4,25 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8">
-  <title>Stimme - Digitale Wahlkabine</title>
+  <title>Wahlkabine Cast Confirm</title>
   <link rel="stylesheet" type="text/css" href="{% static 'booth.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'forms.css' %}" />
-  <script language="javascript" src="{% static 'helios/js/jquery-1.4.2.min.js' %}"></script>
+  <script language="javascript" src="{% static 'js/jquery-1.4.2.min.js' %}"></script>
 </head>
 <body>
 <div id="wrapper">
   <div id="banner" class="edge">
-    <div class="banner-content">
-        <span class="banner-title">Digitale Wahlkabine</span>
-        <a class="banner-exit" href="{% url "election@view" election.uuid %}">Verlassen</a>
+    <div class="banner-content" style="position:relative; display:flex; align-items:center; justify-content:center;">
+        <div id="lang-switch" style="position:absolute; left:12px; top:0; bottom:0; display:flex; gap:6px; align-items:center;">
+            <a id="lang-de" class="lang-link" href="#" onclick="switch_language('de'); return false;" title="Deutsch" aria-label="Deutsch">
+                <img src="{% static 'lang/flag-de.svg' %}" alt="DE" style="width:26px; height:18px; vertical-align:middle; border-radius:2px;"/>
+            </a>
+            <a id="lang-en" class="lang-link" href="#" onclick="switch_language('en'); return false;" title="English" aria-label="English">
+                <img src="{% static 'lang/flag-en.svg' %}" alt="EN" style="width:26px; height:18px; vertical-align:middle; border-radius:2px;"/>
+            </a>
+        </div>
+        <span class="banner-title">Wahlkabine</span>
+        <a class="banner-exit" href="{% url "election@view" election.uuid %}" style="position:absolute; right:12px;">Verlassen</a>
     </div>
   </div>
   <div id="content">
@@ -23,13 +31,29 @@
     </div>
 
     <script language="javascript">
+    function switch_language(lang) {
+        localStorage.setItem('helios_language', lang);
+        var url = new URL(window.location.href);
+        url.searchParams.set('lang', lang);
+        window.location.href = url.toString();
+    }
+
     $(document).ready(function() {
       $('#waiting_div').hide();
       
       // Language handling
-      var lang = localStorage.getItem('helios_language') || 'de';
+      var params = new URLSearchParams(window.location.search);
+      var lang = params.get('lang') || localStorage.getItem('helios_language') || 'de';
+      
+      // Ensure consistency
+      if (lang) {
+          localStorage.setItem('helios_language', lang);
+      }
       // console.log("Helios language: " + lang);
       if (lang === 'en') {
+          $('#lang-en').addClass('lang-active');
+          $('#lang-de').removeClass('lang-active');
+
           // Banner
           $('.banner-title').text('Voting Booth');
           $('.banner-exit').text('Exit');
@@ -52,12 +76,15 @@
           
           // Translate content in included templates
           translate_content();
+      } else {
+          $('#lang-de').addClass('lang-active');
+          $('#lang-en').removeClass('lang-active');
       }
     });
 
     function translate_content() {
         // Translations for _castconfirm_password.html
-        $('.trans-voter-id-label').text('Voter ID:');
+        $('.trans-voter-id-label').text('First Name:');
         $('.trans-password-label').text('Password:');
         $('.trans-login-button').val('Login');
         $('.trans-cast-button').val('Authenticate & Cast Ballot');
@@ -81,6 +108,14 @@
         // Update confirm dialog for cancel button
         var cancelUrl = '{% url "election@view" election.uuid %}';
         $('.trans-cancel-button').attr('onclick', "if (confirm('Are you sure you want to delete this ballot and NOT cast it?')) {document.location='" + cancelUrl + "';}");
+
+        // Update password login form action to include lang
+        var form = $('form[action*="password-voter-login"]');
+        if (form.length > 0) {
+            var action = form.attr('action');
+            var separator = action.indexOf('?') !== -1 ? '&' : '?';
+            form.attr('action', action + separator + 'lang=en');
+        }
 
         // General page translations
         $('.title').text('Log in to cast your ballot!');

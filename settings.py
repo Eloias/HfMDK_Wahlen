@@ -16,6 +16,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'helios', 'media',),
     os.path.join(BASE_DIR, 'heliosbooth', 'css'),
     os.path.join(BASE_DIR, 'heliosbooth', 'js'),
+    os.path.join(BASE_DIR, 'heliosbooth', 'static'),
     os.path.join(BASE_DIR, 'server_ui', 'media'),
     os.path.join(BASE_DIR, 'helios_auth', 'media'),
     os.path.join(BASE_DIR, 'heliosverifier', 'css'),
@@ -60,6 +61,9 @@ SHOW_LOGIN_OPTIONS = (get_from_env('SHOW_LOGIN_OPTIONS', '1') == '1')
 # sometimes, when the site is not that social, it's not helpful
 # to display who created the election
 SHOW_USER_INFO = (get_from_env('SHOW_USER_INFO', '1') == '1')
+
+# show feedback form
+SHOW_FEEDBACK = (get_from_env('SHOW_FEEDBACK', '0') == '1')
 
 DATABASES = {
     'default': {
