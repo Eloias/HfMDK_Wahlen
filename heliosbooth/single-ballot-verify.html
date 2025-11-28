@@ -54,7 +54,30 @@ function result_append(str) {
 }
 
 function verify_single_ballot(election_url, audit_trail) {
-  var encrypted_vote_json = jQuery.secureEvalJSON(audit_trail);
+  if (!audit_trail || audit_trail.trim() === "") {
+    alert("Bitte fügen Sie den Stimmzettel-Inhalt in das Textfeld ein.");
+    return;
+  }
+  var encrypted_vote_json;
+  try {
+     encrypted_vote_json = JSON.parse(audit_trail);
+  } catch (e) {
+     // Versuch, doppelt eingefügten JSON-Code zu reparieren (z.B. durch Template-Fehler oder Copy-Paste)
+     var doubleJsonMatch = audit_trail.match(/}\s*{/);
+     if (doubleJsonMatch) {
+        try {
+            var firstPart = audit_trail.substring(0, doubleJsonMatch.index + 1);
+            encrypted_vote_json = JSON.parse(firstPart);
+            console.log("Doppelter JSON-Inhalt erkannt und korrigiert.");
+        } catch (e2) {
+            alert("Fehler beim Lesen des Stimmzettels: " + e);
+            return;
+        }
+     } else {
+        alert("Fehler beim Lesen des Stimmzettels: " + e);
+        return;
+     }
+  }
   
   result_append("Lade die Wahl...");
 
@@ -130,7 +153,7 @@ Zurzeit ist das Java-Plugin für die überprüfende Prüfung von Stimmzetteln im
     Mit diesem Stimmzettel-Prüfer kannst du einen Prüfungs-Stimmzettel (keinen echten) eingeben<br />und überprüfen, ob er korrekt erstellt wurde.
 </p>
 
-<form onsubmit="try {verify_single_ballot(this.election_url.value, this.audit_trail.value);} catch (e) {E = e;} return false;">
+<form onsubmit="try {verify_single_ballot(this.election_url.value, this.audit_trail.value);} catch (e) {alert('Ein Fehler ist aufgetreten: ' + e); E = e;} return false;">
 Bitte die URL der Wahl eingeben:
     <input type="text" size="50" name="election_url" id="election_url" style="width: 100%; box-sizing: border-box;"/><br />
 
