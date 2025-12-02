@@ -60,16 +60,50 @@ diese {{election.get_election_type_display}} wird <u>nicht</u> auf der Startseit
   </div>
 
   {% if election.election_info_url %}
-  <p style="font-size:1.5em;">[<a target="_blank" href="{{election.election_info_url}}" rel="noopener noreferrer">Kandidaten-Biografien &amp; Statements herunterladen</a>]</p>
+  <p style="font-size:1.5em;">[<a target="_blank" href="{{election.election_info_url}}" rel="noopener noreferrer">Kandidat*innen-Biografien &amp; Statements herunterladen</a>]</p>
   {% endif %}
 
-  <p align="center" style="font-size: 1.5em;">
-  <a href="{% url "election@questions" election.uuid %}">Abstimmungsgegenstand ({% if election.questions %}{{election.questions|length}}{% else %}0{% endif %})</a>
-  &nbsp;&nbsp;|&nbsp;&nbsp;
-  <a href="{% url "election@voters@list-pretty" election.uuid %}">Wähler*innen &amp; Stimmzettel</a>
-  &nbsp;&nbsp;|&nbsp;&nbsp;
-  <a href="{% url "election@trustees@view" election.uuid %}">Trustees ({{trustees|length}})</a>
-  </p>
+  <style>
+    .election-menu {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .election-menu a.button {
+      display: inline-block;
+      padding: 10px 20px;
+      text-decoration: none;
+      background-color: #ffebd0;
+      border: 1px solid #bfbfbf;
+      border-radius: 5px;
+      color: #333;
+      margin: 0;
+      font-size: 1.1em;
+      text-align: center;
+      transition: background-color 0.2s;
+    }
+    .election-menu a.button:hover {
+      background-color: #ddd;
+      color: #000;
+    }
+    @media (max-width: 600px) {
+      .election-menu {
+        flex-direction: column;
+      }
+      .election-menu a.button {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  </style>
+
+  <div class="election-menu">
+    <a class="button" href="{% url "election@questions" election.uuid %}">Abstimmungsgegenstand ({% if election.questions %}{{election.questions|length}}{% else %}0{% endif %})</a>
+    <a class="button" href="{% url "election@voters@list-pretty" election.uuid %}">Wähler*innen &amp; Stimmzettel</a>
+    <a class="button" href="{% url "election@trustees@view" election.uuid %}">Trustees ({{trustees|length}})</a>
+  </div>
 
 {% if admin_p %}
 {% if election.frozen_p %}
@@ -284,7 +318,7 @@ Jede*r kann in dieser Wahl abstimmen.
 
 <p style="font-size: 1.3em;">
 <a href="{% url "election@voters@list-pretty" election.uuid %}">Wähler*innenliste</a> &nbsp;| &nbsp;
-<a href="{% url "election@audited-ballots" election.uuid %}">Prüfungs-Stimmzettel</a>
+<a href="{% url "election@audited-ballots" election.uuid %}">Stimmzettel-Prüfer</a>
 </p>
 
 {% endif %}
