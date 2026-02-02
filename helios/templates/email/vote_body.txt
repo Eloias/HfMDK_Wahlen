@@ -6,8 +6,7 @@ Wahl-Link (klicke hier, um mit der Stimmabgabe zu beginnen):
 {{election_vote_url}}
 
 {% if voter.voter_type == "password" %}
-Dein Vorname: {{voter.voter_login_id}}
-Dein Passwort: {{voter.voter_password}}
+Passwort: {{voter.voter_password}}
 {% else %}
 Melde dich mit deinem {{voter.voter_type}}-Konto an.
 {% endif %}

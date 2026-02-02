@@ -7,7 +7,6 @@ So kannst du wählen:
 
 Wahl-URL: {{election_vote_url}}
 {% if voter.voter_type == "password" %}
-Dein Vorname: {{voter.voter_login_id}}
 Dein Passwort: {{voter.voter_password}}
 {% else %}
 Logge dich mit deinem {{voter.voter_type}}-Konto ein.
@@ -17,7 +16,3 @@ Logge dich mit deinem {{voter.voter_type}}-Konto ein.
 Wahlsache
 StuPa/AStA der HfMDK
 
-{% if unsubscribe_url %}
-Um alle Emails bezüglich der Wahl abzubestellen, hier klicken (nicht empfohlen!):
-{{ unsubscribe_url }}
-{% endif %}

@@ -19,7 +19,4 @@ Falls du der Meinung bist, gewählt zu haben, melde dich bitte bei uns.
 Wahlsache
 StuPa/AStA der HfMDK
 
-{% if unsubscribe_url %}
-Um alle Emails bezüglich der Wahl abzubestellen, hier klicken (nicht empfohlen!):
-{{ unsubscribe_url }}
-{% endif %}
+
