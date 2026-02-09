@@ -1,4 +1,4 @@
-Liebe*r {{voter.name}},
+Hallo {{voter.name}},
 
 Die Auszählung der Stimmen für {{election.name}} wurde abgeschlossen und veröffentlicht:
 

@@ -1,4 +1,4 @@
-Liebe*r {{voter.name}},
+Hallo {{voter.name}},
 
 {{custom_message|safe}}
 

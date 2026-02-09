@@ -74,7 +74,7 @@ Klicke sonst auf **"Weiter zum Login"**.
 ### 5. Login, bevor der Stimmzettel abgschickt wird.
 
 
-Um deinen Stimmzettel abzugeben musst du deine Wahlberechtigung verifizieren. Das tust du mit deinem Vornamen und Passwort. **Beides findest du in der Email!**
+Um deinen Stimmzettel abzugeben musst du deine Wahlberechtigung verifizieren. Das tust du mit deiner Matrikelnummer und Passwort. **Das Passwort findest du in der Email!**
 <details>
 <summary><b>Bild der Wahlkabine, Login</b></summary>
 

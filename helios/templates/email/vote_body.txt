@@ -1,4 +1,4 @@
-Liebe*r {{voter.name}},
+Hallo {{voter.name}},
 
 {{custom_message|safe}}
 
@@ -34,7 +34,3 @@ mit dem du die Echtheit der Wahl prüfen kannst: {{voter.election.hash}}
 Wahlsache
 StuPa/AStA der HfMDK
 
-{% if unsubscribe_url %}
-Um alle Emails bezüglich der Wahl abzubestellen, hier klicken (nicht empfohlen!):
-{{ unsubscribe_url }}
-{% endif %}

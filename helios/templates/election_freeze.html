@@ -10,7 +10,7 @@
 
   <p>
     {% if election.openreg %}
-    Die Registrierung für deine Wahl ist derzeit <b>offen</b>, was bedeutet, dass jeder abstimmen kann, auch nachdem du den Stimmzettel eingefroren hast.
+    Die Registrierung für deine Wahl ist derzeit <b>offen</b>, was bedeutet, dass jeder abstimmen kann, auch nachdem du den Wahlsache eingefroren hast.
     {% else %}
     Die Registrierung für deine Wahl ist derzeit <b>geschlossen</b>, was bedeutet, dass nur die von dir bestimmten Wähler einen Stimmzettel abgeben können. Als Administrator kannst du die Wählerliste im Laufe der Wahl weiterhin bearbeiten.
     {% endif %}
@@ -36,7 +36,7 @@
   <form method="post" action="">
     <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
       
-    <input class="button" type="submit" value="Stimmzettel einfrieren" />
+    <input class="button" type="submit" value="Wahlsache einfrieren" />
     <button onclick="document.location='{% url "election@view" election.uuid %}'; return false;">noch NICHT einfrieren</button>
   </form>
   {% endif %}
