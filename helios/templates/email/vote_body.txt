@@ -11,24 +11,15 @@ Passwort: {{voter.voter_password}}
 Melde dich mit deinem {{voter.voter_type}}-Konto an.
 {% endif %}
 
-{% if voter.vote_hash %}
-Wir haben deine Stimme mit folgendem Stimmzettel-Tracker gespeichert:
-{{voter.vote_hash}}
-
 Du kannst mehrfach wählen, wenn du möchtest, nur deine letzte Stimmabgabe zählt.
-{% endif %}
 
 {% if election.use_voter_aliases %}
-Um deine Privatsphäre zu schützen, ist diese Wahl so konfiguriert,
-dass dein Login, Name oder deine E-Mail-Adresse nicht öffentlich angezeigt werden.
-Stattdessen wird im Stimmzettel-Tracking nur dein Alias angezeigt.
-
+Um deine Privatsphäre zu schützen, ist diese Wahl so konfiguriert, dass dein Name und deine E-Mail-Adresse nicht öffentlich angezeigt werden. Stattdessen wird in der Wähler*innenliste nur dein Alias angezeigt.
 Dein Wähler-Alias lautet: {{voter.alias}}
-
 {% endif %}
 
-Am unteren Rand des Wahlbildschirms findest du den sogenannten „Election Fingerprint“,
-mit dem du die Echtheit der Wahl prüfen kannst: {{voter.election.hash}}
+Am unteren Rand der Wahlkabine findest du den Wahl-Hash,
+mit dem du die Echtheit dieser Wahl prüfen kannst: {{voter.election.hash}}
 
 --
 Wahlsache
