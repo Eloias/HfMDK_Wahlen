@@ -69,19 +69,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': get_from_env('DB_NAME', 'helios_db'),  # 'helios_db' als Standardwert
-        'USER': get_from_env('DB_USER', 'helios_user'),  # 'helios_user' als Standardwert
+        'USER': get_from_env('DB_USER', 'helios_use'),  # 'helios_user' als Standardwert
         'PASSWORD': get_from_env('DB_PASSWORD', 'password'), # Einen Fallback-Wert
         'HOST': get_from_env('DB_HOST', 'localhost'),  # 'localhost' als Standardwert
         'PORT': get_from_env('DB_PORT', ''), # Ein leerer String als Standardwert
         'CONN_MAX_AGE': 600,
     },
 }
-
-# override if we have an env variable
-if get_from_env('DATABASE_URL', None):
-    import dj_database_url
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
 
 # explicitly set the default auto-created primary field to silence warning models.W042
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

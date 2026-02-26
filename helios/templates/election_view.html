@@ -112,8 +112,7 @@ diese {{election.get_election_type_display}} wird <u>nicht</u> auf der Startseit
     <a class="button" href="{% url "election@voters@list-pretty" election.uuid %}">Wähler*innen &amp; Stimmzettel</a>
     <a class="button" href="{% url "election@trustees@view" election.uuid %}">Trustees ({{trustees|length}})</a>
 {% if admin_p %}
-&nbsp;&nbsp;|&nbsp;&nbsp;
-<a href="{% url "election@admins" election.uuid %}">administrators</a>
+    <a class="button" href="{% url "election@admins" election.uuid %}">administrators</a>
 {% endif %}
   </div>
 
