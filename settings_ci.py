@@ -14,3 +14,5 @@ DATABASES = {
         'CONN_MAX_AGE': 600,
     },
 }
+
+SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret')
