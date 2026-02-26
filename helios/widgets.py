@@ -6,12 +6,13 @@ from django import forms
 from django.db import models
 from django.template.loader import render_to_string
 from django.forms.widgets import Select, MultiWidget, DateInput, TextInput, Widget, SelectDateWidget
+from django.forms.utils import flatatt
 from time import strftime
 
 import re
 from django.utils.safestring import mark_safe
 
-__all__ = ('SelectTimeWidget', 'SplitSelectDateTimeWidget')
+__all__ = ('SelectTimeWidget', 'SplitSelectDateTimeWidget', 'DateTimeLocalWidget')
 
 # Attempt to match many time formats:
 # Example: "12:34:56 P.M."  matches:
@@ -211,3 +212,42 @@ class SplitSelectDateTimeWidget(MultiWidget):
         value = self.compress(value)
         rendered_widgets = list(widget.render(name, value, attrs=attrs, renderer=renderer) for widget in self.widgets)
         return mark_safe('<br/>'.join(rendered_widgets))
+
+
+class DateTimeLocalWidget(Widget):
+    """
+    A modern datetime picker widget using HTML5 datetime-local input.
+    Provides a native, user-friendly datetime picker interface.
+    """
+    template_name = ''
+
+    class Media:
+        css = {
+            'all': ('helios/datetime-local.css', 'helios/timezone-display.css',)
+        }
+        js = ('helios/timezone-display.js',)
+
+    def __init__(self, attrs=None):
+        super(DateTimeLocalWidget, self).__init__(attrs)
+        # Set default attributes
+        self.attrs['type'] = 'datetime-local'
+        self.attrs.setdefault('class', 'helios-datetime-input')
+        self.attrs.setdefault('placeholder', 'YYYY-MM-DDTHH:MM')
+
+    def render(self, name, value, attrs=None, renderer=None):
+        if value is None:
+            value = ''
+        elif hasattr(value, 'strftime'):
+            # Convert datetime to the format expected by datetime-local input
+            # Format: YYYY-MM-DDTHH:MM
+            value = value.strftime('%Y-%m-%dT%H:%M')
+
+        # Merge self.attrs with provided attrs and extra attributes
+        final_attrs = {**self.attrs, **(attrs or {}), 'name': name, 'type': 'datetime-local'}
+        if value != '':
+            final_attrs['value'] = value
+
+        return mark_safe('<input%s />' % flatatt(final_attrs))
+
+    def value_from_datadict(self, data, files, name):
+        return data.get(name, None)

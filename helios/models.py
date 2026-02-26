@@ -31,8 +31,19 @@ class HeliosModel(models.Model, datatypes.LDObjectContainer):
   class Meta:
     abstract = True
 
+class ElectionManager(models.Manager):
+  """
+  Custom manager that filters out soft-deleted elections by default.
+  Use Election.objects_with_deleted.all() to include deleted elections.
+  """
+  def get_queryset(self):
+    return super().get_queryset().filter(deleted_at__isnull=True)
+
 class Election(HeliosModel):
   admin = models.ForeignKey(User, on_delete=models.CASCADE)
+
+  # additional administrators with equal privileges to the creator
+  admins = models.ManyToManyField(User, related_name='elections_administered', blank=True)
 
   uuid = models.CharField(max_length=50, null=False)
 
@@ -74,7 +85,7 @@ class Election(HeliosModel):
   openreg = models.BooleanField(default=False)
 
   # featured election?
-  featured_p = models.BooleanField(default=False)
+  featured_p = models.BooleanField(default=False, db_index=True)
 
   # voter aliases?
   use_voter_aliases = models.BooleanField(default=False)
@@ -95,6 +106,9 @@ class Election(HeliosModel):
   # dates at which things happen for the election
   frozen_at = models.DateTimeField(auto_now_add=False, default=None, null=True)
   archived_at = models.DateTimeField(auto_now_add=False, default=None, null=True)
+
+  # soft delete timestamp - null means not deleted, non-null means deleted at that time
+  deleted_at = models.DateTimeField(auto_now_add=False, default=None, null=True, db_index=True)
 
   # dates for the election steps, as scheduled
   # these are always UTC
@@ -143,6 +157,10 @@ class Election(HeliosModel):
   # downloadable election info
   election_info_url = models.CharField(max_length=300, null=True)
 
+  # Custom managers
+  objects = ElectionManager()  # default manager excludes deleted elections
+  objects_with_deleted = models.Manager()  # includes all elections
+
   class Meta:
     app_label = 'helios'
 
@@ -163,6 +181,20 @@ class Election(HeliosModel):
   @property
   def num_cast_votes(self):
     return self.voter_set.exclude(vote=None).count()
+
+  @property
+  def num_pending_votes(self):
+    """
+    Count votes that have been cast but not yet verified or invalidated.
+    These are votes still waiting in the queue to be processed.
+    Excludes quarantined votes which are intentionally held.
+    """
+    return CastVote.objects.filter(
+      voter__election=self,
+      verified_at=None,
+      invalidated_at=None,
+      quarantined_p=False
+    ).count()
 
   @property
   def num_voters(self):
@@ -195,6 +227,10 @@ class Election(HeliosModel):
     return self.archived_at is not None
 
   @property
+  def is_deleted(self):
+    return self.deleted_at is not None
+
+  @property
   def description_bleached(self):
     return bleach.clean(self.description,
                         tags=list(bleach.ALLOWED_TAGS) + ['p', 'h4', 'h5', 'h3', 'h2', 'br', 'u'],
@@ -212,7 +248,9 @@ class Election(HeliosModel):
 
   @classmethod
   def get_by_user_as_admin(cls, user, archived_p=None, limit=None):
-    query = cls.objects.filter(admin = user)
+    from django.db.models import Q
+    # Include elections where user is the creator (admin) OR in the admins list
+    query = cls.objects.filter(Q(admin=user) | Q(admins=user)).distinct()
     if archived_p is True:
       query = query.exclude(archived_at= None)
     if archived_p is False:
@@ -237,16 +275,18 @@ class Election(HeliosModel):
       return query
 
   @classmethod
-  def get_by_uuid(cls, uuid):
+  def get_by_uuid(cls, uuid, include_deleted=False):
     try:
-      return cls.objects.select_related().get(uuid=uuid)
+      manager = cls.objects_with_deleted if include_deleted else cls.objects
+      return manager.select_related().get(uuid=uuid)
     except cls.DoesNotExist:
       return None
 
   @classmethod
-  def get_by_short_name(cls, short_name):
+  def get_by_short_name(cls, short_name, include_deleted=False):
     try:
-      return cls.objects.get(short_name=short_name)
+      manager = cls.objects_with_deleted if include_deleted else cls.objects
+      return manager.get(short_name=short_name)
     except cls.DoesNotExist:
       return None
 
@@ -405,6 +445,41 @@ class Election(HeliosModel):
 
     return issues
 
+  def can_send_voter_emails(self):
+    """
+    Check if voter emails can be sent for this election.
+    Returns a tuple: (can_send: bool, reason: str|None)
+
+    If can_send is True, reason will be None.
+    If can_send is False, reason will explain why emails are disabled.
+    """
+    # Check if election was tallied more than configured weeks ago
+    if self.tallying_finished_at:
+      cutoff_date = datetime.datetime.utcnow() - datetime.timedelta(weeks=settings.HELIOS_VOTER_EMAIL_CUTOFF_WEEKS)
+      if self.tallying_finished_at < cutoff_date:
+        weeks = settings.HELIOS_VOTER_EMAIL_CUTOFF_WEEKS
+        return (False, f"Election was tallied more than {weeks} week{'s' if weeks != 1 else ''} ago")
+
+    # Add more reasons here in the future
+
+    return (True, None)
+
+  def can_modify_voters(self):
+    """
+    Check if voter modifications (uploads, deletions) are allowed for this election.
+    Returns a tuple: (allowed: bool, reason: str|None)
+
+    Voter modifications are blocked once tallying has started,
+    as changing voters after vote counting would compromise election integrity.
+    """
+    if self.encrypted_tally:
+      return (False, "Election has been tallied")
+
+    if self.tallying_started_at:
+      return (False, "Tallying has started")
+
+    return (True, None)
+
   def ready_for_tallying(self):
     return datetime.datetime.utcnow() >= self.tallying_starts_at
 
@@ -547,6 +622,23 @@ class Election(HeliosModel):
 
     self.save()
 
+  def soft_delete(self):
+    """
+    Soft delete the election by setting deleted_at timestamp.
+    The election will be hidden from default queries.
+    """
+    self.deleted_at = datetime.datetime.utcnow()
+    self.append_log(ElectionLog.DELETED)
+    self.save()
+
+  def undelete(self):
+    """
+    Restore a soft-deleted election by clearing deleted_at.
+    """
+    self.deleted_at = None
+    self.append_log(ElectionLog.UNDELETED)
+    self.save()
+
   def generate_trustee(self, params):
     """
     generate a trustee including the secret key,
@@ -635,7 +727,7 @@ class Election(HeliosModel):
 
     # if max = 1, then depends on absolute or relative
     if question['result_type'] == 'absolute':
-      if counts[0][1] >=  (num_cast_votes/2 + 1):
+      if counts[0][1] >=  (num_cast_votes//2 + 1):
         return [counts[0][0]]
       else:
         return []
@@ -687,6 +779,8 @@ class ElectionLog(models.Model):
   FROZEN = "frozen"
   VOTER_FILE_ADDED = "voter file added"
   DECRYPTIONS_COMBINED = "decryptions combined"
+  DELETED = "deleted"
+  UNDELETED = "undeleted"
 
   election = models.ForeignKey(Election, on_delete=models.CASCADE)
   log = models.CharField(max_length=500)
@@ -694,6 +788,9 @@ class ElectionLog(models.Model):
 
   class Meta:
     app_label = 'helios'
+    indexes = [
+      models.Index(fields=['election', 'at'], name='helios_eleclog_elec_at_idx'),
+    ]
 
 
 class VoterFile(models.Model):
@@ -805,10 +902,14 @@ class VoterFile(models.Model):
           new_voter.generate_password()
           election=self.election
           if election.use_voter_aliases:
-              utils.lock_row(Election, election.id)
-              alias_num = election.last_alias_num + 1
-              new_voter.alias = "V%s" % alias_num
-          new_voter.save()
+              # Use transaction to ensure alias assignment is atomic
+              with transaction.atomic():
+                  utils.lock_row(Election, election.id)
+                  alias_num = election.last_alias_num + 1
+                  new_voter.alias = "V%s" % alias_num
+                  new_voter.save()
+          else:
+              new_voter.save()
           successful_voters += 1
       else:
           user, _ = User.objects.get_or_create(user_type=voter['voter_type'], user_id=voter['voter_id'], defaults = {'name': voter['voter_id'], 'info': {}, 'token': None})
@@ -836,7 +937,7 @@ class Voter(HeliosModel):
   #voter_type = models.CharField(max_length = 100)
   #voter_id = models.CharField(max_length = 100)
 
-  uuid = models.CharField(max_length = 50)
+  uuid = models.CharField(max_length=50, db_index=True)
 
   # for users of type password, no user object is created
   # but a dynamic user object is created automatically
@@ -877,6 +978,11 @@ class Voter(HeliosModel):
 
     voter_uuid = str(uuid.uuid4())
     voter = Voter(uuid= voter_uuid, user = user, election = election)
+
+    # Set voter_login_id and voter_email from user object for consistent lookups
+    if user:
+        voter.voter_login_id = user.user_id
+        voter.voter_email = user.info.get('email') or user.user_id
 
     # do we need to generate an alias?
     if election.use_voter_aliases:
@@ -1036,7 +1142,7 @@ class CastVote(HeliosModel):
   vote = LDObjectField(type_hint = 'legacy/EncryptedVote')
 
   # cache the hash of the vote
-  vote_hash = models.CharField(max_length=100)
+  vote_hash = models.CharField(max_length=100, db_index=True)
 
   # a tiny version of the hash to enable short URLs
   vote_tinyhash = models.CharField(max_length=50, null=True, unique=True)
@@ -1055,7 +1161,10 @@ class CastVote(HeliosModel):
   cast_ip = models.GenericIPAddressField(null=True)
 
   class Meta:
-      app_label = 'helios'
+    app_label = 'helios'
+    indexes = [
+      models.Index(fields=['verified_at', 'invalidated_at'], name='helios_cv_verified_invld_idx'),
+    ]
 
   @property
   def datatype(self):
@@ -1147,6 +1256,9 @@ class AuditedBallot(models.Model):
 
   class Meta:
     app_label = 'helios'
+    indexes = [
+      models.Index(fields=['election', 'vote_hash'], name='helios_ab_elec_hash_idx'),
+    ]
 
   @classmethod
   def get(cls, election, vote_hash):
@@ -1169,7 +1281,7 @@ class AuditedBallot(models.Model):
 class Trustee(HeliosModel):
   election = models.ForeignKey(Election, on_delete=models.CASCADE)
 
-  uuid = models.CharField(max_length=50)
+  uuid = models.CharField(max_length=50, db_index=True)
   name = models.CharField(max_length=200)
   email = models.EmailField()
   secret = models.CharField(max_length=100)

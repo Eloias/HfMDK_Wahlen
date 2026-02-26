@@ -37,7 +37,7 @@
     <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
       
     <input class="button" type="submit" value="Wahlsache einfrieren" />
-    <button onclick="document.location='{% url "election@view" election.uuid %}'; return false;">noch NICHT einfrieren</button>
+    <button class="button" onclick="document.location='{% url "election@view" election.uuid %}'; return false;">noch NICHT einfrieren</button>
   </form>
   {% endif %}
 

@@ -26,12 +26,12 @@ if 'password' in AUTH_ENABLED_SYSTEMS:
     from .auth_systems.password import urlpatterns as password_patterns
     urlpatterns.extend(password_patterns)
 
-# twitter
-if 'twitter' in AUTH_ENABLED_SYSTEMS:
-    from .auth_systems.twitter import urlpatterns as twitter_patterns
-    urlpatterns.extend(twitter_patterns)
-
 # ldap
 if 'ldap' in AUTH_ENABLED_SYSTEMS:
     from .auth_systems.ldapauth import urlpatterns as ldap_patterns
     urlpatterns.extend(ldap_patterns)
+
+# devlogin (development only)
+if 'devlogin' in AUTH_ENABLED_SYSTEMS:
+    from .auth_systems.devlogin import urlpatterns as devlogin_patterns
+    urlpatterns.extend(devlogin_patterns)

@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="{% static 'foundation/css/foundation.css' %}">
   <link rel="stylesheet" href="{% static 'foundation-tweaks.css' %}">
   <link rel="stylesheet" href="{% static 'main.css' %}">
+  <link rel="stylesheet" href="/static/helios/timezone-display.css">
 
 {# JavaScript-Dateien, die bedingt geladen werden #}
 {% if settings.DEBUG %}
@@ -29,11 +30,11 @@
 <script language="javascript" src="{% static '20140302-helios-combined.js' %}"></script>
 {% endif %}
 
-  {# Block für zusätzliche JavaScript-Dateien aus Kind-Templates #}
+  <script language="javascript" src="/static/helios/timezone-display.js"></script></script>
+
   {% block js %}
   {% endblock %}
 
-  {# Block für zusätzliche Head-Elemente #}
   {% block extra-head %}{% endblock %}
 </head>
 <body>

@@ -21,6 +21,7 @@ urlpatterns = [
     path('/schedule', views.one_election_schedule, name=names.ELECTION_SCHEDULE),
     path('/extend', views.one_election_extend, name=names.ELECTION_EXTEND),
     path('/archive', views.one_election_archive, name=names.ELECTION_ARCHIVE),
+    path('/delete', views.one_election_delete, name=names.ELECTION_DELETE),
     path('/copy', views.one_election_copy, name=names.ELECTION_COPY),
 
     # badge
@@ -32,6 +33,11 @@ urlpatterns = [
     path('/trustees/new', views.new_trustee, name=names.ELECTION_TRUSTEES_NEW),
     path('/trustees/add-helios', views.new_trustee_helios, name=names.ELECTION_TRUSTEES_ADD_HELIOS),
     path('/trustees/delete', views.delete_trustee, name=names.ELECTION_TRUSTEES_DELETE),
+
+    # managing administrators
+    path('/admins/', views.election_admin_list, name=names.ELECTION_ADMINS_LIST),
+    path('/admins/add', views.election_admin_add, name=names.ELECTION_ADMINS_ADD),
+    path('/admins/remove', views.election_admin_remove, name=names.ELECTION_ADMINS_REMOVE),
     
     # trustee pages
     path('/trustees/<str:trustee_uuid>/home',
@@ -59,9 +65,6 @@ urlpatterns = [
     # get randomness
     path('/get-randomness', views.get_randomness, name=names.ELECTION_GET_RANDOMNESS),
 
-    # server-side encryption
-    path('/encrypt-ballot', views.encrypt_ballot, name=names.ELECTION_ENCRYPT_BALLOT),
-
     # construct election
     path('/questions', views.one_election_questions, name=names.ELECTION_QUESTIONS),
     path('/set_reg', views.one_election_set_reg, name=names.ELECTION_SET_REG),
@@ -79,6 +82,7 @@ urlpatterns = [
     path('/cast', views.one_election_cast, name=names.ELECTION_CAST),
     path('/cast_confirm', views.one_election_cast_confirm, name=names.ELECTION_CAST_CONFIRM),
     path('/password_voter_login', views.password_voter_login, name=names.ELECTION_PASSWORD_VOTER_LOGIN),
+    path('/password_voter_resend', views.password_voter_resend, name=names.ELECTION_PASSWORD_VOTER_RESEND),
     path('/cast_done', views.one_election_cast_done, name=names.ELECTION_CAST_DONE),
     
     # post audited ballot
@@ -92,6 +96,7 @@ urlpatterns = [
     path('/voters/download-csv', views.voters_download_csv, name='election@voters@download-csv'),
     path('/voters/eligibility', views.voters_eligibility, name=names.ELECTION_VOTERS_ELIGIBILITY),
     path('/voters/email', views.voters_email, name=names.ELECTION_VOTERS_EMAIL),
+    path('/voters/clear', views.voters_clear, name=names.ELECTION_VOTERS_CLEAR),
     path('/voters/<str:voter_uuid>', views.one_voter, name=names.ELECTION_VOTER),
     path('/voters/<str:voter_uuid>/delete', views.voter_delete, name=names.ELECTION_VOTER_DELETE),
     
@@ -99,5 +104,8 @@ urlpatterns = [
     path('/ballots/', views.ballot_list, name=names.ELECTION_BALLOTS_LIST),
     path('/ballots/<str:voter_uuid>/all', views.voter_votes, name=names.ELECTION_BALLOTS_VOTER),
     path('/ballots/<str:voter_uuid>/last', views.voter_last_vote, name=names.ELECTION_BALLOTS_VOTER_LAST),
+
+    # election log
+    path('/log/download-csv', views.election_log_download_csv, name=names.ELECTION_LOG_DOWNLOAD_CSV),
 
 ]

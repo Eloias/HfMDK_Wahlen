@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from django.urls import re_path
 
 from helios_auth import url_names
+from helios_auth.utils import format_recipient
 
 import logging
 
@@ -20,10 +21,13 @@ PASSWORD_FORGOTTEN_URL_NAME = "auth@password@forgotten"
 
 def create_user(username, password, name = None):
   from helios_auth.models import User
-  
-  user = User.get_by_type_and_id('password', username)
-  if user:
-    raise Exception('user exists')
+
+  try:
+    User.get_by_type_and_id('password', username)
+  except User.DoesNotExist:
+    pass
+  else:
+    raise ValueError(f"user '{username}' already exists")
   
   info = {'password' : password, 'name': name}
   user = User.update_or_create(user_type='password', user_id=username, info = info)
@@ -100,7 +104,7 @@ Your password: %s
 """ % (user.user_id, user.info['password'], settings.SITE_TITLE)
 
     # FIXME: make this a task
-    send_mail('password reminder', body, settings.SERVER_EMAIL, ["%s <%s>" % (user.info['name'], user.info['email'])], fail_silently=False)
+    send_mail('password reminder', body, settings.SERVER_EMAIL, [format_recipient(user.info['name'], user.info['email'])], fail_silently=False)
     
     return HttpResponseRedirect(return_url)
   
@@ -120,7 +124,7 @@ def update_status(token, message):
 def send_message(user_id, user_name, user_info, subject, body):
   email = user_id
   name = user_name or email
-  send_mail(subject, body, settings.SERVER_EMAIL, ["\"%s\" <%s>" % (name, email)], fail_silently=False)    
+  send_mail(subject, body, settings.SERVER_EMAIL, [format_recipient(name, email)], fail_silently=False)    
 
 
 #

@@ -153,12 +153,42 @@ if get_from_env('HSTS', '0') == '1':
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
+# Content Security Policy Configuration (django-csp)
+# https://django-csp.readthedocs.io/
+#
+# 'unsafe-inline' and 'unsafe-eval' are required due to legacy inline scripts,
+# onclick handlers, and jQuery JSON eval usage. Future improvement: use nonces.
+
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'")
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+CSP_IMG_SRC = ("'self'", "data:")
+CSP_FONT_SRC = ("'self'",)
+CSP_CONNECT_SRC = ("'self'",)
+CSP_WORKER_SRC = ("'self'", "blob:")
+CSP_FORM_ACTION = ("'self'",)
+CSP_FRAME_ANCESTORS = ("'self'",)
+CSP_BASE_URI = ("'self'",)
+CSP_OBJECT_SRC = ("'none'",)
+
+# Set CSP_REPORT_ONLY=1 to test without enforcing
+if get_from_env('CSP_REPORT_ONLY', '0') == '1':
+    CSP_REPORT_ONLY = True
+else:
+    CSP_REPORT_ONLY = False
+
+# Optional: URI to receive CSP violation reports
+_csp_report_uri = get_from_env('CSP_REPORT_URI', None)
+if _csp_report_uri:
+    CSP_REPORT_URI = _csp_report_uri
+
 SILENCED_SYSTEM_CHECKS = ['urls.W002']
 
 MIDDLEWARE = [
     # secure a bunch of things
     'django.middleware.security.SecurityMiddleware',
     'helios.security.HSTSMiddleware',
+    'csp.middleware.CSPMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
 
@@ -202,10 +232,16 @@ INSTALLED_APPS = (
     'email_import',
 )
 
+# Email backend configuration
+# In development mode, set EMAIL_USE_CONSOLE=1 to print emails to stdout
+if DEBUG and get_from_env('EMAIL_USE_CONSOLE', '0') == '1':
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 ANYMAIL = {
     "MAILGUN_API_KEY": get_from_env('MAILGUN_API_KEY', None),
 }
 
+# Mailgun overrides console backend if configured
 if ANYMAIL["MAILGUN_API_KEY"]:
     EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 
@@ -256,14 +292,22 @@ HELIOS_ADMIN_ONLY = False
 HELIOS_VOTERS_UPLOAD = True
 HELIOS_VOTERS_EMAIL = True
 
+# Number of weeks after tallying when voter emails should be disabled
+HELIOS_VOTER_EMAIL_CUTOFF_WEEKS = int(get_from_env('HELIOS_VOTER_EMAIL_CUTOFF_WEEKS', '3'))
+
 # are elections private by default?
 HELIOS_PRIVATE_DEFAULT = False
 
 # authentication systems enabled
-# AUTH_ENABLED_SYSTEMS = ['password','facebook','twitter', 'google', 'yahoo']
+# AUTH_ENABLED_SYSTEMS = ['password','facebook', 'google', 'yahoo']
 AUTH_ENABLED_SYSTEMS = get_from_env('AUTH_ENABLED_SYSTEMS',
                                     get_from_env('AUTH_ENABLED_AUTH_SYSTEMS', 'ldap,password,google,facebook')
                                     ).split(",")
+
+# Add development login in debug mode
+if DEBUG:
+    AUTH_ENABLED_SYSTEMS = ['devlogin'] + AUTH_ENABLED_SYSTEMS
+
 AUTH_DEFAULT_SYSTEM = get_from_env('AUTH_DEFAULT_SYSTEM', get_from_env('AUTH_DEFAULT_AUTH_SYSTEM', None))
 
 # google
@@ -275,28 +319,15 @@ FACEBOOK_APP_ID = get_from_env('FACEBOOK_APP_ID','')
 FACEBOOK_API_KEY = get_from_env('FACEBOOK_API_KEY','')
 FACEBOOK_API_SECRET = get_from_env('FACEBOOK_API_SECRET','')
 
-# twitter
-TWITTER_API_KEY = ''
-TWITTER_API_SECRET = ''
-TWITTER_USER_TO_FOLLOW = 'heliosvoting'
-TWITTER_REASON_TO_FOLLOW = "we can direct-message you when the result has been computed in an election in which you participated"
-
-# the token for Helios to do direct messaging
-TWITTER_DM_TOKEN = {"oauth_token": "", "oauth_token_secret": "", "user_id": "", "screen_name": ""}
-
 # LinkedIn
-LINKEDIN_API_KEY = ''
-LINKEDIN_API_SECRET = ''
+LINKEDIN_CLIENT_ID = get_from_env('LINKEDIN_CLIENT_ID', '')
+LINKEDIN_CLIENT_SECRET = get_from_env('LINKEDIN_CLIENT_SECRET', '')
 
 # CAS (for universities)
 CAS_USERNAME = get_from_env('CAS_USERNAME', "")
 CAS_PASSWORD = get_from_env('CAS_PASSWORD', "")
 CAS_ELIGIBILITY_URL = get_from_env('CAS_ELIGIBILITY_URL', "")
 CAS_ELIGIBILITY_REALM = get_from_env('CAS_ELIGIBILITY_REALM', "")
-
-# Clever
-CLEVER_CLIENT_ID = get_from_env('CLEVER_CLIENT_ID', "")
-CLEVER_CLIENT_SECRET = get_from_env('CLEVER_CLIENT_SECRET', "")
 
 # GitHub
 GH_CLIENT_ID = get_from_env('GH_CLIENT_ID', '')
@@ -335,7 +366,8 @@ logging.basicConfig(
 CELERY_BROKER_URL = get_from_env('CELERY_BROKER_URL', 'amqp://localhost')
 if TESTING:
     CELERY_TASK_ALWAYS_EAGER = True
-#database_url = DATABASES['default']
+else:
+    CELERY_TASK_ALWAYS_EAGER = (get_from_env('CELERY_TASK_ALWAYS_EAGER', '0') == '1')
 
 # Rollbar Error Logging
 ROLLBAR_ACCESS_TOKEN = get_from_env('ROLLBAR_ACCESS_TOKEN', None)

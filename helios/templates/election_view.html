@@ -1,4 +1,5 @@
 {% extends TEMPLATE_BASE %}
+{% load timezone_tags %}
 {% block title %}{{election.name}}{% endblock %}
 {% block content %}
 <div style="float: left; margin-right: 50px;">
@@ -16,6 +17,13 @@
 {% endif %}
 {% if admin_p %}
 &nbsp;{% if election.is_archived %}<a class="small button" href="{% url "election@archive" election_uuid=election.uuid %}?archive_p=0">de-archivieren</a>{% else %}<a class="small button" href="{% url "election@archive" election_uuid=election.uuid %}?archive_p=1">archivieren</a>{% endif %}
+{% if election.is_archived %}
+<form method="post" action="{% url "election@delete" election_uuid=election.uuid %}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this election? Once deleted, only site administrators can restore it.');">
+<input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+<input type="hidden" name="delete_p" value="1" />
+<button type="submit" class="small button">delete it</button>
+</form>
+{% endif %}
 <a class="small button" onclick="return window.confirm('Bist du sicher, dass du diese Wahl kopieren möchtest?');" href="{% url "election@copy" election_uuid=election.uuid %}">Kopie erstellen</a>
 {% endif %}
 <br />
@@ -53,8 +61,8 @@ diese {{election.get_election_type_display}} wird <u>nicht</u> auf der Startseit
     <div id="info_dropdown" style="display:none; margin-top: 10px;">
       <p>
         {% if election.help_email and admin_p %}E-Mail-Adresse für Hilfe: {{election.help_email}}<br />{% endif %}
-        {% if election.voting_start_at %}Wahl beginnt am {{election.voting_start_at}}<br />{% endif %}
-        {% if election.voting_end_at %}Wahl endet am {{election.voting_end_at}}<br />{% endif %}
+        {% if election.voting_start_at %}Wahl beginnt am {{election.voting_start_at|utc_time}}<br />{% endif %}
+        {% if election.voting_end_at %}Wahl endet am {{election.voting_end_at|utc_time}}<br />{% endif %}
       </p>
     </div>
   </div>
@@ -103,6 +111,10 @@ diese {{election.get_election_type_display}} wird <u>nicht</u> auf der Startseit
     <a class="button" href="{% url "election@questions" election.uuid %}">Abstimmungsgegenstand ({% if election.questions %}{{election.questions|length}}{% else %}0{% endif %})</a>
     <a class="button" href="{% url "election@voters@list-pretty" election.uuid %}">Wähler*innen &amp; Stimmzettel</a>
     <a class="button" href="{% url "election@trustees@view" election.uuid %}">Trustees ({{trustees|length}})</a>
+{% if admin_p %}
+&nbsp;&nbsp;|&nbsp;&nbsp;
+<a href="{% url "election@admins" election.uuid %}">administrators</a>
+{% endif %}
   </div>
 
 {% if admin_p %}
@@ -136,7 +148,7 @@ diese {{election.get_election_type_display}} wird <u>nicht</u> auf der Startseit
 <br />
 {% if election.voting_starts_at %}
 sobald du dies tust, ist die Wahl abstimmungsbereit und wird automatisch<br />
-am {{election.voting_starts_at}} gemäß deinen Einstellungen geöffnet.
+am {{election.voting_starts_at|utc_time}} gemäß deinen Einstellungen geöffnet.
 {% else %}
 sobald du dies tust, wird die Wahl sofort für die Abstimmung geöffnet.
 {% endif %}
@@ -224,12 +236,12 @@ Sobald du dies getan hast, wird die Auszählung nur für dich, den Administrator
 <br />
 <br />
 {% if election.voting_extended_until %}
-Diese {{election.get_election_type_display}} sollte ursprünglich am {{election.voting_ends_at}} (UTC) enden,<br />
-wurde aber bis zum {{ election.voting_extended_until }} (UTC) verlängert.
+Diese {{election.get_election_type_display}} sollte ursprünglich am {{election.voting_ends_at|utc_time}} enden,<br />
+wurde aber bis zum {{election.voting_extended_until|utc_time}} verlängert.
 {% else %}
 {% if election.voting_ends_at %}
 <br />
-Diese {{election.get_election_type_display}} endet am {{election.voting_ends_at}} (UTC).
+Diese {{election.get_election_type_display}} endet am {{election.voting_ends_at|utc_time}}.
 {% else %}
 Diese {{election.get_election_type_display}} endet nach Ermessen des Wahlsausschusses.
 {% endif %}
@@ -319,6 +331,9 @@ Jede*r kann in dieser Wahl abstimmen.
 <p style="font-size: 1.3em;">
 <a href="{% url "election@voters@list-pretty" election.uuid %}">Wähler*innenliste</a> &nbsp;| &nbsp;
 <a href="{% url "election@audited-ballots" election.uuid %}">Stimmzettel-Prüfer</a>
+{% if admin_p %}&nbsp;| &nbsp;
+<a href="{% url "election@log@download-csv" election.uuid %}">Download Election Log (CSV)</a>
+{% endif %}
 </p>
 
 {% endif %}
