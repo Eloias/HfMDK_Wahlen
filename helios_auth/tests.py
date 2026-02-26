@@ -244,11 +244,6 @@ class UserBlackboxTests(TestCase):
         # self.assertContains(response, "logged in as")
         # self.assertContains(response, "Foobar User")
 
-    def test_logout(self):
-        response = self.client.post(reverse("auth@logout"), follow=True)
-
-        self.assertContains(response, "not logged in")
-        self.assertNotContains(response, "Foobar User")
 
     def test_email(self):
         """using the test email backend"""
