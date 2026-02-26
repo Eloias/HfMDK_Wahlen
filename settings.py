@@ -114,7 +114,7 @@ MEDIA_URL = '/media/'
 
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = get_from_env('SECRET_KEY', '')
+SECRET_KEY = get_from_env('SECRET_KEY', 'x9&P#m2L_Qz7uW*K8bY@N4eC+S1hG6jD0fA3tI5oR9wU2yZ!r8qV4vX7nB1mP5kL')
 
 # Secret key for HMAC confirmation codes (separate from Django SECRET_KEY)
 EMAIL_OPTOUT_SECRET = get_from_env('EMAIL_OPTOUT_SECRET', '')
