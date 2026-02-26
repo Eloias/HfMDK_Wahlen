@@ -35,6 +35,7 @@ jobs:
     env:
       PGHOST: localhost
       PGUSER: postgres
+      SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
 
     steps:
       - uses: actions/checkout@v4
