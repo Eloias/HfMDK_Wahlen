@@ -1,0 +1,39 @@
+# Python byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv*/
+
+# uv cache
+.cache/
+
+# Django
+*.log
+media/
+static/
+
+# Celery
+celerybeat-schedule
+celerybeat-*.db
+
+# Local environment
+.env
+env.sh
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+*~
+
+# Git
+.git/
+.gitignore
+
+# Docs / local scripts
+deploy-*.sh
