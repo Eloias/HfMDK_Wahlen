@@ -30,17 +30,8 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
-    environment:
-      DEBUG: "0"
-      SECRET_KEY: "${SECRET_KEY:?SECRET_KEY must be set in the environment or a .env file}"
-      DB_NAME: helios_db
-      DB_USER: helios_user
-      DB_PASSWORD: password
-      DB_HOST: db
-      DB_PORT: "5432"
-      CELERY_BROKER_URL: amqp://rabbitmq
-      URL_HOST: "${URL_HOST:-http://localhost:8000}"
-      ALLOWED_HOSTS: "${ALLOWED_HOSTS:-localhost,127.0.0.1}"
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
@@ -51,16 +42,9 @@ services:
     build: .
     restart: unless-stopped
     command: ["uv", "run", "celery", "--app", "helios", "worker",
-              "--events", "--beat", "--concurrency", "1"]
-    environment:
-      DEBUG: "0"
-      SECRET_KEY: "${SECRET_KEY:?SECRET_KEY must be set in the environment or a .env file}"
-      DB_NAME: helios_db
-      DB_USER: helios_user
-      DB_PASSWORD: password
-      DB_HOST: db
-      DB_PORT: "5432"
-      CELERY_BROKER_URL: amqp://rabbitmq
+              "--pool=solo", "--events", "--beat"]
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy

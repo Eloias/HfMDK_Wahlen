@@ -22,10 +22,12 @@ do
 done
 echo "PostgreSQL is ready."
 
-echo "Running database migrations..."
-uv run python manage.py migrate --noinput
+if [[ "$3" == "gunicorn" ]]; then
+    echo "Running database migrations..."
+    uv run python manage.py migrate --noinput
 
-echo "Collecting static files..."
-uv run python manage.py collectstatic --noinput
+    echo "Collecting static files..."
+    uv run python manage.py collectstatic --noinput
+fi
 
 exec "$@"

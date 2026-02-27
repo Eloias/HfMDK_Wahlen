@@ -34,4 +34,4 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["gunicorn", "wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4"]
+CMD ["uv", "run", "gunicorn", "wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4"]
