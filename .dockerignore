@@ -13,7 +13,7 @@ venv*/
 # Django
 *.log
 media/
-static/
+# static/
 
 # Celery
 celerybeat-schedule
